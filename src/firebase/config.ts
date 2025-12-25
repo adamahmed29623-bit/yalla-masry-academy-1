@@ -1,8 +1,8 @@
 export const firebaseConfig = {
-  "projectId": "studio-1391317803-d393f",
-  "appId": "1:259088451308:web:fd708dc068d59d431807c9",
-  "apiKey": "AIzaSyASKFdYPoeHuENGY9UrS0aFefBa6PuHxmw",
-  "authDomain": "studio-1391317803-d393f.firebaseapp.com",
-  "measurementId": "",
-  "messagingSenderId": "259088451308"
+  "projectId": "yalla-masry-academy",
+  "appId": "1:652841336422:web:2d18c35b9a456a5c13936c",
+  "storageBucket": "yalla-masry-academy.appspot.com",
+  "apiKey": "AIzaSyC1sCq2O1O7n4Yd5n2f3g6hJk9l1mNn2o",
+  "authDomain": "yalla-masry-academy.firebaseapp.com",
+  "messagingSenderId": "652841336422"
 };
