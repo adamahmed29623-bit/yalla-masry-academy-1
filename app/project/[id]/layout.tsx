@@ -7,6 +7,7 @@ import { doc } from "firebase/firestore"
 import { notFound } from "next/navigation"
 import { useMemo } from "react"
 import { Loader2 } from "lucide-react"
+import { useMemoFirebase } from "@/firebase/provider";
 
 export default function ProjectLayout({
   children,
@@ -17,7 +18,7 @@ export default function ProjectLayout({
 }) {
   const { firestore, user, isUserLoading } = useFirebase()
 
-  const projectRef = useMemo(() => {
+  const projectRef = useMemoFirebase(() => {
     if (!firestore || !user) return null
     // Note: The document ID is params.id which is the projectId
     return doc(firestore, `users/${user.uid}/firebaseProjects`, params.id)
