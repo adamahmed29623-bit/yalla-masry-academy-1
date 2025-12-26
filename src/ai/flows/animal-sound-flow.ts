@@ -1,31 +1,38 @@
 'use server';
 /**
- * @fileOverview A Genkit flow for generating animal sounds using a TTS model.
- * - getAnimalSoundFlow: Main function to generate the audio.
- * - AnimalSoundInput: Input type for the flow.
- * - AnimalSoundOutput: Output type for the flow.
+ * @fileOverview An AI flow for generating animal sounds.
+ *
+ * This file defines the AI logic for a Text-to-Speech (TTS) agent that
+ * takes an animal's name in Arabic and generates a corresponding sound,
+ * then converts it to a playable audio format.
+ *
+ * - AnimalSoundInputSchema: Zod schema for the flow's input.
+ * - AnimalSoundOutputSchema: Zod schema for the flow's output.
+ * - getAnimalSoundFlow: The main server action that invokes the Genkit flow.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 import { googleAI } from '@genkit-ai/google-genai';
 import wav from 'wav';
 
-const AnimalSoundInputSchema = z.object({
-  animalName: z.string().describe('The name of the animal to generate a sound for.'),
+// === Schemas ===
+
+export const AnimalSoundInputSchema = z.object({
+  animalName: z.string().describe("The name of the animal in Arabic (e.g., 'قطة', 'كلب')."),
 });
 export type AnimalSoundInput = z.infer<typeof AnimalSoundInputSchema>;
 
-const AnimalSoundOutputSchema = z.object({
-  audioDataUri: z
-    .string()
-    .describe(
-      "The generated audio as a data URI. Expected format: 'data:audio/wav;base64,<encoded_data>'."
-    ),
+export const AnimalSoundOutputSchema = z.object({
+  audioDataUri: z.string().describe("The base64 encoded WAV audio data URI of the animal sound."),
 });
 export type AnimalSoundOutput = z.infer<typeof AnimalSoundOutputSchema>;
 
-// Helper function to convert PCM buffer to WAV base64 string
+// === Utility Functions ===
+
+/**
+ * Converts raw PCM audio buffer to a base64 encoded WAV data URI.
+ */
 async function toWav(
   pcmData: Buffer,
   channels = 1,
@@ -49,43 +56,53 @@ async function toWav(
   });
 }
 
-export const getAnimalSoundFlow = ai.defineFlow(
+// === Main Flow ===
+
+/**
+ * Defines the main Genkit flow for generating animal sounds.
+ */
+const animalSoundFlow = ai.defineFlow(
   {
-    name: 'getAnimalSoundFlow',
+    name: 'animalSoundFlow',
     inputSchema: AnimalSoundInputSchema,
     outputSchema: AnimalSoundOutputSchema,
   },
   async ({ animalName }) => {
+    // Step 1: Generate the animal sound using a specialized prompt.
+    // We ask the model to generate the sound effect directly.
     const { media } = await ai.generate({
       model: googleAI.model('gemini-2.5-flash-preview-tts'),
-      prompt: `Generate the sound of a ${animalName}.`,
       config: {
         responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            // Using a prebuilt voice as a base, the prompt will guide the sound.
-            // There isn't a direct "animal sound" voice, so we rely on the model's ability to interpret the prompt.
-            prebuiltVoiceConfig: { voiceName: 'Alloy' },
-          },
-        },
+        // We don't need a specific voice, as we're asking for a sound effect.
       },
+      prompt: `Generate the sound of a ${animalName}.`,
     });
 
     if (!media || !media.url) {
-      throw new Error('No audio media was returned from the model.');
+      throw new Error('No media was returned from the TTS model for the animal sound.');
     }
 
-    // The media.url is a base64 data URI for the raw PCM audio data.
-    const audioBuffer = Buffer.from(
+    // Step 2: Convert the raw PCM audio data to WAV format.
+    const pcmAudioBuffer = Buffer.from(
       media.url.substring(media.url.indexOf(',') + 1),
       'base64'
     );
-
-    // Convert the raw PCM data to a proper WAV format.
-    const wavBase64 = await toWav(audioBuffer);
+    
+    const wavBase64 = await toWav(pcmAudioBuffer);
 
     return {
-      audioDataUri: `data:audio/wav;base64,${wavBase64}`,
+      audioDataUri: 'data:audio/wav;base64,' + wavBase64,
     };
   }
 );
+
+
+/**
+ * The server action wrapper for the Genkit flow.
+ * @param input The name of the animal.
+ * @returns The AI-generated animal sound as a data URI.
+ */
+export async function getAnimalSoundFlow(input: AnimalSoundInput): Promise<AnimalSoundOutput> {
+  return await animalSoundFlow(input);
+}

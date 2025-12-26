@@ -4,6 +4,8 @@ import { generateSecurityRules } from "@/ai/flows/generate-security-rules";
 import { suggestRuleImprovements } from "@/ai/flows/suggest-rule-improvements";
 import { handleAdventure } from "@/ai/flows/smart-adventure-flow";
 import { getAnimalSoundFlow } from "@/ai/flows/animal-sound-flow";
+import { getStorytellerAudio, StorytellerInputSchema } from "@/ai/flows/storyteller-flow";
+import { getDialogueEvaluationFlow, DialogueEvaluationInputSchema, DialogueEvaluationOutput } from "@/ai/flows/dialogue-evaluation-flow";
 import { z } from "zod";
 
 const generateRulesSchema = z.object({
@@ -101,5 +103,35 @@ export async function getAnimalSound(
     throw new Error('Invalid input for getAnimalSound');
   }
   return await getAnimalSoundFlow(validatedFields.data);
+}
+
+export async function handleGetStory(input: z.infer<typeof StorytellerInputSchema>) {
+    const validatedFields = StorytellerInputSchema.safeParse(input);
+    if (!validatedFields.success) {
+        return { success: false, error: "Invalid input" };
+    }
+    try {
+        const result = await getStorytellerAudio(validatedFields.data);
+        return { success: true, audioDataUri: result.media };
+    } catch (e) {
+        console.error("Storyteller error:", e);
+        return { success: false, error: "Failed to generate audio story." };
+    }
+}
+
+export async function getDialogueEvaluation(
+    input: z.infer<typeof DialogueEvaluationInputSchema>
+): Promise<{ success: boolean; data?: DialogueEvaluationOutput; error?: string }> {
+    const validatedFields = DialogueEvaluationInputSchema.safeParse(input);
+    if (!validatedFields.success) {
+        return { success: false, error: "Invalid input for dialogue evaluation" };
+    }
+    try {
+        const result = await getDialogueEvaluationFlow(validatedFields.data);
+        return { success: true, data: result };
+    } catch (e) {
+        console.error("Dialogue Evaluation error:", e);
+        return { success: false, error: "Failed to get AI evaluation." };
+    }
 }
 }
