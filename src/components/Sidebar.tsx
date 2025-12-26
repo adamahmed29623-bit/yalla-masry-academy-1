@@ -17,56 +17,37 @@ import {
   Palette,
   Mic2,
   Users2,
+  UserCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { UserNav } from './user-nav';
 import { User } from 'firebase/auth';
-import { getDictionary } from '@/dictionaries';
-import { Locale } from '@/i18n-config';
-import { useEffect, useState } from 'react';
 
-type NavDict = Awaited<ReturnType<typeof getDictionary>>['header'];
-type UserNavDict = Awaited<ReturnType<typeof getDictionary>>['user_nav'];
+const navLinks = [
+    { href: '/dashboard', label: "Dashboard", icon: LayoutDashboard },
+    { href: '/profile', label: "Profile", icon: UserCircle },
+    { href: '/egyptian-school', label: "School", icon: GraduationCap },
+    { href: '/teachers', label: "Teachers", icon: Users2 },
+    { href: '/community', label: "Community", icon: Users },
+    { href: '/quran', label: "Quran", icon: BookOpen },
+    { href: '/sunnah', label: "Sunnah", icon: Scroll },
+    { href: '/museum', label: "Museum", icon: Pyramid },
+    { href: '/smart-adventure', label: "Smart Adventure", icon: Sparkles },
+    { href: '/challenge', label: "Challenge", icon: Swords },
+    { href: '/store', label: "Store", icon: Store },
+    { href: '/gulf', label: "Gulf Council", icon: Ship },
+    { href: '/animal-sounds', label: "Animal Sounds", icon: Mic2 },
+    { href: '/coloring', label: "Coloring Game", icon: Palette },
+    { href: '/teacher-dashboard', label: "Teacher Dashboard", icon: UserCog },
+];
 
 export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname();
-  const lang = (pathname.split('/')[1] || 'en') as Locale;
-  const [dict, setDict] = useState<NavDict | null>(null);
-  const [userNavDict, setUserNavDict] = useState<UserNavDict | null>(null);
-
-  useEffect(() => {
-    getDictionary(lang).then(d => {
-        setDict(d.header);
-        setUserNavDict(d.user_nav);
-    });
-  }, [lang]);
-
-  if (!dict || !userNavDict) {
-    return <div className="hidden md:flex w-64 flex-col border-r bg-background p-4" />;
-  }
-
-  const navLinks = [
-    { href: `/${lang}/dashboard`, label: dict.dashboard, icon: LayoutDashboard },
-    { href: `/${lang}/profile`, label: userNavDict.profile, icon: Users },
-    { href: `/${lang}/egyptian-school`, label: dict.school, icon: GraduationCap },
-    { href: `/${lang}/teachers`, label: dict.teachers, icon: Users2 },
-    { href: `/${lang}/community`, label: dict.community, icon: Users },
-    { href: `/${lang}/quran`, label: dict.quran, icon: BookOpen },
-    { href: `/${lang}/sunnah`, label: dict.sunnah, icon: Scroll },
-    { href: `/${lang}/museum`, label: dict.museum, icon: Pyramid },
-    { href: `/${lang}/smart-adventure`, label: dict.smart_adventure, icon: Sparkles },
-    { href: `/${lang}/challenge`, label: dict.challenge, icon: Swords },
-    { href: `/${lang}/store`, label: dict.store, icon: Store },
-    { href: `/${lang}/gulf`, label: dict.gulf_council, icon: Ship },
-    { href: `/${lang}/animal-sounds`, label: dict.animal_sounds, icon: Mic2 },
-    { href: `/${lang}/coloring`, label: dict.coloring_game, icon: Palette },
-    { href: `/${lang}/teacher-dashboard`, label: dict.teacher_dashboard, icon: UserCog },
-  ];
 
   return (
     <aside className="hidden md:flex w-64 flex-col border-r bg-background">
       <div className="p-4 border-b">
-        <Link href={`/${lang}`} className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2">
           <FirebaseLogo className="h-8 w-8 text-primary" />
           <span className="font-bold sm:inline-block font-headline text-lg">
             Yalla Masry
@@ -94,7 +75,7 @@ export function Sidebar({ user }: { user: User }) {
         </nav>
       </div>
       <div className="p-4 border-t mt-auto">
-        <UserNav lang={lang} dict={userNavDict} />
+        <UserNav />
       </div>
     </aside>
   );

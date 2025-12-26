@@ -6,9 +6,6 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/firebase/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/hooks/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   prefix: "",
   theme: {
@@ -21,16 +18,10 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        'cairo': ['Cairo', 'sans-serif'],
-        'el-messiri': ['"El Messiri"', 'sans-serif'],
-        'amiri-quran': ['"Amiri Quran"', 'serif'],
+        'body': ['"El Messiri"', 'sans-serif'],
+        'display': ['Cairo', 'sans-serif'],
       },
       colors: {
-        'nile-blue': '#0b4e8d',
-        'gold-accent': '#FFD700',
-        'sand-ochre': '#d6b876',
-        'dark-granite': '#2a2a2a',
-        'nile-dark': '#0d284e',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -64,6 +55,10 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        'nile-dark': 'hsl(var(--background))',
+        'nile-blue': 'hsl(var(--card))',
+        'sand-ochre': 'hsl(var(--primary))',
+        'gold-accent': 'hsl(var(--accent))',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,19 +75,19 @@ const config: Config = {
           to: { height: "0" },
         },
          "fade-in-down": {
-          "0%": { opacity: "0", transform: "translateY(-20px)" },
+          "0%": { opacity: "0", transform: "translateY(-10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "fade-in-up": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in-down": "fade-in-down 0.5s ease-out",
-        "fade-in-up": "fade-in-up 0.5s ease-out",
+        "fade-in-down": "fade-in-down 0.5s ease-out forwards",
+        "fade-in-up": "fade-in-up 0.5s ease-out forwards",
       },
     },
   },

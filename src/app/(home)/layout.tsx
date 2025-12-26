@@ -5,6 +5,7 @@ import { useFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sidebar } from '@/components/Sidebar';
+import { User } from 'firebase/auth';
 
 export default function HomeLayout({
   children,
@@ -22,7 +23,7 @@ export default function HomeLayout({
   }, [user, isUserLoading, router]);
 
   // While loading, show a skeleton layout
-  if (isUserLoading) {
+  if (isUserLoading || !user) {
     return (
       <div className="flex min-h-screen bg-background text-foreground">
         <Skeleton className="hidden md:block w-64 border-r border-border" />
@@ -41,22 +42,12 @@ export default function HomeLayout({
   }
 
   // If there's a user, show the full layout
-  if (user) {
-    return (
-      <div className="flex min-h-screen bg-background text-foreground">
-        <Sidebar user={user} />
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    );
-  }
-
-  // If no user and not loading, this will be briefly visible before redirect
-  // Or you can return null or a more specific "Redirecting..." component
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
-        <p>Loading...</p>
+    <div className="flex min-h-screen bg-background text-foreground">
+      <Sidebar user={user as User} />
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 }

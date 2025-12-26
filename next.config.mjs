@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https' ,
+        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
       {
@@ -21,11 +21,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'avatar.vercel.sh',
+        hostname: 'i.pravatar.cc',
       },
       {
         protocol: 'https',
-        hostname: 'i.pravatar.cc',
+        hostname: 'avatar.vercel.sh',
       }
     ],
   },

@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 
-// The root page will redirect to the dashboard, which will handle authentication checks.
-export default function Home() {
-  redirect('/dashboard')
+export default function HomePage() {
+  // The root page will redirect to the dashboard, which will handle authentication checks.
+  redirect('/dashboard');
 }

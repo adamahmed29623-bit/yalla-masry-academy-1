@@ -15,26 +15,17 @@ import { CreditCard, LogOut, Settings, User, LogIn, Loader2 } from "lucide-react
 import { useFirebase } from "@/firebase"
 import { signOut } from "firebase/auth"
 import Link from "next/link"
-import React from "react"
-import { type getDictionary } from "@/dictionaries"
-
-type UserNavDict = Awaited<ReturnType<typeof getDictionary>>['user_nav'];
-
-interface UserNavProps {
-  lang: string;
-  dict: UserNavDict;
-}
 
 function getInitials(name?: string | null) {
   if (!name) return "U";
   const parts = name.split(" ");
   if (parts.length > 1) {
-    return parts[0][0] + parts[parts.length - 1][0];
+    return (parts[0][0] + (parts[parts.length - 1][0] || '')).toUpperCase();
   }
-  return name.substring(0, 2);
+  return name.substring(0, 2).toUpperCase();
 }
 
-export function UserNav({ lang, dict }: UserNavProps) {
+export function UserNav() {
   const { user, isUserLoading, auth } = useFirebase();
 
   const handleLogout = () => {
@@ -51,9 +42,9 @@ export function UserNav({ lang, dict }: UserNavProps) {
   if (!user) {
     return (
       <Button asChild>
-        <Link href={`/${lang}/login`}>
+        <Link href="/login">
             <LogIn className="mr-2 h-4 w-4" />
-            {dict.sign_in}
+            Sign In
         </Link>
       </Button>
     )
@@ -81,24 +72,24 @@ export function UserNav({ lang, dict }: UserNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href={`/${lang}/profile`}>
-              <User className="mr-2 h-4 w-4" />
-              <span>{dict.profile}</span>
-            </Link>
+             <Link href="/profile">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <CreditCard className="mr-2 h-4 w-4" />
-            <span>{dict.billing}</span>
+            <span>Billing</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
-            <span>{dict.settings}</span>
+            <span>Settings</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{dict.log_out}</span>
+          <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

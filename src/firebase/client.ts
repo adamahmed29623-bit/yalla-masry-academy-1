@@ -14,6 +14,7 @@ const firebaseConfig = {
   "messagingSenderId": "652841336422"
 };
 
+
 interface FirebaseServices {
   firebaseApp: FirebaseApp;
   auth: Auth;
