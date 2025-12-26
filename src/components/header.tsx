@@ -33,6 +33,12 @@ export function Header() {
             >
               Museum
             </Link>
+             <Link
+              href="/challenge"
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Challenge
+            </Link>
             <Link
               href="/store"
               className="transition-colors hover:text-foreground/80 text-foreground/60"
