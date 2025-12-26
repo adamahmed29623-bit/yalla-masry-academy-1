@@ -292,7 +292,7 @@ const MuseumPage = () => {
                 </div>
             </div>
 
-            <div id="blocker" ref={blockerRef} className="fixed inset-0 z-50 flex flex-col items-center justify-center text-center">
+            <div id="blocker" ref={blockerRef} className="improve inset-0 z-50 flex flex-col items-center justify-center text-center">
                 <h1 className="text-5xl font-black text-yellow-500 mb-6 font-display">المتحف الفرعوني</h1>
                 <button id="start-btn" onClick={handleStart} className="bg-yellow-600 px-12 py-4 rounded-full text-2xl font-bold text-black hover:bg-yellow-500 transition-transform hover:scale-110">
                     ادخل المتحف
