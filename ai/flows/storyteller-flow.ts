@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI flow for narrating a museum artifact's story.
@@ -8,10 +9,10 @@
  *
  * - StorytellerInputSchema: Zod schema for the flow's input.
  * - SpeechOutputSchema: Zod schema for the flow's output.
- * - getStorytellerAudio: The main server action that invokes the Genkit flow.
+ * - getStorytellerAudioFlow: The main server action that invokes the Genkit flow.
  */
 
-import { ai } from '@/ai/genkit';
+import { ai } from 'ai/index';
 import { z } from 'zod';
 import { googleAI } from '@genkit-ai/google-genai';
 import wav from 'wav';
@@ -148,6 +149,6 @@ const storytellerAudioFlow = ai.defineFlow(
  * @param input The artifact's title and description.
  * @returns The AI-generated audio as a data URI.
  */
-export async function getStorytellerAudio(input: StorytellerInput): Promise<SpeechOutput> {
+export async function getStorytellerAudioFlow(input: StorytellerInput): Promise<SpeechOutput> {
     return await storytellerAudioFlow(input);
 }
