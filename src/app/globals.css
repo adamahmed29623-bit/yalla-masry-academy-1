@@ -4,71 +4,34 @@
 
 @layer base {
   :root {
-    --background: 200 17% 94%;
-    --foreground: 200 15% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 200 15% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 15% 10%;
-    --primary: 200 15% 27%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 200 15% 88%;
-    --secondary-foreground: 200 15% 10%;
-    --muted: 200 15% 88%;
-    --muted-foreground: 200 15% 40%;
-    --accent: 202 18% 33%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 200 15% 85%;
-    --input: 200 15% 85%;
-    --ring: 202 18% 33%;
+    --background: 220 40% 10%; /* Nile Dark Blue */
+    --foreground: 45 30% 90%; /* Light Sand */
+
+    --card: 215 80% 25%; /* Nile Blue */
+    --card-foreground: 45 30% 90%;
+
+    --popover: 220 40% 10%;
+    --popover-foreground: 45 30% 90%;
+
+    --primary: 45 40% 85%; /* Sand Ochre */
+    --primary-foreground: 220 40% 10%;
+
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 45 30% 90%;
+
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 51 100% 50%; /* Gold Accent */
+    --accent-foreground: 220 40% 10%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 45 30% 90%;
+
+    --border: 45 40% 65%; /* Sand Ochre as border */
+    --input: 217 33% 18%;
+    --ring: 51 100% 50%; /* Gold Accent for focus rings */
     --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-
-    /* Custom Colors */
-    --nile-blue: 210 70% 10%; /* A very dark, rich blue */
-    --nile-dark: 210 70% 8%;
-    --sand-ochre: 35 65% 80%; /* A light, sandy yellow-orange */
-    --gold-accent: 45 85% 60%; /* A vibrant, rich gold */
-    --kids-bg: 200 50% 30%; /* A playful but dark blue for kids section */
-  }
-  .dark {
-    --background: 200 15% 10%;
-    --foreground: 200 17% 94%;
-    --card: 200 15% 13%;
-    --card-foreground: 200 17% 94%;
-    --popover: 200 15% 10%;
-    --popover-foreground: 200 17% 94%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 200 15% 10%;
-    --secondary: 200 15% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 200 15% 18%;
-    --muted-foreground: 200 15% 60%;
-    --accent: 202 18% 33%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 200 15% 20%;
-    --input: 200 15% 20%;
-    --ring: 202 18% 40%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-
-    /* Custom Colors - Dark mode can be the same or adjusted */
-    --nile-blue: 210 70% 8%;
-    --nile-dark: 210 70% 6%;
-    --sand-ochre: 35 55% 75%;
-    --gold-accent: 45 80% 55%;
-    --kids-bg: 200 50% 25%;
   }
 }
 
@@ -78,5 +41,31 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'El Messiri', sans-serif;
   }
+}
+
+/* Custom CSS Variables for easier access in code if needed */
+:root {
+    --nile-dark: hsl(220 40% 10%);
+    --nile-blue: hsl(215 80% 25%);
+    --sand-ochre: hsl(45 40% 65%);
+    --gold-accent: hsl(51 100% 50%);
+    --dark-granite: #2a2a2a; /* Kept for compatibility if used somewhere */
+}
+
+/* Specific theme classes */
+.bg-nile-dark { background-color: hsl(var(--background)); }
+.bg-nile-blue { background-color: hsl(var(--card)); }
+.text-sand-ochre { color: var(--sand-ochre); }
+.text-gold-accent { color: var(--gold-accent); }
+.border-sand-ochre { border-color: var(--sand-ochre); }
+.border-gold-accent { border-color: var(--gold-accent); }
+
+
+/* Royal Title Style */
+.royal-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  color: var(--gold-accent);
 }
