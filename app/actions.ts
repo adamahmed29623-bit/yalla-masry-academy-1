@@ -2,6 +2,7 @@
 
 import { generateSecurityRules } from "@/ai/flows/generate-security-rules";
 import { suggestRuleImprovements } from "@/ai/flows/suggest-rule-improvements";
+import { getStorytellerAudio, StorytellerInputSchema } from "@/ai/flows/storyteller-flow";
 import { z } from "zod";
 
 const generateRulesSchema = z.object({
@@ -61,4 +62,18 @@ export async function handleSuggestImprovements(prevState: any, formData: FormDa
     console.error(error);
     return { message: "AI suggestion failed. Please try again.", errors: {} };
   }
+}
+
+export async function handleGetStory(input: z.infer<typeof StorytellerInputSchema>) {
+    const validatedFields = StorytellerInputSchema.safeParse(input);
+    if (!validatedFields.success) {
+        return { success: false, error: "Invalid input" };
+    }
+    try {
+        const result = await getStorytellerAudio(validatedFields.data);
+        return { success: true, audioDataUri: result.media };
+    } catch (e) {
+        console.error("Storyteller error:", e);
+        return { success: false, error: "Failed to generate audio story." };
+    }
 }

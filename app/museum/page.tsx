@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { handleGetStory } from '@/app/actions';
+import { Loader2 } from 'lucide-react';
 
 const ARTIFACTS: { [key: string]: any } = {
     'mask': { 
@@ -34,8 +36,11 @@ const MuseumPage = () => {
     const speakBtnRef = useRef<HTMLButtonElement>(null);
     const blockerRef = useRef<HTMLDivElement>(null);
     const markersContainerRef = useRef<HTMLDivElement>(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
+
 
     const [isStarted, setIsStarted] = useState(false);
+    const [isGeneratingStory, setIsGeneratingStory] = useState(false);
     
     // Store mutable scene objects in refs to prevent re-creation on re-renders
     const sceneRef = useRef<THREE.Scene | null>(null);
@@ -43,15 +48,31 @@ const MuseumPage = () => {
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const artifactMarkersRef = useRef<{ [key: string]: any }>({});
 
-    // --- Text-to-speech function ---
-    const speak = (text: string) => {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'ar';
-        msg.pitch = 1.1;
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
+    // --- AI Storyteller function ---
+    const tellStory = async (title: string, description: string) => {
+        if (isGeneratingStory) return;
+        setIsGeneratingStory(true);
+
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.src = '';
+        }
+
+        try {
+            const result = await handleGetStory({ title, description });
+            if (result.success && result.audioDataUri && audioRef.current) {
+                audioRef.current.src = result.audioDataUri;
+                audioRef.current.play();
+            } else {
+                console.error("Failed to get story:", result.error);
+            }
+        } catch (error) {
+            console.error("Error calling storyteller action:", error);
+        } finally {
+            setIsGeneratingStory(false);
+        }
     };
+
 
     const handleStart = () => {
         if (blockerRef.current) {
@@ -64,7 +85,10 @@ const MuseumPage = () => {
         if (infoPanelRef.current) {
             infoPanelRef.current.classList.remove('visible');
         }
-        window.speechSynthesis.cancel();
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
     };
     
     useEffect(() => {
@@ -139,7 +163,7 @@ const MuseumPage = () => {
                 if (artifactTitleRef.current) artifactTitleRef.current.innerText = artifact.title;
                 if (artifactDescRef.current) artifactDescRef.current.innerText = artifact.desc;
                 if (infoPanelRef.current) infoPanelRef.current.classList.add('visible');
-                if (speakBtnRef.current) speakBtnRef.current.onclick = () => speak(artifact.desc);
+                if (speakBtnRef.current) speakBtnRef.current.onclick = () => tellStory(artifact.title, artifact.desc);
             };
             if(markersContainerRef.current) markersContainerRef.current.appendChild(div);
             artifactMarkersRef.current[key] = { el: div, pos: new THREE.Vector3(...artifact.pos) };
@@ -242,6 +266,7 @@ const MuseumPage = () => {
 
     return (
         <>
+            <audio ref={audioRef} hidden />
             <style jsx global>{`
                 body, html {
                     overflow: hidden;
@@ -283,8 +308,14 @@ const MuseumPage = () => {
                 <h2 id="artifact-title" ref={artifactTitleRef} className="text-2xl font-bold mb-2 border-b border-yellow-600 pb-2"></h2>
                 <p id="artifact-description" ref={artifactDescRef} className="text-gray-200 mb-4 leading-relaxed"></p>
                 <div className="flex flex-col space-y-2">
-                    <button id="speak-btn" ref={speakBtnRef} className="bg-blue-700 p-2 rounded font-bold hover:bg-blue-600 transition text-white">
-                        <i className="fas fa-volume-up ml-2"></i> استمع للوصف
+                    <button id="speak-btn" ref={speakBtnRef} className="bg-blue-700 p-2 rounded font-bold hover:bg-blue-600 transition text-white flex items-center justify-center" disabled={isGeneratingStory}>
+                         {isGeneratingStory ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                            <>
+                                <i className="fas fa-volume-up ml-2"></i> استمع للقصة
+                            </>
+                        )}
                     </button>
                     <button id="close-panel" onClick={handleClosePanel} className="bg-red-700 p-2 rounded font-bold text-white">إغلاق</button>
                 </div>
