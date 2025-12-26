@@ -20,6 +20,7 @@ const config: Config = {
         body: ['Inter', 'sans-serif'],
         headline: ['"Noto Kufi Arabic"', 'sans-serif'],
         code: ['monospace'],
+        display: ['"El Messiri"', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',
