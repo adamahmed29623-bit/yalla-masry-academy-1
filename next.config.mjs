@@ -13,15 +13,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'api.dicebear.com',
-      },
-      {
-        protocol: 'https',
         hostname: 'img.freepik.com',
-      },
-       {
-        protocol: 'https',
-        hostname: 'i.pravatar.cc',
       },
       {
         protocol: 'https',
@@ -29,8 +21,8 @@ const nextConfig = {
       },
        {
         protocol: 'https',
-        hostname: 'placehold.co',
-      },
+        hostname: 'i.pravatar.cc',
+      }
     ],
   },
 };

@@ -68,29 +68,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+    <div className="flex items-center justify-center min-h-screen bg-nile-dark p-4">
+      <Card className="w-full max-w-sm bg-nile-blue border-gold-accent/20">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl text-gold-accent font-headline">أهلاً بعودتك</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account.
+            سجل الدخول لتبدأ رحلتك الملكية
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">البريد الإلكتروني</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="you@example.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">كلمة المرور</Label>
               <Input 
                 id="password" 
                 type="password" 
@@ -102,17 +102,17 @@ export default function LoginPage() {
             {error && <p className="text-sm text-destructive">{error}</p>}
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button className="w-full" type="submit" disabled={loading}>
-              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Sign In'}
+            <Button className="w-full bg-gold-accent text-nile-dark hover:bg-sand-ochre font-bold" type="submit" disabled={loading}>
+              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'تسجيل الدخول'}
             </Button>
             <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={googleLoading}>
                {googleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 381.5 512 244 512 110.1 512 0 401.9 0 265.8 0 129.7 110.1 20 244 20c66.5 0 123.9 24.5 166.9 65.8L354.4 139.9C323.2 111.4 286.1 96 244 96c-88.6 0-160.2 71.9-160.2 160.7s71.7 160.7 160.2 160.7c93.1 0 148.1-62.1 152.9-108.9H244v-64.8h243.2c1.3 12.6 2 25.4 2 38.9z"></path></svg>}
-              Sign in with Google
+              الدخول باستخدام جوجل
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-                Don't have an account?{' '}
-                <Link href="/signup" className="font-semibold text-primary hover:underline">
-                    Sign up
+                ليس لديك حساب؟{' '}
+                <Link href="/signup" className="font-semibold text-gold-accent hover:underline">
+                    أنشئ حساباً
                 </Link>
             </p>
           </CardFooter>

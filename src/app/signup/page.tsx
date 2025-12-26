@@ -101,27 +101,27 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-2xl border-border shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-nile-dark p-4">
+      <Card className="w-full max-w-2xl bg-nile-blue border-gold-accent/20">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-primary">Create Your Account</CardTitle>
-          <CardDescription className="text-muted-foreground">Embark on your Egyptian adventure!</CardDescription>
+          <CardTitle className="text-3xl font-bold text-gold-accent font-headline">أنشئ حسابك الملكي</CardTitle>
+          <CardDescription className="text-sand-ochre">انضم للأكاديمية وابدأ مغامرتك المصرية!</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignup} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={handleSignup} className="grid grid-cols-1 md:grid-cols-2 gap-6" dir="rtl">
             
             {/* Column 1 */}
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input id="name" placeholder="e.g., John Doe" value={name} onChange={(e) => setName(e.target.value)} required />
+                <Label htmlFor="name">الاسم الكامل</Label>
+                <Input id="name" placeholder="مثال: خالد المصري" value={name} onChange={(e) => setName(e.target.value)} required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">البريد الإلكتروني</Label>
                 <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">كلمة المرور</Label>
                 <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
             </div>
@@ -129,69 +129,69 @@ export default function SignupPage() {
             {/* Column 2 */}
             <div className="space-y-4">
                <div className="space-y-2">
-                <Label>I am a...</Label>
+                <Label>أنا...</Label>
                 <RadioGroup defaultValue="student" value={role} onValueChange={(value) => setRole(value as any)} className="flex gap-4 pt-2">
-                  <Label htmlFor="role-student" className="flex flex-col items-center gap-2 cursor-pointer rounded-lg border-2 p-3 transition-colors hover:bg-accent has-[input:checked]:border-primary has-[input:checked]:bg-accent/50">
+                  <Label htmlFor="role-student" className="flex flex-col items-center gap-2 cursor-pointer rounded-lg border-2 p-3 transition-colors hover:bg-gold-accent/20 has-[input:checked]:border-gold-accent has-[input:checked]:bg-gold-accent/10">
                     <User className="h-6 w-6" />
-                    <span>Student</span>
+                    <span>طالب</span>
                     <RadioGroupItem value="student" id="role-student" className="sr-only" />
                   </Label>
-                  <Label htmlFor="role-teacher" className="flex flex-col items-center gap-2 cursor-pointer rounded-lg border-2 p-3 transition-colors hover:bg-accent has-[input:checked]:border-primary has-[input:checked]:bg-accent/50">
+                  <Label htmlFor="role-teacher" className="flex flex-col items-center gap-2 cursor-pointer rounded-lg border-2 p-3 transition-colors hover:bg-gold-accent/20 has-[input:checked]:border-gold-accent has-[input:checked]:bg-gold-accent/10">
                      <BookUser className="h-6 w-6" />
-                     <span>Teacher</span>
+                     <span>معلم</span>
                      <RadioGroupItem value="teacher" id="role-teacher" className="sr-only" />
                   </Label>
-                  <Label htmlFor="role-parent" className="flex flex-col items-center gap-2 cursor-pointer rounded-lg border-2 p-3 transition-colors hover:bg-accent has-[input:checked]:border-primary has-[input:checked]:bg-accent/50">
+                  <Label htmlFor="role-parent" className="flex flex-col items-center gap-2 cursor-pointer rounded-lg border-2 p-3 transition-colors hover:bg-gold-accent/20 has-[input:checked]:border-gold-accent has-[input:checked]:bg-gold-accent/10">
                      <HeartHandshake className="h-6 w-6" />
-                     <span>Parent</span>
+                     <span>ولي أمر</span>
                      <RadioGroupItem value="parent" id="role-parent" className="sr-only" />
                   </Label>
                 </RadioGroup>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="goal">Primary Goal</Label>
+                <Label htmlFor="goal">هدفي الأساسي</Label>
                 <Select value={goal} onValueChange={setGoal}>
                   <SelectTrigger id="goal">
-                    <SelectValue placeholder="What do you want to learn?" />
+                    <SelectValue placeholder="ماذا تريد أن تتعلم؟" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="social">Social & Daily Conversation</SelectItem>
-                    <SelectItem value="business">Business & Professional</SelectItem>
-                    <SelectItem value="media">Understanding Media (Movies, Songs)</SelectItem>
-                    <SelectItem value="travel">Traveling to Egypt</SelectItem>
+                    <SelectItem value="social">محادثات يومية واجتماعية</SelectItem>
+                    <SelectItem value="business">لهجة الأعمال</SelectItem>
+                    <SelectItem value="media">فهم الإعلام (أفلام وأغاني)</SelectItem>
+                    <SelectItem value="travel">السفر إلى مصر</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="level">Skill Level</Label>
+                <Label htmlFor="level">مستواي الحالي</Label>
                 <Select value={level} onValueChange={setLevel}>
                   <SelectTrigger id="level">
-                    <SelectValue placeholder="How would you rate your skills?" />
+                    <SelectValue placeholder="كيف تقيم مستواك؟" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beginner">Absolute Beginner (Just starting)</SelectItem>
-                    <SelectItem value="novice">Novice (Know a few words)</SelectItem>
-                    <SelectItem value="intermediate">Intermediate (Can form sentences)</SelectItem>
-                    <SelectItem value="advanced">Advanced (Comfortable conversing)</SelectItem>
+                    <SelectItem value="beginner">مبتدئ تماماً (أول خطوة)</SelectItem>
+                    <SelectItem value="novice">هاوٍ (أعرف بضع كلمات)</SelectItem>
+                    <SelectItem value="intermediate">متوسط (أكون جُملاً بسيطة)</SelectItem>
+                    <SelectItem value="advanced">متقدم (أتحدث بثقة)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="md:col-span-2">
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Creating Account...</> : 'Sign Up'}
+              <Button type="submit" className="w-full bg-gold-accent text-nile-dark font-bold hover:bg-sand-ochre" disabled={isLoading}>
+                {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />جاري إنشاء الحساب...</> : 'أنشئ حسابي'}
               </Button>
             </div>
           </form>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
             <p>
-              Already have an account?{' '}
-              <Link href="/login" className="font-semibold text-primary hover:underline">
-                Log In
+              لديك حساب بالفعل؟{' '}
+              <Link href="/login" className="font-semibold text-gold-accent hover:underline">
+                سجل الدخول
               </Link>
             </p>
           </div>

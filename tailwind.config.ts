@@ -58,7 +58,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-         'nile-dark': 'hsl(var(--background))',
+        'nile-dark': 'hsl(var(--background))',
         'nile-blue': 'hsl(var(--card))',
         'sand-ochre': 'hsl(var(--primary))',
         'gold-accent': 'hsl(var(--accent))',
