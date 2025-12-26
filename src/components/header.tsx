@@ -75,6 +75,12 @@ export function Header() {
             >
               Animal Sounds
             </Link>
+            <Link
+              href="/coloring"
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Coloring Game
+            </Link>
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">

@@ -32,8 +32,10 @@
 
     /* Custom Colors */
     --nile-blue: 210 70% 10%; /* A very dark, rich blue */
+    --nile-dark: 210 70% 8%;
     --sand-ochre: 35 65% 80%; /* A light, sandy yellow-orange */
     --gold-accent: 45 85% 60%; /* A vibrant, rich gold */
+    --kids-bg: 200 50% 30%; /* A playful but dark blue for kids section */
   }
   .dark {
     --background: 200 15% 10%;
@@ -63,8 +65,10 @@
 
     /* Custom Colors - Dark mode can be the same or adjusted */
     --nile-blue: 210 70% 8%;
+    --nile-dark: 210 70% 6%;
     --sand-ochre: 35 55% 75%;
     --gold-accent: 45 80% 55%;
+    --kids-bg: 200 50% 25%;
   }
 }
 

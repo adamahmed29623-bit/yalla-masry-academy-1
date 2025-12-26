@@ -5,6 +5,12 @@
       "description": "User avatar for navigation",
       "imageUrl": "https://i.pravatar.cc/150?u=a042581f4e29026704d",
       "imageHint": "person portrait"
+    },
+    {
+      "id": "coloring-tut",
+      "description": "Coloring page image of Tutankhamun",
+      "imageUrl": "https://i.imgur.com/Q2yT3p9.png",
+      "imageHint": "coloring page tutankhamun"
     }
   ]
 }
