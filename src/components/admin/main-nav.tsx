@@ -14,11 +14,8 @@ export function MainNav({
     { href: "/admin/student-analytics", label: "Students" },
     { href: "/admin/tutor-analytics", label: "Tutors" },
     { href: "/admin/challenge-analytics", label: "Challenges" },
-    { href: "/admin/adventure-challenges", label: "Adventures" },
+    { href: "/admin/phrases", label: "Content" },
     { href: "/admin/store-management", label: "Store" },
-    { href: "/admin/hadiths", label: "Hadiths" },
-    { href: "/admin/books", label: "Books" },
-    { href: "/admin/phrases", label: "Phrases" },
   ]
 
   return (
@@ -32,7 +29,7 @@ export function MainNav({
           href={link.href}
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary",
-            pathname !== link.href && "text-muted-foreground"
+            !pathname.startsWith(link.href) && "text-muted-foreground"
           )}
         >
           {link.label}

@@ -62,7 +62,7 @@ const PhraseForm = ({ phrase, onSave, onCancel }: { phrase?: WithId<Phrase>, onS
 };
 
 export default function PhrasesAdminPage() {
-  const firestore = useFirestore();
+  const { firestore } = useFirebase();
   const phrasesCollection = useMemoFirebase(() => firestore ? collection(firestore, 'phrases') : null, [firestore]);
   const { data: phrases, isLoading, error } = useCollection<Phrase>(phrasesCollection);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

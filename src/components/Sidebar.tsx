@@ -15,7 +15,8 @@ import {
   Ship,
   UserCog,
   Palette,
-  Mic2
+  Mic2,
+  Users2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { UserNav } from './user-nav';
@@ -48,6 +49,7 @@ export function Sidebar({ user }: { user: User }) {
     { href: `/${lang}/dashboard`, label: dict.dashboard, icon: LayoutDashboard },
     { href: `/${lang}/egyptian-school`, label: dict.school, icon: GraduationCap },
     { href: `/${lang}/teachers`, label: dict.teachers, icon: Users },
+    { href: `/${lang}/community`, label: dict.community, icon: Users2 },
     { href: `/${lang}/quran`, label: dict.quran, icon: BookOpen },
     { href: `/${lang}/sunnah`, label: dict.sunnah, icon: Scroll },
     { href: `/${lang}/museum`, label: dict.museum, icon: Pyramid },

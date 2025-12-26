@@ -72,7 +72,7 @@ const ChallengeForm = ({ challenge, onSave, onCancel }: { challenge?: WithId<Adv
 };
 
 export default function AdventureChallengesAdminPage() {
-  const firestore = useFirestore();
+  const { firestore } = useFirebase();
   const challengesCollection = useMemoFirebase(() => firestore ? collection(firestore, 'adventure_challenges') : null, [firestore]);
   const { data: challenges, isLoading, error } = useCollection<AdventureChallenge>(challengesCollection);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

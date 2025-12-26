@@ -66,7 +66,7 @@ const BookForm = ({ book, onSave, onCancel }: { book?: WithId<Book>, onSave: (b:
 };
 
 export default function BooksAdminPage() {
-  const firestore = useFirestore();
+  const { firestore } = useFirebase();
   const booksCollection = useMemoFirebase(() => firestore ? collection(firestore, 'books') : null, [firestore]);
   const { data: books, isLoading, error } = useCollection<Book>(booksCollection);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

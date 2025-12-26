@@ -62,7 +62,7 @@ const HadithForm = ({ hadith, onSave, onCancel }: { hadith?: WithId<Hadith>, onS
 };
 
 export default function HadithsAdminPage() {
-  const firestore = useFirestore();
+  const { firestore } = useFirebase();
   const hadithsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'hadiths') : null, [firestore]);
   const { data: hadiths, isLoading, error } = useCollection<Hadith>(hadithsCollection);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
