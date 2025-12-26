@@ -17,7 +17,7 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
+        body: ['Inter', 'Cairo', 'sans-serif'],
         headline: ['"Noto Kufi Arabic"', 'sans-serif'],
         code: ['monospace'],
         display: ['"El Messiri"', 'sans-serif'],
