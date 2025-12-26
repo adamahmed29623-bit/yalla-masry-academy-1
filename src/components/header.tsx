@@ -34,6 +34,12 @@ export function Header() {
               Teachers
             </Link>
             <Link
+              href="/quran"
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Quran
+            </Link>
+            <Link
               href="/museum"
               className="transition-colors hover:text-foreground/80 text-foreground/60"
             >
