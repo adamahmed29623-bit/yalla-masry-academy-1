@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { CreditCard, LogOut, Settings, User, LogIn, Loader2 } from "lucide-react"
 import { useFirebase } from "@/firebase"
-import { getAuth, signOut, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { getAuth, signOut } from "firebase/auth"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 function getInitials(name?: string | null) {
   if (!name) return "U";
@@ -26,14 +28,8 @@ function getInitials(name?: string | null) {
 
 export function UserNav() {
   const { user, isUserLoading, auth } = useFirebase();
+  const router = useRouter();
 
-  const handleLogin = () => {
-    if (!auth) return;
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider).catch(error => {
-      console.error("Login failed:", error);
-    });
-  };
 
   const handleLogout = () => {
     if (!auth) return;
@@ -48,9 +44,11 @@ export function UserNav() {
 
   if (!user) {
     return (
-      <Button onClick={handleLogin}>
-        <LogIn className="mr-2" />
-        Sign In with Google
+      <Button asChild>
+        <Link href="/login">
+            <LogIn className="mr-2" />
+            Sign In
+        </Link>
       </Button>
     )
   }
