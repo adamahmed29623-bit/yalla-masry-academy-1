@@ -80,9 +80,11 @@ export function UserNav({ lang, dict }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>{dict.profile}</span>
+          <DropdownMenuItem asChild>
+            <Link href={`/${lang}/profile`}>
+              <User className="mr-2 h-4 w-4" />
+              <span>{dict.profile}</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <CreditCard className="mr-2 h-4 w-4" />

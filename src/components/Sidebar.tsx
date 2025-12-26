@@ -47,9 +47,10 @@ export function Sidebar({ user }: { user: User }) {
 
   const navLinks = [
     { href: `/${lang}/dashboard`, label: dict.dashboard, icon: LayoutDashboard },
+    { href: `/${lang}/profile`, label: userNavDict.profile, icon: Users },
     { href: `/${lang}/egyptian-school`, label: dict.school, icon: GraduationCap },
-    { href: `/${lang}/teachers`, label: dict.teachers, icon: Users },
-    { href: `/${lang}/community`, label: dict.community, icon: Users2 },
+    { href: `/${lang}/teachers`, label: dict.teachers, icon: Users2 },
+    { href: `/${lang}/community`, label: dict.community, icon: Users },
     { href: `/${lang}/quran`, label: dict.quran, icon: BookOpen },
     { href: `/${lang}/sunnah`, label: dict.sunnah, icon: Scroll },
     { href: `/${lang}/museum`, label: dict.museum, icon: Pyramid },

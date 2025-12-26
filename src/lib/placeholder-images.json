@@ -11,6 +11,60 @@
       "description": "Coloring page image of Tutankhamun",
       "imageUrl": "https://i.imgur.com/Q2yT3p9.png",
       "imageHint": "coloring page tutankhamun"
+    },
+    {
+      "id": "animal-cat",
+      "description": "A cat",
+      "imageUrl": "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYXR8ZW58MHx8fHwxNzY2NzU5NzI0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cat",
+      "metadata": {
+        "name": "قطة"
+      }
+    },
+    {
+      "id": "animal-dog",
+      "description": "A dog",
+      "imageUrl": "https://images.unsplash.com/photo-1504826260979-242151ee45b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkb2d8ZW58MHx8fHwxNzY2NzI5MjgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "dog",
+      "metadata": {
+        "name": "كلب"
+      }
+    },
+    {
+      "id": "animal-bird",
+      "description": "A bird",
+      "imageUrl": "https://images.unsplash.com/photo-1606567595334-d39972c85dbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiaXJkfGVufDB8fHx8MTc2Njc1OTcyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bird",
+      "metadata": {
+        "name": "عصفور"
+      }
+    },
+    {
+      "id": "animal-sheep",
+      "description": "A sheep",
+      "imageUrl": "https://images.unsplash.com/photo-1528709024086-98a7672e0b9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2hlZXB8ZW58MHx8fHwxNzY2NzU5NzI0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sheep",
+      "metadata": {
+        "name": "خروف"
+      }
+    },
+    {
+      "id": "animal-horse",
+      "description": "A horse",
+      "imageUrl": "https://images.unsplash.com/photo-1513966007261-5a86a5284471?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aG9yc2V8ZW58MHx8fHwxNzY2NzU5NzI0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "horse",
+      "metadata": {
+        "name": "حصان"
+      }
+    },
+    {
+      "id": "animal-cricket",
+      "description": "A cricket",
+      "imageUrl": "https://images.unsplash.com/photo-1609159127856-85b6813a4823?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjcmlja2V0JTIwYnVnfGVufDB8fHx8MTc2Njc1OTcyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cricket bug",
+      "metadata": {
+        "name": "صرصور"
+      }
     }
   ]
 }
