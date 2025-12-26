@@ -1,0 +1,50 @@
+
+{
+    "landing": {
+        "main_title": "Bienvenue à l'Académie Yalla Masry",
+        "subtitle": "Votre porte d'entrée pour apprendre le dialecte égyptien authentique et explorer les trésors de la culture pharaonique.",
+        "dashboard_button": "Aller au Tableau de Bord"
+    },
+    "header": {
+        "dashboard": "Tableau de Bord",
+        "school": "École",
+        "teachers": "Enseignants",
+        "quran": "Coran",
+        "sunnah": "Sunnah",
+        "museum": "Musée",
+        "challenge": "Défi",
+        "smart_adventure": "Aventure Intelligente",
+        "store": "Magasin",
+        "gulf_council": "Conseil du Golfe",
+        "teacher_dashboard": "TdB Enseignant",
+        "animal_sounds": "Sons d'Animaux",
+        "coloring_game": "Jeu de Coloriage"
+    },
+    "user_nav": {
+        "sign_in": "Se Connecter",
+        "profile": "Profil",
+        "billing": "Facturation",
+        "settings": "Paramètres",
+        "log_out": "Se Déconnecter"
+    },
+    "dashboard": {
+        "title": "Tableau des Héros",
+        "edit_alias": "Modifier",
+        "save_alias": "Sauver",
+        "rank_label": "Rang",
+        "rank_name": "Scribe Royal",
+        "stat_points": "Points du Nil",
+        "stat_lessons": "Leçons",
+        "stat_streak": "Série",
+        "stat_hours": "Heures",
+        "missions_title": "Missions Royales Actives",
+        "mission_1_title": "Studio BD: Basbous sur le Marché",
+        "mission_1_desc": "Enregistrez votre voix pour le rôle principal",
+        "mission_2_title": "Défi de Prononciation: Lettres d'Or",
+        "mission_2_desc": "Maîtrisez les mots égyptiens difficiles",
+        "hof_title": "Panthéon des Héros",
+        "next_level_label": "Prochain Niveau",
+        "next_level_name": "Sage du Nil",
+        "redirecting_to_login": "Veuillez vous connecter pour voir votre tableau de bord."
+    }
+}

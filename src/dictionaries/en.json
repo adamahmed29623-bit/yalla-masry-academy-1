@@ -26,5 +26,25 @@
         "billing": "Billing",
         "settings": "Settings",
         "log_out": "Log out"
+    },
+    "dashboard": {
+        "title": "Heroes Dashboard",
+        "edit_alias": "Edit",
+        "save_alias": "Save",
+        "rank_label": "Rank",
+        "rank_name": "Royal Scribe",
+        "stat_points": "Nile Points",
+        "stat_lessons": "Lessons",
+        "stat_streak": "Streak",
+        "stat_hours": "Hours",
+        "missions_title": "Active Royal Missions",
+        "mission_1_title": "Comic Studio: Basbous in the Market",
+        "mission_1_desc": "Record your voice for the main role",
+        "mission_2_title": "Pronunciation Challenge: Golden Letters",
+        "mission_2_desc": "Master difficult Egyptian words",
+        "hof_title": "Hall of Fame",
+        "next_level_label": "Next Level",
+        "next_level_name": "Nile Sage",
+        "redirecting_to_login": "Please log in to view your dashboard."
     }
 }

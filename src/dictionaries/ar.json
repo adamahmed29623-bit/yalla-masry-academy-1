@@ -26,5 +26,25 @@
         "billing": "الفواتير",
         "settings": "الإعدادات",
         "log_out": "تسجيل الخروج"
+    },
+    "dashboard": {
+        "title": "لوحة الأبطال",
+        "edit_alias": "تعديل",
+        "save_alias": "حفظ",
+        "rank_label": "رتبة",
+        "rank_name": "كاتب البردي الملكي",
+        "stat_points": "نقاط النيل",
+        "stat_lessons": "دروس متقنة",
+        "stat_streak": "أيام متواصلة",
+        "stat_hours": "ساعات تعلم",
+        "missions_title": "المهمات الملكية الحالية",
+        "mission_1_title": "استوديو الكوميكس: بسبس في السوق",
+        "mission_1_desc": "سجل صوتك لتمثيل دور البطل مع بسبس",
+        "mission_2_title": "تحدي النطق: الحروف الذهبية",
+        "mission_2_desc": "أتقن نطق الكلمات المصرية الصعبة",
+        "hof_title": "أبطال الأكاديمية",
+        "next_level_label": "المستوى القادم",
+        "next_level_name": "حكيم النيل",
+        "redirecting_to_login": "من فضلك سجل الدخول لعرض لوحة التحكم الخاصة بك."
     }
 }
