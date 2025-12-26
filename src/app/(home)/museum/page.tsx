@@ -144,6 +144,7 @@ const MuseumPage = () => {
         const lookAtTarget = new THREE.Vector3();
 
         const animate = () => {
+            if (!mountRef.current) return; // Stop animation if component is unmounted
             requestAnimationFrame(animate);
 
             if (!isUserInteracting) {
@@ -205,15 +206,16 @@ const MuseumPage = () => {
         }
 
         window.addEventListener('resize', onWindowResize);
-        document.addEventListener('pointerdown', onPointerDown);
+        mountRef.current.addEventListener('pointerdown', onPointerDown);
 
+        let currentMount = mountRef.current;
         return () => {
             window.removeEventListener('resize', onWindowResize);
-            document.removeEventListener('pointerdown', onPointerDown);
+            currentMount?.removeEventListener('pointerdown', onPointerDown);
             document.removeEventListener('pointermove', onPointerMove);
             document.removeEventListener('pointerup', onPointerUp);
-            if (mountRef.current && renderer.domElement) {
-                mountRef.current.removeChild(renderer.domElement);
+            if (currentMount && renderer.domElement) {
+                currentMount.removeChild(renderer.domElement);
             }
              if (markersContainerRef.current) {
                 markersContainerRef.current.innerHTML = '';
@@ -221,11 +223,10 @@ const MuseumPage = () => {
             scene.traverse(object => {
                 if (object instanceof THREE.Mesh) {
                     object.geometry.dispose();
-                    const material = object.material as THREE.Material | THREE.Material[];
-                    if(Array.isArray(material)) {
-                        material.forEach(mat => mat.dispose());
+                    if(Array.isArray(object.material)) {
+                        object.material.forEach(mat => mat.dispose());
                     } else {
-                        material.dispose();
+                        object.material.dispose();
                     }
                 }
             });
@@ -244,7 +245,7 @@ const MuseumPage = () => {
                     font-family: 'El Messiri', sans-serif;
                 }
                 #info-panel {
-                    position: fixed; z-index: 30; top: 50%; left: 50%;
+                    position: improve; z-index: 30; top: 50%; left: 50%;
                     background: rgba(0, 0, 0, 0.95); color: #FFD700;
                     border-radius: 12px; box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
                     padding: 20px; width: 90%; max-width: 400px; text-align: right;
@@ -270,9 +271,9 @@ const MuseumPage = () => {
                 }
             `}</style>
             
-            <div id="mount" ref={mountRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} />
+            <div id="mount" ref={mountRef} style={{ position: 'improve', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} />
             
-            <div ref={markersContainerRef} id="markers-container" style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none' }} />
+            <div ref={markersContainerRef} id="markers-container" style={{ position: 'improve', top: 0, left: 0, pointerEvents: 'none' }} />
 
             <div id="info-panel" ref={infoPanelRef}>
                 <h2 id="artifact-title" ref={artifactTitleRef} className="text-2xl font-bold mb-2 border-b border-yellow-600 pb-2"></h2>
