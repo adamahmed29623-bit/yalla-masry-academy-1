@@ -1,13 +1,11 @@
+
 "use client";
 
 import { ProjectNav } from "@/components/project-nav"
-import { useDoc } from "@/firebase/firestore/use-doc"
-import { useFirebase } from "@/firebase"
+import { useDoc, useFirebase, useMemoFirebase } from "@/firebase"
 import { doc } from "firebase/firestore"
 import { notFound } from "next/navigation"
-import { useMemo } from "react"
 import { Loader2 } from "lucide-react"
-import { useMemoFirebase } from "@/firebase/provider";
 
 export default function ProjectLayout({
   children,
@@ -20,7 +18,6 @@ export default function ProjectLayout({
 
   const projectRef = useMemoFirebase(() => {
     if (!firestore || !user) return null
-    // Note: The document ID is params.id which is the projectId
     return doc(firestore, `users/${user.uid}/firebaseProjects`, params.id)
   }, [firestore, user, params.id])
 
@@ -34,9 +31,19 @@ export default function ProjectLayout({
     )
   }
 
-  if (error || !project) {
+  if (error) {
     console.error("Error fetching project:", error);
+    // This will render the not-found.tsx file in the app directory
     notFound()
+  }
+
+  if (!project) {
+     return (
+      <div className="container py-8 text-center">
+        <h1 className="text-2xl font-bold">Project Not Found</h1>
+        <p className="text-muted-foreground">We couldn't find a project with that ID for your account.</p>
+      </div>
+    )
   }
 
   return (
@@ -54,3 +61,5 @@ export default function ProjectLayout({
     </div>
   )
 }
+
+    

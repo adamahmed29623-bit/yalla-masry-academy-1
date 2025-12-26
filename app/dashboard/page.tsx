@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -7,9 +8,8 @@ import { Globe, PlusCircle, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useFirebase } from '@/firebase';
-import { useCollection } from '@/firebase/firestore/use-collection';
-import { useMemo, useState, useEffect } from 'react';
+import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
+import { useState, useEffect } from 'react';
 import { collection } from 'firebase/firestore';
 import { useFormState, useFormStatus } from 'react-dom';
 import { handleAddProject } from '@/app/actions';
@@ -100,7 +100,7 @@ function AddProjectForm({ userId }: { userId: string }) {
 export default function DashboardPage() {
     const { user, firestore, isUserLoading } = useFirebase();
 
-    const projectsCollection = useMemo(() => {
+    const projectsCollection = useMemoFirebase(() => {
         if (!firestore || !user) return null;
         return collection(firestore, `users/${user.uid}/firebaseProjects`);
     }, [firestore, user]);
@@ -110,7 +110,7 @@ export default function DashboardPage() {
     if (isUserLoading || isLoadingProjects) {
         return (
             <div className="container mx-auto py-10">
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center h-64">
                     <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
             </div>
@@ -164,3 +164,5 @@ export default function DashboardPage() {
         </div>
     );
 }
+
+    
