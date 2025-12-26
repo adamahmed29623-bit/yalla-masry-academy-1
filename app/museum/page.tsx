@@ -267,7 +267,7 @@ const MuseumPage = () => {
     return (
         <>
             <audio ref={audioRef} hidden />
-            <style jsx global>{`
+            <style jsx global>{\`
                 body, html {
                     overflow: hidden;
                     background-color: #000;
@@ -298,7 +298,7 @@ const MuseumPage = () => {
                     background: radial-gradient(circle, #1a1a1a 0%, #000 100%); 
                     font-family: 'El Messiri', sans-serif;
                 }
-            `}</style>
+            \`}</style>
             
             <div id="mount" ref={mountRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} />
             

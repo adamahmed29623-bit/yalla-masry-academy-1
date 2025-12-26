@@ -4,57 +4,26 @@
 
 @layer base {
   :root {
-    --background: 200 17% 94%;
-    --foreground: 200 15% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 200 15% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 15% 10%;
-    --primary: 200 15% 27%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 200 15% 88%;
-    --secondary-foreground: 200 15% 10%;
-    --muted: 200 15% 88%;
-    --muted-foreground: 200 15% 40%;
-    --accent: 202 18% 33%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 200 15% 85%;
-    --input: 200 15% 85%;
-    --ring: 202 18% 33%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
-  .dark {
-    --background: 200 15% 10%;
-    --foreground: 200 17% 94%;
-    --card: 200 15% 13%;
-    --card-foreground: 200 17% 94%;
-    --popover: 200 15% 10%;
-    --popover-foreground: 200 17% 94%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 200 15% 10%;
-    --secondary: 200 15% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 200 15% 18%;
-    --muted-foreground: 200 15% 60%;
-    --accent: 202 18% 33%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 200 15% 20%;
-    --input: 200 15% 20%;
-    --ring: 202 18% 40%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: 220 40% 9.5%; /* Nile Dark */
+    --foreground: 45 30% 90%; /* Light Sand */
+    --card: 217 33% 18%; /* Card background */
+    --card-foreground: 45 30% 90%;
+    --popover: 220 40% 10%;
+    --popover-foreground: 45 30% 90%;
+    --primary: 45 40% 85%; /* Sand Ochre */
+    --primary-foreground: 220 40% 10%;
+    --secondary: 217 33% 25%;
+    --secondary-foreground: 45 30% 90%;
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 51 100% 50%; /* Gold Accent */
+    --accent-foreground: 220 40% 10%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 45 30% 90%;
+    --border: 217 33% 28%;
+    --input: 217 33% 22%;
+    --ring: 51 100% 50%; /* Gold Accent for focus rings */
+    --radius: 0.8rem;
   }
 }
 
@@ -65,4 +34,21 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom theme classes for convenience */
+.bg-nile-dark { background-color: hsl(var(--background)); }
+.bg-nile-blue { background-color: hsl(var(--card)); }
+.text-sand-ochre { color: hsl(var(--primary)); }
+.text-gold-accent { color: hsl(var(--accent)); }
+.border-sand-ochre { border-color: hsl(var(--primary)); }
+.border-gold-accent { border-color: hsl(var(--accent)); }
+.bg-kids-bg { background-color: #0b4e8d; } /* A specific blue for kids section */
+.utility-button {
+  @apply text-sm px-4 py-2;
+}
+
+.font-headline {
+  font-family: 'Cairo', 'El Messiri', sans-serif;
+  font-weight: 700;
 }

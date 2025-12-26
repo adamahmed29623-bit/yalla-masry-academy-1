@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { useRouter } from 'next/navigation';
 
 export default function LandingPage() {
+  const router = useRouter();
   const heroImage = placeholderImages.placeholderImages.find(p => p.id === 'pyramids-hero');
 
   return (
@@ -25,30 +27,23 @@ export default function LandingPage() {
 
       <div className="relative z-20 flex flex-col items-center p-8 max-w-3xl">
         <div className="p-4 rounded-lg bg-black/30 backdrop-blur-sm">
-          <h1 className="text-4xl md:text-6xl font-bold royal-title mb-4 animate-fade-in-down">
-            Welcome to Yalla Masry Academy
+          <h1 className="text-4xl md:text-6xl font-bold font-headline mb-4 animate-fade-in-down" style={{ color: 'hsl(var(--accent))' }}>
+            أكاديمية يلا مصري
           </h1>
           <p className="text-lg md:text-2xl text-sand-ochre mb-8 animate-fade-in-up">
-            Your gateway to learning the authentic Egyptian dialect and exploring the treasures of Pharaonic culture.
+            بوابتك لتعلم اللهجة المصرية الأصيلة واستكشاف كنوز الثقافة الفرعونية.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/signup">
-              <Button size="lg" className="bg-gold-accent text-nile-dark font-bold text-lg hover:bg-sand-ochre transition-transform duration-300 hover:scale-105 animate-pulse">
-                Start Your Journey Now!
+              <Button onClick={() => router.push('/signup')} size="lg" className="bg-gold-accent text-nile-dark font-bold text-lg hover:bg-sand-ochre transition-transform duration-300 hover:scale-105 animate-pulse">
+                ابدأ رحلتك الآن!
               </Button>
-            </Link>
             <Link href="/login">
               <Button size="lg" variant="outline" className="text-sand-ochre border-sand-ochre font-bold text-lg hover:bg-sand-ochre hover:text-nile-dark transition-transform duration-300 hover:scale-105">
-                Login
+                تسجيل الدخول
               </Button>
             </Link>
           </div>
         </div>
-        <Link href="/admin/dashboard" className="absolute top-4 right-4">
-             <Button variant="outline" className="bg-sand-ochre text-nile-dark hover:bg-gold-accent">
-                Admin Panel
-             </Button>
-        </Link>
       </div>
     </div>
   );

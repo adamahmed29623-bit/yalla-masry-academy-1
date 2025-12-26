@@ -20,9 +20,9 @@ function getInitials(name?: string | null) {
   if (!name) return "U";
   const parts = name.split(" ");
   if (parts.length > 1) {
-    return parts[0][0] + parts[parts.length - 1][0];
+    return (parts[0][0] + (parts[parts.length - 1][0] || '')).toUpperCase();
   }
-  return name.substring(0, 2);
+  return name.substring(0, 2).toUpperCase();
 }
 
 export function UserNav() {
@@ -71,9 +71,11 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+          <DropdownMenuItem asChild>
+             <Link href="/dashboard">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <CreditCard className="mr-2 h-4 w-4" />
