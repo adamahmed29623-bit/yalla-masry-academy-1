@@ -1,53 +1,41 @@
-"use client";
+import type { Metadata } from 'next';
+import './globals.css';
+import { Toaster } from "@/components/ui/toaster";
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
-import { ProjectNav } from "@/components/project-nav"
-import { useDoc, useFirebase, useMemoFirebase } from "@/firebase"
-import { doc } from "firebase/firestore"
-import { notFound } from "next/navigation"
-import { Loader2 } from "lucide-react"
+export const metadata: Metadata = {
+  title: 'Yalla Masry Academy',
+  description: 'Your gateway to learning the authentic Egyptian dialect and exploring the treasures of Pharaonic culture.',
+};
 
-export default function ProjectLayout({
-  children,
-  params,
+export default function RootLayout({
+  children
 }: {
-  children: React.ReactNode
-  params: { id: string }
+  children: React.ReactNode;
 }) {
-  const { firestore, user, isUserLoading } = useFirebase()
-
-  const projectRef = useMemoFirebase(() => {
-    if (!firestore || !user) return null
-    // Note: The document ID is params.id which is the projectId
-    return doc(firestore, `users/${user.uid}/firebaseProjects`, params.id)
-  }, [firestore, user, params.id])
-
-  const { data: project, isLoading, error } = useDoc(projectRef)
-  
-  if (isUserLoading || isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    )
-  }
-
-  if (error || !project) {
-    console.error("Error fetching project:", error);
-    notFound()
-  }
-
   return (
-    <div>
-      <div className="border-b bg-card">
-        <div className="container py-4">
-          <h1 className="text-2xl font-bold font-headline">{project.name}</h1>
-          <p className="text-muted-foreground">{project.projectId}</p>
-        </div>
-      </div>
-      <ProjectNav projectId={params.id} />
-      <div className="container py-8">
-        {children}
-      </div>
-    </div>
-  )
+    <html lang='ar' dir="rtl" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=El+Messiri:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Amiri+Quran:wght@400;700&display=swap" 
+          rel="stylesheet" 
+        />
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+          referrerPolicy="no-referrer" 
+        />
+      </head>
+      <body className="font-body antialiased min-h-screen flex flex-col bg-background">
+        <FirebaseClientProvider>
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Toaster />
+        </FirebaseClientProvider>
+      </body>
+    </html>
+  );
 }
