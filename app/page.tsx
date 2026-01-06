@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, CSSProperties } from 'react';
-import { auth } from './firebase'; // تأكدي من مسار الملف
+import { auth } from './firebase/provider.tsx'; // تأكدي من مسار الملف
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 export default function NefertitiAcademy() {
