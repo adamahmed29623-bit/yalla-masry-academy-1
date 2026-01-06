@@ -1,5 +1,5 @@
 
-import { FirebaseProvider } from '@/FirebaseProvider.tsx'; //تأكدي من المسار
+import { FirebaseProvider } from '@/firebase/provider.tsx'; //تأكدي من المسار
 // استورد التطبيق والـ auth والـ firestore من ملف الإعدادات الخاص بك
 
 export default function RootLayout({ children }) {
