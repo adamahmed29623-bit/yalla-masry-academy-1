@@ -1,16 +1,20 @@
+import './globals.css';
+import { FirebaseProvider } from '@/firebase/provider'; 
 
-import { FirebaseProvider } from '@/firebase/provider.tsx'; //تأكدي من المسار
-// استورد التطبيق والـ auth والـ firestore من ملف الإعدادات الخاص بك
+export const metadata = {
+  title: 'Nefertiti Academy',
+  description: 'The Future of Learning on Mars',
+};
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ar" dir="rtl">
       <body>
-        <FirebaseProvider 
-          firebaseApp={firebaseApp} 
-          firestore={firestore} 
-          auth={auth}
-        >
+        <FirebaseProvider>
           {children}
         </FirebaseProvider>
       </body>
