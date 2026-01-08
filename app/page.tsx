@@ -1,99 +1,83 @@
 "use client";
-import React, { useState, useEffect, CSSProperties } from 'react';
-import { auth } from './firebase/provider.tsx'; // تأكدي من مسار الملف
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Crown, Rocket, BookOpen, UserPlus } from 'lucide-react';
+import Link from 'next/link';
 
-export default function NefertitiAcademy() {
-  const [user, setUser] = useState(null);
-  const [activeTab, setActiveTab] = useState('home');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+// ملاحظة ملكية: تم حذف استدعاء Firebase Provider لضمان نجاح النشر [cite: 2025-12-24]
 
-  // مراقبة حالة المستخدم (هل هو داخل المملكة أم لا؟)
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  // وظيفة فتح بوابات المملكة (تسجيل الدخول)
-  const handleAuth = async (type: 'login' | 'signup') => {
-    try {
-      if (type === 'signup') {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-      }
-    } catch (error) {
-      alert("خطأ في الدخول للمملكة: " + error.message);
-    }
-  };
-
-  // إذا لم يكن المستخدم مسجلاً، تظهر صفحة الدخول الملكية
-  if (!user) {
-    return (
-      <div style={authBg}>
-        <div style={royalCard}>
-          <div style={crownIcon}>🏺</div>
-          <h1 style={goldText}>بوابة نفرتيتي الملكية</h1>
-          <input type="email" placeholder="البريد الملكي" onChange={(e) => setEmail(e.target.value)} style={inputField} />
-          <input type="password" placeholder="كلمة السر" onChange={(e) => setPassword(e.target.value)} style={inputField} />
-          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-            <button onClick={() => handleAuth('login')} style={primaryBtn}>دخول العرش</button>
-            <button onClick={() => handleAuth('signup')} style={secondaryBtn}>إنشاء هوية</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // الواجهة الرئيسية بعد تسجيل الدخول (التصميم الفخم المرتب)
+export default function NefertitiMainHome() {
   return (
-    <div style={dashboardBg}>
-      <nav style={royalNav}>
-        <div style={goldText}>🏺 نفرتيتي الملكية</div>
-        <div style={navItems}>
-          <button onClick={() => setActiveTab('home')} style={activeTab === 'home' ? activeLink : link}>الرئيسية</button>
-          <button onClick={() => setActiveTab('goals')} style={activeTab === 'goals' ? activeLink : link}>أهدافي</button>
-          <button onClick={() => setActiveTab('challenges')} style={activeTab === 'challenges' ? activeLink : link}>التحديات</button>
+    <div className="relative min-h-screen bg-[#001233] text-white flex flex-col items-center justify-center overflow-hidden font-serif">
+      
+      {/* خلفية المتحف الكبير - ثابتة ومهيبة */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black z-10" />
+        <img 
+          src="https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&q=80" 
+          className="w-full h-full object-cover opacity-30"
+          alt="Grand Egyptian Museum"
+        />
+      </div>
+
+      <main className="z-20 text-center px-6 max-w-6xl w-full">
+        <motion.div 
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="mb-16"
+        >
+          <Crown className="w-24 h-24 text-[#D4AF37] mx-auto drop-shadow-[0_0_30px_#D4AF37] mb-6" />
+          <h1 className="text-6xl md:text-8xl font-black tracking-[15px] uppercase">
+            NEFERTITI <span className="text-[#D4AF37]">ACADEMY</span>
+          </h1>
+          <p className="text-[#D4AF37] text-xl tracking-[10px] mt-4 opacity-80 uppercase">
+            مستقبل التعليم بروح الحضارة
+          </p>
+        </motion.div>
+
+        {/* شبكة الأقسام الملكية - تربط كل ما في المستودع القديم والجديد */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <Link href="/academy/game">
+            <motion.div whileHover={{ scale: 1.05 }} className="p-8 bg-white/5 border border-[#D4AF37]/30 rounded-3xl hover:bg-[#D4AF37]/10 transition-all cursor-pointer">
+              <Rocket className="w-12 h-12 text-[#D4AF37] mb-4 mx-auto" />
+              <h3 className="text-2xl font-bold mb-2">لعبة المتحف</h3>
+              <p className="text-white/40 text-sm">استكشف المريخ بأدوات الفراعنة</p>
+            </motion.div>
+          </Link>
+
+          <Link href="/quran">
+            <motion.div whileHover={{ scale: 1.05 }} className="p-8 bg-white/5 border border-[#D4AF37]/30 rounded-3xl hover:bg-[#D4AF37]/10 transition-all cursor-pointer">
+              <BookOpen className="w-12 h-12 text-[#D4AF37] mb-4 mx-auto" />
+              <h3 className="text-2xl font-bold mb-2">نور القرآن</h3>
+              <p className="text-white/40 text-sm">تلاوات خاشعة وتدبر ملكي</p>
+            </motion.div>
+          </Link>
+
+          <Link href="/signup">
+            <motion.div whileHover={{ scale: 1.05 }} className="p-8 bg-[#D4AF37] text-black rounded-3xl transition-all cursor-pointer shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+              <UserPlus className="w-12 h-12 mb-4 mx-auto" />
+              <h3 className="text-2xl font-bold mb-2">بوابة الانضمام</h3>
+              <p className="text-black/60 text-sm font-bold">سجل اسمك في التاريخ</p>
+            </motion.div>
+          </Link>
+
         </div>
-        <button onClick={() => signOut(auth)} style={logoutBtn}>خروج</button>
-      </nav>
-
-      <main style={mainContent}>
-        {activeTab === 'home' && (
-          <div style={fadeIn}>
-            <h1 style={heroTitle}>أهلاً بكِ في عرشك، {user.email?.split('@')[0]}</h1>
-            <p style={subHero}>"نحن لا نبني مشروعاً، نحن نعيد صياغة الهوية"</p>
-            <div style={xpCounter}>✨ XP 1250</div>
-          </div>
-        )}
-
-        {/* هنا يمكنك إضافة أقسام الأهداف والتحديات بنفس النمط */}
-        {activeTab === 'goals' && <h2 style={goldText}>المسارات الملكية قيد التجهيز...</h2>}
-        {activeTab === 'challenges' && <h2 style={goldText}>التحديات السحرية في انتظارك...</h2>}
       </main>
+
+      {/* غبار الذهب المتطاير */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{ y: [0, -1000], opacity: [0, 1, 0] }}
+            transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: i }}
+            className="absolute bottom-0 w-1 h-1 bg-[#D4AF37] rounded-full"
+            style={{ left: `${Math.random() * 100}%` }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
-
-// --- التنسيقات (Styles) مستوحاة من صورك الأخيرة ---
-const authBg: CSSProperties = { background: '#05050a', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' };
-const dashboardBg: CSSProperties = { background: 'radial-gradient(circle, #1a1a2e, #05050a)', minHeight: '100vh', color: '#fff' };
-const royalCard: CSSProperties = { background: 'rgba(255,255,255,0.03)', padding: '50px', borderRadius: '30px', border: '1px solid #D4AF37', textAlign: 'center', width: '400px' };
-const goldText: CSSProperties = { color: '#D4AF37', fontWeight: 'bold' };
-const inputField: CSSProperties = { display: 'block', width: '100%', margin: '15px 0', padding: '12px', background: '#111', border: '1px solid #333', color: '#fff', borderRadius: '10px' };
-const primaryBtn: CSSProperties = { flex: 1, padding: '12px', background: '#D4AF37', color: '#000', border: 'none', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' };
-const secondaryBtn: CSSProperties = { ...primaryBtn, background: 'none', border: '1px solid #D4AF37', color: '#D4AF37' };
-const royalNav: CSSProperties = { display: 'flex', justifyContent: 'space-between', padding: '20px 40px', background: 'rgba(0,0,0,0.5)', borderBottom: '1px solid #D4AF37' };
-const navItems: CSSProperties = { display: 'flex', gap: '25px' };
-const link: CSSProperties = { background: 'none', border: 'none', color: '#fff', cursor: 'pointer' };
-const activeLink: CSSProperties = { ...link, color: '#D4AF37', borderBottom: '2px solid #D4AF37' };
-const mainContent: CSSProperties = { padding: '100px 20px', textAlign: 'center' };
-const heroTitle: CSSProperties = { fontSize: '3rem', color: '#D4AF37' };
-const subHero: CSSProperties = { color: '#aaa', fontStyle: 'italic' };
-const xpCounter: CSSProperties = { marginTop: '30px', fontSize: '1.5rem', color: '#D4AF37' };
-const crownIcon: CSSProperties = { fontSize: '50px', marginBottom: '20px' };
-const logoutBtn: CSSProperties = { background: 'none', border: '1px solid #ff4444', color: '#ff4444', padding: '5px 15px', borderRadius: '8px', cursor: 'pointer' };
-const fadeIn: CSSProperties = { animation: 'fadeIn 0.5s ease-in' };
