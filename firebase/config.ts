@@ -1,8 +1,18 @@
-export const firebaseConfig = {
-  "projectId": "yalla-masry-academy",
-  "appId": "1:652841336422:web:2d18c35b9a456a5c13936c",
-  "storageBucket": "yalla-masry-academy.appspot.com",
-  "apiKey": "AIzaSyC1sCq2O1O7n4Yd5n2f3g6hJk9l1mNn2o",
-  "authDomain": "yalla-masry-academy.firebaseapp.com",
-  "messagingSenderId": "652841336422"
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
+
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+export { app, auth, db };
