@@ -1,10 +1,6 @@
 import './globals.css';
-import { FirebaseProvider } from '@/firebase/provider'; 
-
-export const metadata = {
-  title: 'Nefertiti Academy',
-  description: 'The Future of Learning on Mars',
-};
+import { FirebaseProvider } from '@/firebase/provider';
+import { app, auth, db } from '@/firebase/config'; 
 
 export default function RootLayout({
   children,
@@ -14,7 +10,12 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body>
-        <FirebaseProvider>
+        {/* تمرير المفاتيح المطلوبة لحل خطأ البناء في السطر 17 */}
+        <FirebaseProvider 
+          firebaseApp={app} 
+          firestore={db} 
+          auth={auth}
+        >
           {children}
         </FirebaseProvider>
       </body>
