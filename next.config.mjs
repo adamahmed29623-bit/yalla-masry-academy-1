@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    // سيسمح هذا للأكاديمية بالانتشار وتجاهل أخطاء "الأنواع" تماماً
+    // الضربة القاضية لتجاهل أخطاء الأنواع وفتح الموقع فوراً
     ignoreBuildErrors: true,
   },
   eslint: {
-    // لتجنب أي تعطل بسبب قواعد التنسيق أثناء النشر
+    // منع أي توقف بسبب قوانين التنسيق
     ignoreDuringBuilds: true,
   },
 };
 
+// الصيغة الصحيحة لملفات .mjs
 export default nextConfig;
