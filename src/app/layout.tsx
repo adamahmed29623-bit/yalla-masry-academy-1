@@ -7,6 +7,20 @@ export const metadata = {
   description: 'صرح ملكي لتعلم العامية المصرية بروح فرعونية',
 };
 
+// مكوّن لعزل الفايربيس لضمان عدم حدوث دوامة برمجية أثناء البناء
+function ClientWrapper({ children }: { children: React.ReactNode }) {
+  // إذا كنا في مرحلة البناء (Server Side) ولا توجد إعدادات، نمرر الأطفال مباشرة
+  if (!app || !db || !auth) {
+    return <>{children}</>;
+  }
+
+  return (
+    <FirebaseProvider firebaseApp={app} firestore={db} auth={auth}>
+      {children}
+    </FirebaseProvider>
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -14,19 +28,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body suppressHydrationWarning className="min-h-screen">
-        {/* نضمن عدم تشغيل الفايربيس إلا إذا كانت البيئة جاهزة تماماً */}
-        {app && db && auth ? (
-          <FirebaseProvider 
-            firebaseApp={app} 
-            firestore={db} 
-            auth={auth}
-          >
-            {children}
-          </FirebaseProvider>
-        ) : (
-          <main>{children}</main>
-        )}
+      <body suppressHydrationWarning className="min-h-screen bg-background font-sans">
+        <ClientWrapper>
+          {children}
+        </ClientWrapper>
       </body>
     </html>
   );
