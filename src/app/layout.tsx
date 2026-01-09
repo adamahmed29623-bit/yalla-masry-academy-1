@@ -4,7 +4,7 @@ import { app, auth, db } from '@/firebase/config';
 
 export const metadata = {
   title: 'أكاديمية يلا مصري',
-  description: 'هوية ملكية لتعلم العامية المصرية بنظام فريد',
+  description: 'صرح ملكي لتعلم العامية المصرية بروح فرعونية',
 };
 
 export default function RootLayout({
@@ -14,17 +14,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        {/* نغلف التطبيق بـ FirebaseProvider مع ضمان عدم تكرار الاستدعاءات */}
-        <FirebaseProvider 
-          firebaseApp={app} 
-          firestore={db} 
-          auth={auth}
-        >
-          <main>
+      <body suppressHydrationWarning className="min-h-screen">
+        {/* نضمن عدم تشغيل الفايربيس إلا إذا كانت البيئة جاهزة تماماً */}
+        {app && db && auth ? (
+          <FirebaseProvider 
+            firebaseApp={app} 
+            firestore={db} 
+            auth={auth}
+          >
             {children}
-          </main>
-        </FirebaseProvider>
+          </FirebaseProvider>
+        ) : (
+          <main>{children}</main>
+        )}
       </body>
     </html>
   );
