@@ -1,13 +1,15 @@
 'use client';
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export function MainNav({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const links = [
     { href: "/admin/dashboard", label: "Overview" },
@@ -16,7 +18,7 @@ export function MainNav({
     { href: "/admin/challenge-analytics", label: "Challenges" },
     { href: "/admin/phrases", label: "Content" },
     { href: "/admin/store-management", label: "Store" },
-  ]
+  ];
 
   return (
     <nav
@@ -24,17 +26,19 @@ export function MainNav({
       {...props}
     >
       {links.map((link) => (
-         <Link
+        <Link
           key={link.href}
           href={link.href}
           className={cn(
-            "text-sm font-medium transition-colors hover:text-primary",
-            !pathname.startsWith(link.href) && "text-muted-foreground"
+            "text-sm font-medium transition-colors hover:text-[#D4AF37]",
+            pathname === link.href
+              ? "text-white font-bold"
+              : "text-muted-foreground"
           )}
         >
           {link.label}
         </Link>
       ))}
     </nav>
-  )
+  );
 }
