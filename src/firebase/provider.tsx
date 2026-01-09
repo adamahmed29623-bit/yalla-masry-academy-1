@@ -1,39 +1,55 @@
 'use client';
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { FirebaseApp } from 'firebase/app';
+import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { Firestore } from 'firebase/firestore';
-import { Auth } from 'firebase/auth';
 
-// تعريف "واجهة" البيانات التي تطلبها الأكاديمية
-interface FirebaseProviderProps {
+interface FirebaseContextType {
+  user: User | null;
+  firestore: Firestore | null;
+  auth: Auth | null;
+  isUserLoading: boolean;
+}
+
+const FirebaseContext = createContext<FirebaseContextType>({
+  user: null,
+  firestore: null,
+  auth: null,
+  isUserLoading: true,
+});
+
+export function FirebaseProvider({
+  children,
+  firebaseApp,
+  firestore,
+  auth,
+}: {
   children: React.ReactNode;
   firebaseApp: FirebaseApp;
   firestore: Firestore;
   auth: Auth;
-}
+}) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-// إنشاء سياق الأكاديمية الملكي
-const FirebaseContext = createContext<any>(null);
+  useEffect(() => {
+    // هذا السطر هو "صمام الأمان": يمنع الفايربيس من العمل أثناء البناء الثابت
+    if (typeof window === 'undefined') return;
 
-export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ 
-  children, 
-  firebaseApp, 
-  firestore, 
-  auth 
-}) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
   return (
-    <FirebaseContext.Provider value={{ firebaseApp, firestore, auth }}>
+    <FirebaseContext.Provider value={{ user, firestore, auth, isUserLoading: loading }}>
       {children}
     </FirebaseContext.Provider>
   );
-};
+}
 
-// أداة استدعاء البيانات داخل أي صفحة في الأكاديمية
-export const useFirebase = () => {
-  const context = useContext(FirebaseContext);
-  if (!context) {
-    throw new Error('useFirebase must be used within a FirebaseProvider');
-  }
-  return context;
-};
+export const useFirebase = () => useContext(FirebaseContext);
