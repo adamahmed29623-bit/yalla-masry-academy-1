@@ -1,4 +1,5 @@
 'use client';
+export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { useFirebase } from '@/firebase';
 import { Loader2, ArrowRight, Star, Gem, Trophy, PlusCircle } from 'lucide-react';
@@ -13,7 +14,7 @@ import { doc } from 'firebase/firestore';
 export default function DashboardPage() {
     const { user, firestore, isUserLoading } = useFirebase();
 
-    const userRef = useMemoFirebase(() => {
+    const userRef = useMemo(() => {
         if (!firestore || !user) return null;
         return doc(firestore, 'users', user.uid);
     }, [firestore, user]);
