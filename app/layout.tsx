@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body>
-        {/* تمرير المفاتيح المطلوبة لحل خطأ البناء في السطر 17 */}
+        {/* تمرير المفاتيح المطلوبة لحل خطأ البناء وتفعيل هوية الأكاديمية */}
         <FirebaseProvider 
           firebaseApp={app} 
           firestore={db} 
