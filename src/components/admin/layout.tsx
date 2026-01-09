@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { MainNav } from "@/components/admin/main-nav";
 
 export default function AdminLayout({
   children,
@@ -10,13 +9,10 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-[#001524]">
-      <header className="border-b border-[#D4AF37]/20 bg-black/20">
-        <div className="flex h-16 items-center px-4 md:px-8">
-          {/* استدعاء قائمة الملاحة التي كانت تسبب الخطأ */}
-          <MainNav className="mx-6" />
-        </div>
+      <header className="border-b border-[#D4AF37]/20 bg-black/40 p-4">
+        <h1 className="text-[#D4AF37] font-bold text-xl">لوحة تحكم نفرتيتي</h1>
       </header>
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-6 text-white">
         {children}
       </main>
     </div>
