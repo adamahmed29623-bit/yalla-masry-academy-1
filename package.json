@@ -1,6 +1,6 @@
 {
   "name": "yalla-masry-academy",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -16,7 +16,10 @@
     "lucide-react": "^0.454.0",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "firebase": "^10.13.2",
+    "react-confetti": "^6.1.0",
+    "react-use": "^17.5.1"
   },
   "devDependencies": {
     "typescript": "^5",
