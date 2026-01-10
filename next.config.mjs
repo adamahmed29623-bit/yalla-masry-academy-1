@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone', // استخدام هذا النظام بدلاً من export مؤقتاً لتجنب أخطاء الصفحات الثابتة
-  typescript: { ignoreBuildErrors: true },
-  eslint: { ignoreDuringBuilds: true },
+  output: 'export', // هذه هي اللمسة الملكية الحاسمة
+  images: {
+    unoptimized: true, // ضروري لأن Cloudflare Pages لا يدعم تحسين الصور التلقائي لـ Next.js
+  },
 };
 
 export default nextConfig;
