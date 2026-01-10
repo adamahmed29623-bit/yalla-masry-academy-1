@@ -13,14 +13,14 @@ export function AdminNav() {
   ];
 
   return (
-    <nav className="flex items-center space-x-6">
+    <nav className="flex items-center space-x-6 text-white/70">
       {links.map((link) => (
         <Link
           key={link.href}
           href={link.href}
           className={cn(
             "text-sm font-medium transition-colors hover:text-[#D4AF37]",
-            pathname === link.href ? "text-[#D4AF37]" : "text-gray-400"
+            pathname === link.href ? "text-[#D4AF37] font-bold" : ""
           )}
         >
           {link.label}
