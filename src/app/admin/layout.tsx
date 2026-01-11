@@ -1,10 +1,4 @@
 import { Metadata } from "next"
-import Image from "next/image"
-
-import { MainNav } from "@/components/admin/main-nav"
-import { Search } from "@/components/admin/search"
-import { TeamSwitcher } from "@/components/admin/team-switcher"
-import { UserNav } from "@/components/admin/user-nav"
 
 export const metadata: Metadata = {
   title: "لوحة تحكم نفرتيتي الملكية",
@@ -18,22 +12,30 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex flex-col min-h-screen bg-[#050c16] text-white">
-      <div className="border-b border-gold-500/20 bg-[#0a1a31]/50 backdrop-blur-md">
-        <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
-          <TeamSwitcher />
-          {/* تم وضع المكون داخل div لحل مشكلة الـ Type Error */}
-          <div className="mx-6">
-            <MainNav />
+      {/* هيدر بسيط وأنيق مدمج لضمان عدم حدوث خطأ في المسارات */}
+      <header className="border-b border-gold-500/20 bg-[#0a1a31]/50 backdrop-blur-md">
+        <div className="flex h-16 items-center px-6 max-w-7xl mx-auto justify-between">
+          <div className="flex items-center gap-4">
+             <div className="w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center text-black font-black">N</div>
+             <span className="font-black text-gold-400 italic tracking-tighter">NEFERTITI ADMIN</span>
           </div>
-          <div className="mr-auto flex items-center space-x-4 space-x-reverse">
-            <Search />
-            <UserNav />
+          
+          <nav className="hidden md:flex items-center space-x-6 space-x-reverse text-sm font-medium">
+            <a href="/admin" className="hover:text-gold-500 transition-colors">الرئيسية</a>
+            <a href="/admin/quran" className="hover:text-gold-500 transition-colors">القرآن</a>
+            <a href="/admin/hadiths" className="hover:text-gold-500 transition-colors">الأحاديث</a>
+          </nav>
+
+          <div className="flex items-center gap-4">
+             <div className="w-8 h-8 rounded-full border border-gold-500/50 bg-white/5" />
           </div>
         </div>
-      </div>
-      <div className="flex-1 p-8 pt-6 max-w-7xl mx-auto w-full">
+      </header>
+
+      {/* المحتوى الرئيسي */}
+      <main className="flex-1 p-8 pt-6 max-w-7xl mx-auto w-full">
         {children}
-      </div>
+      </main>
     </div>
   )
 }
