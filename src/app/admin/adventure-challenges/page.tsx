@@ -9,25 +9,26 @@ export default function AdminAdventurePage() {
   const firestore = useFirestore();
   const challengesCollection = firestore ? collection(firestore, 'adventure_challenges') : null;
   
-  // حل مشكلة نظامك البرمجي (استدعاء بدون مدخلات)
   useMemoFirebase(); 
 
-  const { data: challenges, isLoading } = useCollection<any>(challengesCollection as any);
+  // التعديل الملكي: استخدام كلمة loading بدلاً من isLoading لتتوافق مع نظامك
+  const { data: challenges, loading } = useCollection<any>(challengesCollection as any);
 
   return (
     <div className="min-h-screen bg-[#f4f7fe] flex rtl" dir="rtl">
       {/* القائمة الجانبية الملكية */}
       <aside className="w-72 bg-[#0a1a31] text-white fixed h-full shadow-2xl z-50">
         <div className="p-8 border-b border-white/5 text-center">
-          <div className="relative w-24 h-24 mx-auto mb-4">
+          <div className="relative w-24 h-24 mx-auto mb-4 group">
+            <div className="absolute inset-0 bg-gold-500 rounded-full blur-lg opacity-20 animate-pulse" />
             <img 
               src="/nefertiti-avatar.png" 
               alt="Queen Nefertiti" 
-              className="rounded-full border-2 border-gold-500 shadow-[0_0_15px_rgba(255,215,0,0.3)] object-cover w-full h-full"
+              className="rounded-full border-2 border-gold-500 shadow-2xl object-cover w-full h-full relative z-10"
             />
           </div>
           <h2 className="text-xl font-black text-gold-400">لوحة نفرتيتي</h2>
-          <p className="text-[10px] opacity-50 uppercase mt-1 italic">مركز قيادة الأكاديمية</p>
+          <p className="text-[10px] opacity-50 uppercase mt-1 italic tracking-widest">إدارة الأكاديمية</p>
         </div>
         
         <nav className="p-4 mt-4 space-y-2">
@@ -35,7 +36,7 @@ export default function AdminAdventurePage() {
             <Star size={18} /> إدارة التحديات
           </button>
           <button className="w-full flex items-center gap-3 px-6 py-4 rounded-xl font-bold hover:bg-white/5 text-gray-400">
-            <LayoutDashboard size={18} /> الإحصائيات
+            <LayoutDashboard size={18} /> الإحصائيات العامة
           </button>
         </nav>
       </aside>
@@ -44,28 +45,28 @@ export default function AdminAdventurePage() {
       <main className="flex-1 mr-72 p-10">
         <header className="flex justify-between items-center mb-10 border-b border-gray-200 pb-8">
           <div>
-            <h1 className="text-3xl font-black text-[#0a1a31]">تحديات المحروسة والخليج</h1>
-            <p className="text-gray-500 italic">أهلاً بكِ يا جلالة الملكة في مملكتكِ الخاصة.</p>
+            <h1 className="text-3xl font-black text-[#0a1a31] mb-1">مركز التحكم في التحديات</h1>
+            <p className="text-gray-500 italic text-sm">أهلاً بكِ في مملكتكِ الخاصة يا جلالة الملكة.</p>
           </div>
-          <button className="bg-[#0a1a31] text-white px-8 py-4 rounded-2xl font-black shadow-xl flex items-center gap-2 hover:bg-gold-500 hover:text-black transition-all">
-            <Plus size={20} /> إضافة تحدي جديد
+          <button className="bg-[#0a1a31] text-white px-8 py-4 rounded-2xl font-black shadow-xl flex items-center gap-2 hover:bg-gold-500 hover:text-black transition-all active:scale-95">
+            <Plus size={20} /> إضافة تحدي ملكي
           </button>
         </header>
 
-        {isLoading ? (
+        {loading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
             <Loader2 className="animate-spin text-gold-500" size={48} />
-            <p className="text-gray-400 font-bold italic">جاري استدعاء البيانات الملكية...</p>
+            <p className="text-gray-400 font-bold italic animate-pulse">جاري جلب البيانات السامية...</p>
           </div>
         ) : (
-          <div className="bg-white rounded-[30px] shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-[40px] shadow-sm border border-gray-100 overflow-hidden">
              <table className="w-full text-right">
-              <thead className="bg-gray-50/50">
+              <thead className="bg-gray-50/50 border-b border-gray-100">
                 <tr>
-                  <th className="px-8 py-6 text-gray-400 font-bold text-xs">المهمة</th>
-                  <th className="px-8 py-6 text-gray-400 font-bold text-xs">الترجمة</th>
-                  <th className="px-8 py-6 text-gray-400 font-bold text-xs">النقاط</th>
-                  <th className="px-8 py-6 text-gray-400 font-bold text-xs text-left">التحكم</th>
+                  <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase">المهمة</th>
+                  <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase">القاموس</th>
+                  <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase">النقاط</th>
+                  <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase text-left">الإجراءات</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -73,18 +74,29 @@ export default function AdminAdventurePage() {
                   <tr key={challenge.id} className="hover:bg-blue-50/30 transition-all group">
                     <td className="px-8 py-6 font-black text-[#0a1a31]">{challenge.title}</td>
                     <td className="px-8 py-6">
-                      <div className="text-xs text-gray-400 italic">خليجي: {challenge.gulf_phrase}</div>
+                      <div className="text-xs text-gray-400 italic mb-1">خليجي: {challenge.gulf_phrase}</div>
                       <div className="text-sm font-bold text-gold-600">مصري: {challenge.egyptian_phrase}</div>
                     </td>
-                    <td className="px-8 py-6 font-black text-emerald-600">+{challenge.points}</td>
-                    <td className="px-8 py-6 text-left flex justify-end gap-2 opacity-0 group-hover:opacity-100">
-                       <button className="p-2 text-blue-500"><Edit2 size={16} /></button>
-                       <button className="p-2 text-red-400"><Trash2 size={16} /></button>
+                    <td className="px-8 py-6">
+                      <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-black text-[10px]">
+                        +{challenge.points} نقطة
+                      </span>
+                    </td>
+                    <td className="px-8 py-6 text-left">
+                      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                       <button className="p-2 text-blue-500 hover:bg-white rounded-lg shadow-sm border border-blue-50"><Edit2 size={16} /></button>
+                       <button className="p-2 text-red-400 hover:bg-white rounded-lg shadow-sm border border-red-50"><Trash2 size={16} /></button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            {challenges?.length === 0 && (
+               <div className="p-20 text-center text-gray-400 italic font-bold">
+                 لا توجد تحديات حالياً.. ابدأي بإضافة أول مهمة.
+               </div>
+            )}
           </div>
         )}
       </main>
