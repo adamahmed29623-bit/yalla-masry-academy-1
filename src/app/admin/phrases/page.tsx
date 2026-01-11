@@ -1,160 +1,78 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { useCollection, type WithId, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+
+import React, { useState } from 'react';
+import { useCollection, useFirestore } from '@/firebase';
+import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
+import { Loader2, Trash2, Plus } from 'lucide-react';
 
-type Phrase = {
-  category: string;
-  text: string;
-  translation: string;
-};
+export default function AdminPhrasesPage() {
+  const [arabic, setArabic] = useState('');
+  const [english, setEnglish] = useState('');
+  const firestore = useFirestore();
+  
+  const phrasesRef = firestore ? collection(firestore, 'phrases') : null;
+  const { data: phrases, loading } = useCollection(phrasesRef as any);
 
-const PhraseForm = ({ phrase, onSave, onCancel }: { phrase?: WithId<Phrase>, onSave: (p: Phrase) => void, onCancel: () => void }) => {
-  const [category, setCategory] = useState('');
-  const [text, setText] = useState('');
-  const [translation, setTranslation] = useState('');
-
-  useEffect(() => {
-    if (phrase) {
-      setCategory(phrase.category);
-      setText(phrase.text);
-      setTranslation(phrase.translation);
-    } else {
-        setCategory('');
-        setText('');
-        setTranslation('');
-    }
-  }, [phrase]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave({ category, text, translation });
+  const handleAdd = async () => {
+    if (!arabic || !english || !phrasesRef) return;
+    await addDoc(phrasesRef, { 
+      arabic, 
+      english, 
+      createdAt: new Date().toISOString() 
+    });
+    setArabic('');
+    setEnglish('');
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="category">Category</Label>
-        <Input id="category" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g., Greetings" required />
-      </div>
-      <div>
-        <Label htmlFor="text">Phrase (Egyptian)</Label>
-        <Input id="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="e.g., صباح الخير" required />
-      </div>
-      <div>
-        <Label htmlFor="translation">Translation (English)</Label>
-        <Input id="translation" value={translation} onChange={(e) => setTranslation(e.target.value)} placeholder="e.g., Good morning" required />
-      </div>
-      <DialogFooter>
-        <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
-        <Button type="submit">Save Phrase</Button>
-      </DialogFooter>
-    </form>
-  );
-};
-
-export default function PhrasesAdminPage() {
-  const { firestore } = useFirebase();
-  const phrasesCollection = useMemoFirebase(() => firestore ? collection(firestore, 'phrases') : null, [firestore]);
-  const { data: phrases, isLoading, error } = useCollection<Phrase>(phrasesCollection);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingPhrase, setEditingPhrase] = useState<WithId<Phrase> | undefined>(undefined);
-  const { toast } = useToast();
-
-  const handleSave = async (phraseData: Phrase) => {
+  const handleDelete = async (id: string) => {
     if (!firestore) return;
-    try {
-      if (editingPhrase) {
-        // Update
-        const phraseDoc = doc(firestore, 'phrases', editingPhrase.id);
-        await updateDoc(phraseDoc, phraseData);
-        toast({ title: 'Phrase updated successfully!' });
-      } else {
-        // Create
-        await addDoc(collection(firestore, 'phrases'), phraseData);
-        toast({ title: 'Phrase added successfully!' });
-      }
-      setIsDialogOpen(false);
-      setEditingPhrase(undefined);
-    } catch (e) {
-      toast({ variant: 'destructive', title: 'Error saving phrase', description: (e as Error).message });
-    }
-  };
-
-  const handleDelete = async (phraseId: string) => {
-    if (!firestore || !window.confirm('Are you sure you want to delete this phrase?')) return;
-    try {
-      await deleteDoc(doc(firestore, 'phrases', phraseId));
-      toast({ title: 'Phrase deleted successfully!' });
-    } catch (e) {
-      toast({ variant: 'destructive', title: 'Error deleting phrase', description: (e as Error).message });
-    }
+    await deleteDoc(doc(firestore, 'phrases', id));
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Phrasebook</CardTitle>
-          <CardDescription>Manage the phrases used in challenges and lessons.</CardDescription>
+    <div className="min-h-screen bg-[#050c16] text-white p-8 rtl" dir="rtl">
+      <h1 className="text-3xl font-black text-gold-400 mb-8 italic">إدارة قاموس العبارات الملكية</h1>
+      
+      <div className="bg-white/5 p-6 rounded-3xl mb-8 space-y-4 border border-gold-500/20 shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input 
+            placeholder="العبارة بالعربية..." 
+            value={arabic}
+            onChange={(e) => setArabic(e.target.value)}
+            className="bg-black/40 border-white/10 text-white h-14"
+          />
+          <Input 
+            placeholder="Translation in English..." 
+            value={english}
+            onChange={(e) => setEnglish(e.target.value)}
+            className="bg-black/40 border-white/10 text-white h-14 text-left"
+            dir="ltr"
+          />
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setEditingPhrase(undefined)}>
-              <PlusCircle className="mr-2 h-4 w-4" /> Add Phrase
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{editingPhrase ? 'Edit Phrase' : 'Add New Phrase'}</DialogTitle>
-            </DialogHeader>
-            <PhraseForm
-              phrase={editingPhrase}
-              onSave={handleSave}
-              onCancel={() => { setIsDialogOpen(false); setEditingPhrase(undefined); }}
-            />
-          </DialogContent>
-        </Dialog>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Category</TableHead>
-              <TableHead>Egyptian Phrase</TableHead>
-              <TableHead>English Translation</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading && <TableRow><TableCell colSpan={4} className="text-center">Loading...</TableCell></TableRow>}
-            {error && <TableRow><TableCell colSpan={4} className="text-center text-destructive">Error loading data.</TableCell></TableRow>}
-            {phrases?.map((phrase) => (
-              <TableRow key={phrase.id}>
-                <TableCell>{phrase.category}</TableCell>
-                <TableCell>{phrase.text}</TableCell>
-                <TableCell>{phrase.translation}</TableCell>
-                <TableCell className="space-x-2">
-                  <Button variant="ghost" size="icon" onClick={() => { setEditingPhrase(phrase); setIsDialogOpen(true); }}>
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(phrase.id)}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+        <Button onClick={handleAdd} className="w-full bg-gold-500 text-black h-14 font-black hover:bg-white transition-all">
+          <Plus className="ml-2" /> إضافة للقاموس الملكي
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
+        {loading ? (
+          <div className="flex justify-center py-10"><Loader2 className="animate-spin text-gold-500" /></div>
+        ) : (
+          (phrases as any[])?.map((phrase) => (
+            <div key={phrase.id} className="p-5 bg-white/5 rounded-2xl border border-white/5 flex justify-between items-center group hover:border-gold-500/30 transition-all">
+              <div>
+                <p className="text-xl font-bold mb-1">{phrase.arabic}</p>
+                <p className="text-gold-500/60 italic text-sm font-serif">{phrase.english}</p>
+              </div>
+              <button onClick={() => handleDelete(phrase.id)} className="text-red-500 opacity-0 group-hover:opacity-100 transition-all p-2 hover:bg-red-500/10 rounded-full">
+                <Trash2 size={20} />
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
 }
