@@ -2,108 +2,129 @@
 
 import React, { useState } from 'react';
 import { 
-  Gift, MapPin, Coffee, Sparkles, CheckCircle, Trophy, 
-  Crown, Star, ArrowLeftRight, Flame, Gem, Navigation, 
-  ChevronLeft, Timer
+  Gift, MapPin, Coffee, Crown, Gem, Navigation, 
+  ArrowLeftRight, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 export default function GulfSectionPage() {
-  const [activeTab, setActiveTab] = useState('map'); 
-  const [points] = useState(1250);
+  const [activeTab, setActiveTab] = useState('map');
+  const points = 1250;
 
   return (
-    <div className="min-h-screen bg-[#040b16] text-white font-serif rtl" dir="rtl">
-      
-      {/* شريط الإعلانات الملكي المتحرك */}
-      <div className="bg-gold-500 text-black py-2 overflow-hidden whitespace-nowrap border-b border-gold-600">
-        <div className="flex animate-marquee gap-10 font-black text-sm uppercase">
-          <span>✨ خصم 50% لأبناء الخليج بمناسبة العام الجديد ✨</span>
-          <span>💎 سجل الآن واحصل على وسام "المستكشف الذهبي" 💎</span>
-          <span>🇪🇬 تعلم لهجة ابن البلد بأسلوب ملكي رفيع 🇪🇬</span>
-          <span>✨ خصم 50% لأبناء الخليج بمناسبة العام الجديد ✨</span>
-        </div>
-      </div>
-
-      {/* الرأس الإمبراطوري */}
-      <header className="relative pt-16 pb-28 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/papyros.png')] opacity-10"></div>
-        <div className="max-w-6xl mx-auto relative z-10 flex flex-col items-center">
-          
+    <div className="min-h-screen bg-[#040b16] text-white overflow-x-hidden rtl" dir="rtl">
+      {/* 1. Header Section */}
+      <header className="relative pt-16 pb-24 px-6 text-center border-b border-white/5">
+        <div className="max-w-4xl mx-auto relative z-10">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="relative mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col items-center"
           >
-            <div className="w-44 h-44 md:w-56 md:h-56 rounded-[50px] border-8 border-gold-500 shadow-[0_0_70px_rgba(212,175,55,0.5)] overflow-hidden bg-white rotate-3">
-              <Image 
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop" 
-                alt="الملكة نفرتيتي" 
-                fill
-                className="object-cover"
-              />
+            <div className="relative mb-8">
+              <div className="w-40 h-40 md:w-48 md:h-48 rounded-[40px] border-4 border-gold-500 overflow-hidden bg-white shadow-[0_0_50px_rgba(212,175,55,0.3)]">
+                <Image 
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop"
+                  alt="Nefertiti"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-emerald-600 p-3 rounded-2xl border-4 border-[#040b16]">
+                <Crown size={24} className="text-white" />
+              </div>
             </div>
-            <div className="absolute -bottom-4 -right-4 bg-emerald-600 p-4 rounded-3xl border-4 border-[#040b16] shadow-2xl">
-               <Crown size={30} className="text-white" />
+
+            <h1 className="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-b from-white to-gold-500 bg-clip-text text-transparent">
+              مجلس الخليج والمحروسة
+            </h1>
+
+            <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-xl px-8 py-3 rounded-full border border-gold-500/20 shadow-2xl">
+              <Gem className="text-gold-500" />
+              <span className="text-xl font-bold text-gold-400">رصيد الفخامة: {points} وسام</span>
             </div>
           </motion.div>
-
-          <h1 className="text-5xl md:text-7xl font-black mb-6 text-center bg-gradient-to-b from-white via-gold-200 to-gold-600 bg-clip-text text-transparent leading-tight">
-            ديوان الخليج والمحروسة
-          </h1>
-          
-          <div className="bg-white/5 backdrop-blur-2xl px-10 py-4 rounded-full border border-gold-500/30 flex items-center gap-4 shadow-2xl">
-            <Gem className="text-gold-500" />
-            <span className="text-2xl font-black text-gold-400 italic">رصيد الفخامة: {points} وسام</span>
-          </div>
         </div>
       </header>
 
-      {/* المحتوى الرئيسي */}
-      <main className="max-w-6xl mx-auto px-6 -mt-16 pb-32 relative z-20">
-        
-        {/* أزرار التنقل */}
-        <div className="flex flex-wrap justify-center gap-6 mb-16">
+      {/* 2. Main Content */}
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        <div className="flex justify-center gap-4 mb-12">
           <button 
-            onClick={() => setActiveTab('map')} 
-            className={`px-12 py-5 rounded-[30px] font-black text-xl transition-all shadow-2xl flex items-center gap-3 ${activeTab === 'map' ? 'bg-gold-500 text-black scale-105' : 'bg-white/5 border border-white/10'}`}
+            onClick={() => setActiveTab('map')}
+            className={`px-8 py-4 rounded-2xl font-black transition-all flex items-center gap-2 ${activeTab === 'map' ? 'bg-gold-500 text-black' : 'bg-white/5 border border-white/10'}`}
           >
-            <Navigation size={24} /> خريطة المهمات
+            <Navigation size={20} /> خريطة المهمات
           </button>
           <button 
-            onClick={() => setActiveTab('gifts')} 
-            className={`px-12 py-5 rounded-[30px] font-black text-xl transition-all shadow-2xl flex items-center gap-3 ${activeTab === 'gifts' ? 'bg-emerald-600 text-white scale-105' : 'bg-white/5 border border-white/10'}`}
+            onClick={() => setActiveTab('gifts')}
+            className={`px-8 py-4 rounded-2xl font-black transition-all flex items-center gap-2 ${activeTab === 'gifts' ? 'bg-emerald-600 text-white' : 'bg-white/5 border border-white/10'}`}
           >
-            <Gift size={24} /> خزنة الجوائز
+            <Gift size={20} /> خزنة الجوائز
           </button>
         </div>
 
         <AnimatePresence mode="wait">
           {activeTab === 'map' ? (
             <motion.div 
-              key="map-view"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              key="map"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="space-y-12"
+              className="space-y-8"
             >
-              {/* بطاقة المهمة النشطة */}
-              <div className="p-10 rounded-[60px] border-2 border-gold-500 bg-[#0a1a31] shadow-[0_20px_50px_rgba(212,175,55,0.2)] relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-32 h-32 bg-gold-500/10 rounded-br-full -ml-10 -mt-10 blur-2xl"></div>
-                
-                <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
-                  <div className="w-40 h-40 bg-gradient-to-tr from-gold-600 to-amber-300 rounded-[40px] flex items-center justify-center text-6xl shadow-inner border-4 border-white/10">
-                    🕌
-                  </div>
-                  
+              <div className="p-8 md:p-12 rounded-[50px] bg-[#0a1a31] border-2 border-gold-500/50 shadow-2xl">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="w-32 h-32 bg-gold-500 rounded-3xl flex items-center justify-center text-5xl shadow-lg">🕌</div>
                   <div className="flex-1 text-center md:text-right">
-                    <div className="text-gold-500 font-black text-xl mb-4 flex items-center justify-center md:justify-start gap-2 italic">
-                      <MapPin size={24} /> خان الخليلي - القاهرة
+                    <div className="text-gold-500 font-bold mb-2 flex items-center justify-center md:justify-start gap-2">
+                      <MapPin size={18} /> خان الخليلي - القاهرة
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                      <div className="bg-white/5 p-6 rounded-3xl border border-white/10">
-                        <span className="text-xs text-gold-500 block mb-2 font-black">بالخليجي</span>
-                        <p className="text-2xl font-bold">"وش علومك يا راعي المحل؟"</p>
+                    <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+                      <div className="bg-white/5 p-4 rounded-2xl border border-white/10 w-full">
+                        <span className="text-[10px] text-gold-500 block font-bold uppercase">بالخليجي</span>
+                        <p className="text-lg">"وش علومك يا راعي المحل؟"</p>
                       </div>
-                      <div className
+                      <ArrowLeftRight className="text-gold-500 hidden md:block" />
+                      <div className="bg-gold-500/10 p-4 rounded-2xl border border-gold-500/30 w-full">
+                        <span className="text-[10px] text-blue-300 block font-bold uppercase">بالمصري</span>
+                        <p className="text-lg text-gold-200">"إيه الأخبار يا فنان؟"</p>
+                      </div>
+                    </div>
+                    <button className="w-full md:w-auto px-12 py-4 bg-gold-500 text-black rounded-2xl font-black hover:bg-white transition-all">
+                      ابدأ التحدي الملكي
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="gifts"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              <PrizeCard name="خاتم توت الذهبي" price={1500} icon="💍" />
+              <PrizeCard name="بخور القصر" price={3000} icon="🏺" />
+              <PrizeCard name="تاج السيادة" price={9999} icon="👑" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
+    </div>
+  );
+}
+
+function PrizeCard({ name, price, icon }: { name: string; price: number; icon: string }) {
+  return (
+    <div className="bg-white/5 border border-white/10 p-8 rounded-[40px] text-center hover:border-gold-500 transition-all">
+      <div className="text-6xl mb-6">{icon}</div>
+      <h3 className="text-2xl font-bold mb-2">{name}</h3>
+      <div className="flex items-center justify-center gap-2 text-gold-500 font-bold">
+        <Star size={16} /> {price} وسام
+      </div>
+    </div>
+  );
+}
