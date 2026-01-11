@@ -1,15 +1,14 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  output: 'standalone', // هذا الخيار هو الأهم لعمل الأكاديمية على السيرفرات السحابية
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'standalone',
   images: {
-    unoptimized: true, // لضمان ظهور صور الأكاديمية الملكية دون أخطاء
+    unoptimized: true,
   },
   eslint: {
-    ignoreDuringBuilds: true, // لنسمح للنشر بالمرور حتى لو وجد ملاحظات بسيطة
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // لضمان عدم توقف النشر بسبب تدقيقات TypeScript الصارمة
+    ignoreBuildErrors: true,
   }
 };
 
