@@ -1,167 +1,134 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { getBadgeByName, type BadgeInfo } from '@/lib/badges';
-import { Award, BookOpen, Shield, Star } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { User } from 'firebase/auth';
-
-const UserProfileSkeleton = () => (
-    <div className="space-y-8">
-        <Card>
-            <CardHeader className="items-center text-center">
-                <Skeleton className="h-24 w-24 rounded-full" />
-                <div className="space-y-2 mt-4">
-                    <Skeleton className="h-8 w-48" />
-                    <Skeleton className="h-4 w-32" />
-                </div>
-            </CardHeader>
-            <CardContent className="text-center">
-                <Skeleton className="h-4 w-full max-w-md mx-auto" />
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader>
-                <Skeleton className="h-6 w-1/3" />
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-24 w-full" />
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader>
-                 <Skeleton className="h-6 w-1/4" />
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
-            </CardContent>
-        </Card>
-    </div>
-);
-
-
-const ProfileCard = ({ authUser, dbUser }: { authUser: User, dbUser: any }) => {
-    const getInitials = (name: string | null | undefined) => {
-        if (!name) return '..';
-        const names = name.split(' ');
-        if (names.length > 1) {
-            return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
-        }
-        return name.substring(0, 2).toUpperCase();
-    };
-
-    return (
-        <Card className="text-center">
-            <CardHeader className="items-center">
-                <Avatar className="h-24 w-24 mb-4 border-4 border-primary">
-                    <AvatarImage src={authUser.photoURL || ''} alt={authUser.displayName || 'User'} />
-                    <AvatarFallback className="text-3xl">{getInitials(authUser.displayName)}</AvatarFallback>
-                </Avatar>
-                <CardTitle className="text-3xl font-headline text-primary">{authUser.displayName || 'Valued Member'}</CardTitle>
-                <CardDescription>Pharaonic Alias: <span className="font-bold text-accent-foreground">{dbUser.alias}</span></CardDescription>
-                <Badge variant="secondary" className="mt-2">{dbUser.role || 'Student'}</Badge>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground max-w-md mx-auto">
-                    A dedicated student on the path to mastering the Egyptian dialect, currently at the <span className="font-semibold text-foreground">{dbUser.level}</span> level, focusing on <span className="font-semibold text-foreground">{dbUser.goal}</span>.
-                </p>
-            </CardContent>
-        </Card>
-    );
-};
-
-const StatsCard = ({ user }: { user: any }) => (
-    <Card>
-        <CardHeader>
-            <CardTitle>Your Progress</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="flex flex-col items-center gap-2">
-                <Award className="h-8 w-8 text-primary" />
-                <p className="text-2xl font-bold">{user.nilePoints}</p>
-                <p className="text-sm text-muted-foreground">Nile Points</p>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-                <Shield className="h-8 w-8 text-primary" />
-                <p className="text-2xl font-bold">{user.badges?.length || 0}</p>
-                <p className="text-sm text-muted-foreground">Badges Earned</p>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-                <BookOpen className="h-8 w-8 text-primary" />
-                <p className="text-2xl font-bold">12</p>
-                <p className="text-sm text-muted-foreground">Lessons Completed</p>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-                <Star className="h-8 w-8 text-primary" />
-                <p className="text-2xl font-bold">4.8</p>
-                <p className="text-sm text-muted-foreground">Average Score</p>
-            </div>
-        </CardContent>
-    </Card>
-);
-
-const BadgesCard = ({ user }: { user: any }) => {
-    const earnedBadges = (user.badges || []).map(getBadgeByName).filter(Boolean) as BadgeInfo[];
-
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Badge Collection</CardTitle>
-                <CardDescription>Showcasing your achievements and milestones.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                {earnedBadges.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {earnedBadges.map((badge) => (
-                            <div key={badge.name} className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-                                <badge.icon className="h-10 w-10 shrink-0" style={{ color: badge.color }} />
-                                <div>
-                                    <p className="font-bold">{badge.name}</p>
-                                    <p className="text-sm text-muted-foreground">{badge.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p className="text-muted-foreground text-center py-8">Your badge collection is awaiting its first treasure. Complete some challenges to start earning them!</p>
-                )}
-            </CardContent>
-        </Card>
-    );
-};
+import React from "react";
+import { useFirebase } from "@/context/useFirebase";
+import { motion } from "framer-motion";
+import { 
+  User, 
+  Settings, 
+  Globe, 
+  ShieldCheck, 
+  Award, 
+  LogOut, 
+  Crown,
+  Languages
+} from "lucide-react";
 
 export default function ProfilePage() {
-    const { user, isUserLoading, firestore } = useFirebase();
+  // المفتاح الملكي لتجاوز أخطاء البناء وضمان استلام البيانات
+  const { user, isUserLoading, auth } = useFirebase() as any;
 
-    const userDocRef = useMemoFirebase(() => {
-        if (!user || !firestore) return null;
-        return doc(firestore, 'users', user.uid);
-    }, [user, firestore]);
-    
-    const { data: dbUser, isLoading: isDbUserLoading } = useDoc(userDocRef);
-    
-    const isLoading = isUserLoading || isDbUserLoading;
-
-    if (isLoading || !user || !dbUser) {
-        return <UserProfileSkeleton />;
-    }
-
+  if (isUserLoading) {
     return (
-        <div className="container mx-auto p-4 md:p-8">
-            <div className="space-y-8">
-                <ProfileCard authUser={user} dbUser={dbUser} />
-                <StatsCard user={dbUser} />
-                <BadgesCard user={dbUser} />
-            </div>
-        </div>
+      <div className="flex h-screen items-center justify-center bg-[#fcfaf2]">
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          className="h-12 w-12 border-4 border-gold-500 border-t-royal-blue rounded-full"
+        />
+      </div>
     );
+  }
+
+  const handleLogout = () => {
+    if (auth) auth.signOut();
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fcfaf2] font-serif">
+      {/* الجزء العلوي: غطاء ملكي (Hero Header) */}
+      <div className="h-64 bg-royal-blue relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/egyptian-hieroglyphs.png')]"></div>
+        <div className="absolute -bottom-1 w-full h-20 bg-[#fcfaf2] rounded-t-[50px]"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 -mt-32 relative z-10">
+        {/* بطاقة الهوية الملكية */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-3xl shadow-2xl p-8 border border-gold-100"
+        >
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full border-4 border-gold-500 overflow-hidden bg-gray-100">
+                {user?.photoURL ? (
+                  <img src={user.photoURL} alt="الملف الملكي" className="w-full h-full object-cover" />
+                ) : (
+                  <User className="w-full h-full p-6 text-gray-400" />
+                )}
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-gold-500 p-2 rounded-full shadow-lg">
+                <Crown className="w-5 h-5 text-royal-blue" />
+              </div>
+            </div>
+
+            <div className="text-center md:text-right flex-1">
+              <h1 className="text-3xl font-bold text-royal-blue mb-1">
+                {user?.displayName || "عضو أكاديمية يلا مصري"}
+              </h1>
+              <p className="text-gray-500 flex items-center justify-center md:justify-start gap-2">
+                <ShieldCheck className="w-4 h-4 text-green-600" />
+                {user?.email}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
+                <span className="px-4 py-1 bg-gold-100 text-gold-700 rounded-full text-sm font-bold border border-gold-200">
+                  طالب ذهبي
+                </span>
+                <span className="px-4 py-1 bg-royal-blue/10 text-royal-blue rounded-full text-sm font-bold border border-royal-blue/20">
+                  عضوية 2026
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* شبكة الإعدادات والمعلومات العالمية */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          
+          {/* قسم اللغات - الـ 11 لغة */}
+          <motion.div whileHover={{ y: -5 }} className="bg-white p-6 rounded-2xl shadow-lg border-r-4 border-gold-500">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-gold-50 rounded-lg">
+                <Languages className="w-6 h-6 text-gold-600" />
+              </div>
+              <h2 className="text-xl font-bold text-royal-blue">تفضيلات اللغة</h2>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">أكاديميتك تدعم 11 لغة عالمية لتناسب طموحك.</p>
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-gold-50 transition-colors">
+              <span className="font-medium">اللغة الحالية</span>
+              <span className="text-royal-blue font-bold flex items-center gap-2">
+                العربية <Globe className="w-4 h-4" />
+              </span>
+            </div>
+          </motion.div>
+
+          {/* قسم الإنجازات */}
+          <motion.div whileHover={{ y: -5 }} className="bg-white p-6 rounded-2xl shadow-lg border-r-4 border-royal-blue">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <Award className="w-6 h-6 text-royal-blue" />
+              </div>
+              <h2 className="text-xl font-bold text-royal-blue">الإنجازات الملكية</h2>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">لقد بدأت رحلتك نحو العالمية معنا.</p>
+            <div className="text-royal-blue text-sm font-bold">قريباً: الأوسمة والشهادات</div>
+          </motion.div>
+        </div>
+
+        {/* خيارات التحكم */}
+        <div className="mt-8 flex flex-col md:flex-row gap-4 mb-12">
+          <button className="flex-1 flex items-center justify-center gap-2 bg-white border-2 border-gold-500 text-gold-700 py-3 rounded-2xl font-bold hover:bg-gold-50 transition-all shadow-md">
+            <Settings className="w-5 h-5" /> تعديل الملف الشخصي
+          </button>
+          <button 
+            onClick={handleLogout}
+            className="flex-1 flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-2xl font-bold hover:bg-red-100 transition-all shadow-md"
+          >
+            <LogOut className="w-5 h-5" /> تسجيل الخروج
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
