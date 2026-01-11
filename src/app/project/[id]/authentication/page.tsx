@@ -1,64 +1,39 @@
-"use client"
+'use client';
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
-import { useFirebase } from "@/firebase"
-import { Loader2 } from "lucide-react"
-
-const availableProviders = [
-    { id: 'password', name: 'Email/Password' },
-    { id: 'google.com', name: 'Google' },
-    { id: 'facebook.com', name: 'Facebook' },
-    { id: 'github.com', name: 'GitHub' },
-    { id: 'anonymous', name: 'Anonymous' },
-]
+import React from 'react';
+import { useFirebase } from '@/firebase';
+import { Loader2 } from 'lucide-react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function AuthenticationPage() {
-    const { auth, isUserLoading } = useFirebase();
+  const { auth } = useFirebase();
+  // استخدام react-firebase-hooks للحصول على حالة التحميل بشكل صحيح
+  const [user, loading] = useAuthState(auth as any);
 
-    if (isUserLoading) {
-        return <div className="flex justify-center items-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
-    }
-    
-    // This is a placeholder. In a real app you would get the enabled providers from your backend or config.
-    const enabledProviders = ['password', 'anonymous', 'google.com'];
-
+  if (loading) {
     return (
-        <div className="space-y-8">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Sign-in method</CardTitle>
-                    <CardDescription>Configure authentication providers for your users.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        {availableProviders.map(provider => (
-                            <div key={provider.id} className="flex items-center justify-between rounded-lg border p-4">
-                                <span className="font-medium">{provider.name}</span>
-                                <Switch 
-                                    checked={enabledProviders.includes(provider.id)} 
-                                    aria-label={`Enable ${provider.name}`} 
-                                    // In a real app, you would have an onClick handler to update the config
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Users</CardTitle>
-                    <CardDescription>User management requires Admin privileges and is coming soon.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-center text-muted-foreground py-12">
-                        Displaying and managing the full user list is not available on the client-side for security reasons.
-                    </p>
-                </CardContent>
-            </Card>
+      <div className="flex h-screen w-full justify-center items-center bg-[#050c16]">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-gold-500 mx-auto mb-4" />
+          <p className="text-gold-400 font-black animate-pulse">جاري التحقق من الهوية الملكية...</p>
         </div>
-    )
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#050c16] text-white p-8 rtl" dir="rtl">
+      <div className="max-w-md mx-auto bg-white/5 p-8 rounded-3xl border border-gold-500/20 shadow-2xl mt-20">
+        <h1 className="text-2xl font-black text-gold-400 mb-6 text-center">بوابة الدخول للأكاديمية</h1>
+        <p className="text-center text-gray-400 mb-8">مرحباً بك في صرح الملكة نفرتيتي التعليمي</p>
+        
+        {/* سيتم وضع نموذج تسجيل الدخول هنا */}
+        <div className="space-y-4">
+            <button className="w-full bg-gold-500 text-black h-12 rounded-xl font-black hover:bg-white transition-all">
+                تسجيل الدخول
+            </button>
+        </div>
+      </div>
+    </div>
+  );
 }
