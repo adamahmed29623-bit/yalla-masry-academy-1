@@ -1,15 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: 'export', // هذه هي اللمسة السحرية
   images: {
-    unoptimized: true,
+    unoptimized: true, // ضروري عند استخدام التصدير الثابت
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  }
+  // بقية إعداداتكِ كما هي...
 };
 
 export default nextConfig;
