@@ -1,168 +1,113 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-type WithId<T> = T & { id: string };
-import { collection, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+"use client";
 
-type AdventureChallenge = {
-  category: string;
+import React, { useState } from 'react';
+import { 
+  useCollection, 
+  useFirestore, 
+  useMemoFirebase 
+} from '@/firebase';
+import { 
+  collection, 
+  addDoc, 
+  doc, 
+  updateDoc, 
+  deleteDoc 
+} from 'firebase/firestore';
+import { 
+  Trophy, Plus, Trash2, Edit2, 
+  LayoutDashboard, Users, BookOpen, Star 
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+
+// تعريف الأنواع لضمان استقرار النظام
+type WithId<T> = T & { id: string };
+
+interface AdventureChallenge {
+  title: string;
   gulf_phrase: string;
   egyptian_phrase: string;
-  explanation: string;
-};
+  points: number;
+  status: 'active' | 'locked';
+}
 
-const ChallengeForm = ({ challenge, onSave, onCancel }: { challenge?: WithId<AdventureChallenge>, onSave: (c: AdventureChallenge) => void, onCancel: () => void }) => {
-  const [formData, setFormData] = useState<AdventureChallenge>({
-    category: '',
-    gulf_phrase: '',
-    egyptian_phrase: '',
-    explanation: '',
-  });
+export default function AdminAdventurePage() {
+  // استخدام useFirestore مباشرة بدلاً من useFirebase المفقودة
+  const firestore = useFirestore();
+  const [activeTab, setActiveTab] = useState('challenges');
 
-  useEffect(() => {
-    if (challenge) {
-      setFormData(challenge);
-    } else {
-      setFormData({ category: '', gulf_phrase: '', egyptian_phrase: '', explanation: '' });
-    }
-  }, [challenge]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave(formData);
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="category">Category</Label>
-        <Input id="category" value={formData.category} onChange={handleChange} placeholder="e.g., At the Airport" required />
-      </div>
-      <div>
-        <Label htmlFor="gulf_phrase">Gulf Phrase</Label>
-        <Input id="gulf_phrase" value={formData.gulf_phrase} onChange={handleChange} placeholder="What Nouf would say" required />
-      </div>
-      <div>
-        <Label htmlFor="egyptian_phrase">Egyptian Phrase</Label>
-        <Input id="egyptian_phrase" value={formData.egyptian_phrase} onChange={handleChange} placeholder="The correct Egyptian equivalent" required />
-      </div>
-      <div>
-        <Label htmlFor="explanation">Explanation</Label>
-        <Textarea id="explanation" value={formData.explanation} onChange={handleChange} placeholder="Explain the nuance or difference" required />
-      </div>
-      <DialogFooter>
-        <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
-        <Button type="submit">Save Challenge</Button>
-      </DialogFooter>
-    </form>
+  const challengesCollection = useMemoFirebase(
+    () => (firestore ? collection(firestore, 'adventure_challenges') : null),
+    [firestore]
   );
-};
 
-export default function AdventureChallengesAdminPage() {
-  const { firestore } = useFirebase();
-  const challengesCollection = useMemoFirebase(() => firestore ? collection(firestore, 'adventure_challenges') : null, [firestore]);
-  const { data: challenges, isLoading, error } = useCollection<AdventureChallenge>(challengesCollection);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingChallenge, setEditingChallenge] = useState<WithId<AdventureChallenge> | undefined>(undefined);
-  const { toast } = useToast();
-
-  const handleSave = async (challengeData: AdventureChallenge) => {
-    if (!firestore) return;
-    try {
-      if (editingChallenge) {
-        await updateDoc(doc(firestore, 'adventure_challenges', editingChallenge.id), challengeData);
-        toast({ title: 'Challenge updated successfully!' });
-      } else {
-        await addDoc(collection(firestore, 'adventure_challenges'), challengeData);
-        toast({ title: 'Challenge added successfully!' });
-      }
-      setIsDialogOpen(false);
-      setEditingChallenge(undefined);
-    } catch (e) {
-      toast({ variant: 'destructive', title: 'Error saving challenge', description: (e as Error).message });
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!firestore || !window.confirm('Are you sure you want to delete this challenge?')) return;
-    try {
-      await deleteDoc(doc(firestore, 'adventure_challenges', id));
-      toast({ title: 'Challenge deleted successfully!' });
-    } catch (e) {
-      toast({ variant: 'destructive', title: 'Error deleting challenge', description: (e as Error).message });
-    }
-  };
+  const { data: challenges, isLoading } = useCollection<AdventureChallenge>(challengesCollection);
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Nouf's Journey Challenges</CardTitle>
-          <CardDescription>Manage the dialect translation challenges.</CardDescription>
+    <div className="min-h-screen bg-[#f4f7fe] flex rtl" dir="rtl">
+      
+      {/* القائمة الجانبية الملكية */}
+      <aside className="w-72 bg-[#0a1a31] text-white fixed h-full shadow-2xl">
+        <div className="p-8 border-b border-white/5 text-center">
+          <div className="w-16 h-16 bg-gold-500 rounded-2xl mx-auto mb-4 flex items-center justify-center rotate-3 shadow-lg">
+            <Trophy className="text-[#0a1a31]" size={32} />
+          </div>
+          <h2 className="text-xl font-black text-gold-400">لوحة نفرتيتي</h2>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setEditingChallenge(undefined)}>
-              <PlusCircle className="mr-2 h-4 w-4" /> Add Challenge
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{editingChallenge ? 'Edit Challenge' : 'Add New Challenge'}</DialogTitle>
-            </DialogHeader>
-            <ChallengeForm
-              challenge={editingChallenge}
-              onSave={handleSave}
-              onCancel={() => { setIsDialogOpen(false); setEditingChallenge(undefined); }}
-            />
-          </DialogContent>
-        </Dialog>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Category</TableHead>
-              <TableHead>Gulf Phrase</TableHead>
-              <TableHead>Egyptian Phrase</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading && <TableRow><TableCell colSpan={4} className="text-center">Loading...</TableCell></TableRow>}
-            {error && <TableRow><TableCell colSpan={4} className="text-center text-destructive">Error loading data.</TableCell></TableRow>}
-            {challenges?.map((challenge) => (
-              <TableRow key={challenge.id}>
-                <TableCell>{challenge.category}</TableCell>
-                <TableCell>{challenge.gulf_phrase}</TableCell>
-                <TableCell>{challenge.egyptian_phrase}</TableCell>
-                <TableCell className="space-x-2">
-                  <Button variant="ghost" size="icon" onClick={() => { setEditingChallenge(challenge); setIsDialogOpen(true); }}>
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(challenge.id)}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+        
+        <nav className="p-4 space-y-2">
+          <button onClick={() => setActiveTab('stats')} className={`w-full flex items-center gap-3 px-6 py-4 rounded-xl font-bold transition-all ${activeTab === 'stats' ? 'bg-gold-500 text-black' : 'hover:bg-white/5'}`}>
+            <LayoutDashboard size={20} /> الإحصائيات
+          </button>
+          <button onClick={() => setActiveTab('challenges')} className={`w-full flex items-center gap-3 px-6 py-4 rounded-xl font-bold transition-all ${activeTab === 'challenges' ? 'bg-gold-500 text-black' : 'hover:bg-white/5'}`}>
+            <Star size={20} /> إدارة التحديات
+          </button>
+        </nav>
+      </aside>
+
+      {/* المحتوى الرئيسي */}
+      <main className="flex-1 mr-72 p-10">
+        <header className="flex justify-between items-center mb-10">
+          <h1 className="text-3xl font-black text-[#0a1a31]">إدارة الأكاديمية</h1>
+          <button className="bg-[#0a1a31] text-white px-8 py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 hover:bg-gold-600 hover:text-black transition-all">
+            <Plus size={20} /> إضافة تحدي جديد
+          </button>
+        </header>
+
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-500"></div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-[30px] shadow-sm border border-gray-100 overflow-hidden">
+            <table className="w-full text-right">
+              <thead className="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th className="px-8 py-5 text-gray-500 font-bold">التحدي</th>
+                  <th className="px-8 py-5 text-gray-500 font-bold">العبارة (خليجي/مصري)</th>
+                  <th className="px-8 py-5 text-gray-500 font-bold">النقاط</th>
+                  <th className="px-8 py-5 text-gray-500 font-bold text-left">التحكم</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {challenges?.map((challenge) => (
+                  <tr key={challenge.id} className="hover:bg-gray-50 transition-all group">
+                    <td className="px-8 py-6 font-bold text-[#0a1a31]">{challenge.title}</td>
+                    <td className="px-8 py-6">
+                      <div className="text-sm text-gray-400">خليجي: {challenge.gulf_phrase}</div>
+                      <div className="text-sm text-gold-600 font-bold">مصري: {challenge.egyptian_phrase}</div>
+                    </td>
+                    <td className="px-8 py-6 font-black text-emerald-600">{challenge.points}</td>
+                    <td className="px-8 py-6 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                      <button className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"><Edit2 size={18} /></button>
+                      <button className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={18} /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
