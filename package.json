@@ -26,7 +26,12 @@
     "@genkit-ai/flow": "latest",
     "@genkit-ai/google-genai": "latest",
     "@genkit-ai/next": "latest",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "recharts": "^2.13.0",
+    "react-confetti": "^6.1.0",
+    "date-fns": "^3.6.0",
+    "@radix-ui/react-icons": "^1.3.0",
+    "cls-hooked": "^4.2.2"
   },
   "devDependencies": {
     "typescript": "5.4.5",
