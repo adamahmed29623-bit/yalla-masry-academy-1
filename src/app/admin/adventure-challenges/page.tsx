@@ -11,8 +11,8 @@ export default function AdminAdventurePage() {
   
   useMemoFirebase(); 
 
-  // التعديل الملكي: استخدام كلمة loading بدلاً من isLoading لتتوافق مع نظامك
-  const { data: challenges, loading } = useCollection<any>(challengesCollection as any);
+  // التعديل النهائي: إزالة <any> لأن دالة مشروعك لا تدعم التوصيف النوعي هنا
+  const { data: challenges, loading } = useCollection(challengesCollection as any);
 
   return (
     <div className="min-h-screen bg-[#f4f7fe] flex rtl" dir="rtl">
@@ -48,7 +48,7 @@ export default function AdminAdventurePage() {
             <h1 className="text-3xl font-black text-[#0a1a31] mb-1">مركز التحكم في التحديات</h1>
             <p className="text-gray-500 italic text-sm">أهلاً بكِ في مملكتكِ الخاصة يا جلالة الملكة.</p>
           </div>
-          <button className="bg-[#0a1a31] text-white px-8 py-4 rounded-2xl font-black shadow-xl flex items-center gap-2 hover:bg-gold-500 hover:text-black transition-all active:scale-95">
+          <button className="bg-[#0a1a31] text-white px-8 py-4 rounded-2xl font-black shadow-xl flex items-center gap-2 hover:bg-gold-500 hover:text-black transition-all">
             <Plus size={20} /> إضافة تحدي ملكي
           </button>
         </header>
@@ -56,7 +56,7 @@ export default function AdminAdventurePage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
             <Loader2 className="animate-spin text-gold-500" size={48} />
-            <p className="text-gray-400 font-bold italic animate-pulse">جاري جلب البيانات السامية...</p>
+            <p className="text-gray-400 font-bold italic">جاري استدعاء البيانات السامية...</p>
           </div>
         ) : (
           <div className="bg-white rounded-[40px] shadow-sm border border-gray-100 overflow-hidden">
@@ -65,38 +65,27 @@ export default function AdminAdventurePage() {
                 <tr>
                   <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase">المهمة</th>
                   <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase">القاموس</th>
-                  <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase">النقاط</th>
                   <th className="px-8 py-6 text-gray-400 font-bold text-xs uppercase text-left">الإجراءات</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {challenges?.map((challenge: any) => (
+                {(challenges as any[])?.map((challenge) => (
                   <tr key={challenge.id} className="hover:bg-blue-50/30 transition-all group">
                     <td className="px-8 py-6 font-black text-[#0a1a31]">{challenge.title}</td>
                     <td className="px-8 py-6">
                       <div className="text-xs text-gray-400 italic mb-1">خليجي: {challenge.gulf_phrase}</div>
                       <div className="text-sm font-bold text-gold-600">مصري: {challenge.egyptian_phrase}</div>
                     </td>
-                    <td className="px-8 py-6">
-                      <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-black text-[10px]">
-                        +{challenge.points} نقطة
-                      </span>
-                    </td>
                     <td className="px-8 py-6 text-left">
                       <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                       <button className="p-2 text-blue-500 hover:bg-white rounded-lg shadow-sm border border-blue-50"><Edit2 size={16} /></button>
-                       <button className="p-2 text-red-400 hover:bg-white rounded-lg shadow-sm border border-red-50"><Trash2 size={16} /></button>
+                       <button className="p-2 text-blue-500"><Edit2 size={16} /></button>
+                       <button className="p-2 text-red-400"><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            {challenges?.length === 0 && (
-               <div className="p-20 text-center text-gray-400 italic font-bold">
-                 لا توجد تحديات حالياً.. ابدأي بإضافة أول مهمة.
-               </div>
-            )}
           </div>
         )}
       </main>
