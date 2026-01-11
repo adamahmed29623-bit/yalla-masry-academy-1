@@ -1,9 +1,5 @@
-import { config } from 'dotenv';
-config();
+// ملف تطويري - معطل مؤقتاً لضمان استقرار الإطلاق الملكي
+export const devMode = false;
 
-import '@/ai/flows/suggest-rule-improvements.ts';
-import '@/ai/flows/generate-security-rules.ts';
-import '@/ai/flows/smart-adventure-flow.ts';
-import '@/ai/flows/animal-sound-flow.ts';
-import '@/ai/flows/storyteller-flow.ts';
-import '@/ai/flows/dialogue-evaluation-flow.ts';
+// تم إزالة استيراد dotenv لتجنب مشاكل البناء
+console.log("Yalla Masry Academy: Production Mode Active");
