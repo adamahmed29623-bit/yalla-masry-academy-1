@@ -1,169 +1,69 @@
-'use client';
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Image from "next/image";
-import { Star, Wallet, Clock, BookOpen, Loader2, Video } from "lucide-react";
-import { useDoc, useFirebase, useMemoFirebase } from "@/firebase";
-import { doc } from "firebase/firestore";
+// تعريف الـ Props وفق أحدث معايير الأمان والقوة
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
+export default async function TeacherProfilePage({ params }: PageProps) {
+  // 1. فك تشفير المعرف (ID) لضمان عدم حدوث خطأ أثناء البناء
+  const resolvedParams = await params;
+  const teacherId = resolvedParams.id;
 
-export default function TeacherProfilePage({ params }: { params: { id: string } }) {
-  const { firestore } = useFirebase();
-  const teacherRef = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return doc(firestore, 'teachers', params.id);
-  }, [firestore, params.id]);
-  const { data: teacher, isLoading } = useDoc(teacherRef);
-  
-  const specialtiesMap: { [key: string]: string } = {
-    colloquial: 'اللهجة العامية',
-    quran: 'القرآن الكريم والتجويد',
-    kids: 'تعليم الأطفال'
-  };
-
-  if (isLoading) {
-    return (
-      <div className="container mx-auto py-10 text-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-        <p className="mt-4 text-muted-foreground">جاري تحميل ملف المعلمة...</p>
-      </div>
-    );
-  }
-
-  if (!teacher) {
-    return (
-      <div className="container mx-auto py-10 text-center">
-        <h1 className="text-3xl font-bold">لم يتم العثور على المعلمة</h1>
-        <p className="text-muted-foreground mt-2">قد يكون الرابط غير صحيح أو تمت إزالة الملف الشخصي.</p>
-      </div>
-    );
+  if (!teacherId) {
+    return notFound();
   }
 
   return (
-    <div className="bg-muted/40">
-      <div className="container mx-auto py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content Column */}
-          <div className="lg:col-span-2 space-y-8">
+    // استخدام خلفية ملكية هادئة مع تدرج فخم
+    <main className="min-h-screen bg-[#FDFBF7] pt-28 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* قسم الهوية البصرية للمعلمة - مجهز للتصميم الفخم */}
+        <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden border border-royal-gold/10">
+          <div className="h-48 bg-gradient-to-r from-[#1A237E] to-[#C5A059] opacity-90" />
+          
+          <div className="relative -mt-24 px-8 pb-8 flex flex-col md:flex-row items-center md:items-end gap-6">
+            {/* إطار صورة المعلمة الملكي */}
+            <div className="w-48 h-48 rounded-2xl border-4 border-white shadow-lg overflow-hidden bg-gray-200">
+               {/* هنا ستوضع صورة المعلمة لاحقاً */}
+               <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  صورة المعلمة
+               </div>
+            </div>
             
-            {/* Intro Video */}
-            <Card className="overflow-hidden">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 font-headline">
-                        <Video className="text-primary"/>
-                        فيديو تعريفي
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="aspect-video rounded-lg overflow-hidden">
-                        <iframe
-                        className="w-full h-full"
-                        src={teacher.introVideoUrl}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        ></iframe>
-                    </div>
-                </CardContent>
-            </Card>
+            <div className="flex-1 text-center md:text-right mb-4">
+              <h1 className="text-4xl font-bold text-[#1A237E] mb-2">اسم المعلمة الملكي</h1>
+              <p className="text-lg text-[#C5A059] font-medium italic">خبيرة في اللغة العربية والدراسات الإسلامية</p>
+            </div>
 
-            {/* Bio Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">عن {teacher.name}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-muted-foreground prose prose-sm max-w-none dark:prose-invert">
-                <p>{teacher.bio}</p>
-              </CardContent>
-            </Card>
-
-            {/* Experience Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">الخبرة</CardTitle>
-              </CardHeader>
-              <CardContent className="text-muted-foreground">
-                <p>{teacher.experience}</p>
-              </CardContent>
-            </Card>
-
-            {/* Reviews Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">تقييمات الطلاب</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {(teacher.reviews || []).map((review: any) => (
-                  <div key={review.id} className="flex gap-4">
-                    <Avatar>
-                      <AvatarFallback>{review.studentName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center">
-                        <h4 className="font-semibold">{review.studentName}</h4>
-                        <div className="flex items-center text-amber-500">
-                          <span className="font-bold mr-1">{review.rating}</span>
-                          <Star className="w-4 h-4 fill-current" />
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">{review.comment}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sidebar Column */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="sticky top-24 text-center">
-              <CardContent className="p-6">
-                <div className="relative w-32 h-32 mx-auto mb-4">
-                    <Image
-                        src={teacher.profilePictureUrl}
-                        alt={`صورة المعلمة ${teacher.name}`}
-                        fill
-                        className="rounded-full object-cover border-4 border-primary"
-                        data-ai-hint="teacher portrait"
-                    />
-                </div>
-                <h1 className="text-2xl font-bold font-headline text-primary">{teacher.name}</h1>
-                <p className="text-muted-foreground mt-1">{teacher.headline}</p>
-
-                <div className="flex items-center justify-center mt-3 text-amber-500">
-                    <Star className="w-5 h-5 fill-current" />
-                    <span className="mx-1 font-bold">{teacher.rating.toFixed(1)}</span>
-                    <span className="text-xs text-muted-foreground">({teacher.totalReviews} تقييم)</span>
-                </div>
-                
-                <Button size="lg" className="w-full mt-6">احجز درساً تجريبياً</Button>
-              </CardContent>
-              <div className="border-t p-4 space-y-3 text-sm">
-                <div className="flex justify-between">
-                    <span className="flex items-center gap-2 text-muted-foreground"><Wallet/>السعر للساعة</span>
-                    <span className="font-semibold">${teacher.hourlyRate}</span>
-                </div>
-                 <div className="flex justify-between">
-                    <span className="flex items-center gap-2 text-muted-foreground"><Clock/>التوافر</span>
-                    <span className="font-semibold">{teacher.availability}</span>
-                </div>
-                 <div className="flex flex-col items-start gap-2">
-                    <span className="flex items-center gap-2 text-muted-foreground"><BookOpen/>التخصصات</span>
-                    <div className="flex flex-wrap gap-2">
-                        {teacher.specialties.map((specialty: string) => (
-                            <Badge key={specialty} variant="outline">{specialtiesMap[specialty] || specialty}</Badge>
-                        ))}
-                    </div>
-                </div>
-              </div>
-            </Card>
+            {/* زر الحجز - ليضاهي بيربلي بل ويتفوق عليه */}
+            <button className="mb-4 px-10 py-4 bg-[#C5A059] text-white rounded-full font-bold shadow-lg hover:bg-[#A38241] transition-all transform hover:scale-105">
+              احجزي جلستكِ الملكية الآن
+            </button>
           </div>
         </div>
+
+        {/* مساحة للمحتوى التفصيلي - بانتظار صوركِ لتنسيقها */}
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <section className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+              <h2 className="text-2xl font-bold text-[#1A237E] mb-4 border-r-4 border-[#C5A059] pr-4">نبذة عن المعلمة</h2>
+              <p className="text-gray-700 leading-relaxed">جاري استحضار السيرة الذاتية الفاخرة...</p>
+            </section>
+          </div>
+
+          <aside className="space-y-8">
+            {/* قسم إحصائيات المعلمة مثل التقييم وعدد الطلاب */}
+            <div className="bg-[#1A237E] text-white p-8 rounded-2xl shadow-xl">
+               <h3 className="text-xl font-bold mb-4 border-b border-white/20 pb-2 text-center">إحصائيات النجاح</h3>
+               {/* محتوى الإحصائيات */}
+            </div>
+          </aside>
+        </div>
+
       </div>
-    </div>
+    </main>
   );
 }
