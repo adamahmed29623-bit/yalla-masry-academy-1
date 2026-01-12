@@ -4,51 +4,38 @@
 
 @layer base {
   :root {
-    --background: 220 40% 9.5%; /* Nile Dark */
-    --foreground: 45 30% 90%; /* Light Sand */
-    --card: 217 33% 18%; /* Card background */
-    --card-foreground: 45 30% 90%;
-    --popover: 220 40% 10%;
-    --popover-foreground: 45 30% 90%;
-    --primary: 45 40% 85%; /* Sand Ochre */
-    --primary-foreground: 220 40% 10%;
-    --secondary: 217 33% 25%;
-    --secondary-foreground: 45 30% 90%;
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 51 100% 50%; /* Gold Accent */
-    --accent-foreground: 220 40% 10%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 45 30% 90%;
-    --border: 217 33% 28%;
-    --input: 217 33% 22%;
-    --ring: 51 100% 50%; /* Gold Accent for focus rings */
-    --radius: 0.8rem;
+    /* ألوان الخلفية الملكية - مريحة للعين */
+    --background: 40 30% 98%; /* لون كريمي فاخر */
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --primary: 45 64% 53%; /* الذهب الملكي */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 221 100% 20%; /* النيلي العميق */
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 45 64% 90%; /* ذهبي فاتح جداً للمسات */
+    --accent-foreground: 221 100% 20%;
+
+    --border: 214 32% 91%;
+    --radius: 0.75rem; /* زوايا منحنية تعطي شعوراً بالنعومة والأمان */
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* تأثير التدرج الذهبي الملكي */
+.gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #996515 100%);
 }
 
-/* Custom theme classes for convenience */
-.bg-nile-dark { background-color: hsl(var(--background)); }
-.bg-nile-blue { background-color: hsl(var(--card)); }
-.text-sand-ochre { color: hsl(var(--primary)); }
-.text-gold-accent { color: hsl(var(--accent)); }
-.border-sand-ochre { border-color: hsl(var(--primary)); }
-.border-gold-accent { border-color: hsl(var(--accent)); }
-.bg-kids-bg { background-color: #0b4e8d; } /* A specific blue for kids section */
-.utility-button {
-  @apply text-sm px-4 py-2;
+/* تحسين الخطوط العربية */
+body {
+  @apply font-body antialiased;
+  background-color: hsl(var(--background));
 }
 
-.font-headline {
-  font-family: 'Cairo', 'El Messiri', sans-serif;
-  font-weight: 700;
+h1, h2, h3 {
+  @apply font-headline font-bold tracking-tight;
 }
