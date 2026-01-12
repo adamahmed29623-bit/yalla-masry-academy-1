@@ -8,7 +8,6 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/**/*.{ts,tsx}',
   ],
-  prefix: "",
   theme: {
     container: {
       center: true,
@@ -25,43 +24,39 @@ const config: Config = {
         'amiri-quran': ['"Amiri Quran"', 'serif'],
       },
       colors: {
+        // الألوان الملكية الصريحة (تثبيت الهوية)
+        'royal-gold': {
+          light: '#F3E5AB', // ذهبي فاتح للمساحات
+          DEFAULT: '#D4AF37', // الذهب الملكي الأساسي
+          dark: '#996515',  // ذهبي عميق للظلال
+        },
+        'nile-blue': {
+          light: '#1E3A8A',
+          DEFAULT: '#002366', // أزرق نيلي عميق
+          dark: '#001233',
+        },
+        // الحفاظ على نظام المتغيرات مع تحسينه
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#D4AF37", // جعل الذهب هو اللون الأساسي للموقع
+          foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#002366", // جعل النيلي هو اللون الثانوي
+          foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#F3E5AB",
+          foreground: "#002366",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        'nile-dark': 'hsl(var(--background))',
-        'nile-blue': 'hsl(var(--card))',
-        'sand-ochre': 'hsl(var(--primary))',
-        'gold-accent': 'hsl(var(--accent))',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -77,20 +72,15 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-         "fade-in-down": {
-          "0%": { opacity: "0", transform: "translateY(-10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "fade-in-up": {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+        "gold-shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in-down": "fade-in-down 0.5s ease-out forwards",
-        "fade-in-up": "fade-in-up 0.5s ease-out forwards",
+        "shimmer": "gold-shimmer 3s infinite linear",
       },
     },
   },
