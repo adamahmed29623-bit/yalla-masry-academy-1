@@ -1,11 +1,17 @@
 "use client"
 
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
+import * as React from "react"
 
-const Collapsible = CollapsiblePrimitive.Root
+const Collapsible = ({ children, ...props }: { children: React.ReactNode }) => (
+  <div {...props}>{children}</div>
+)
 
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger
+const CollapsibleTrigger = ({ children, ...props }: { children: React.ReactNode }) => (
+  <div className="cursor-pointer" {...props}>{children}</div>
+)
 
-const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent
+const CollapsibleContent = ({ children, ...props }: { children: React.ReactNode }) => (
+  <div {...props}>{children}</div>
+)
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }
