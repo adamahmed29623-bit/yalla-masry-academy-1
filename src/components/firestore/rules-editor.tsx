@@ -6,12 +6,10 @@ export default function RulesEditor() {
   const [status, setStatus] = useState("");
   const [isPending, setIsPending] = useState(false);
 
-  // دالة المحاكاة للأوامر لضمان عمل الواجهة دون أخطاء ملفات مفقودة
   const handleAction = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsPending(true);
     
-    // محاكاة عملية التحديث الملكي
     setTimeout(() => {
       setStatus("تم تحديث حصن البيانات الملكي بنجاح يا جلالة الملكة.");
       setIsPending(false);
@@ -29,7 +27,7 @@ export default function RulesEditor() {
         <div className="bg-white/5 p-6 rounded-2xl border border-white/10 hover:border-gold-500/30 transition-all">
           <h3 className="text-xl font-bold mb-3 text-white">درع الحماية (Firestore Rules)</h3>
           <p className="text-gray-400 leading-relaxed mb-6">
-            هذا القسم يضمن أن بيانات "أكاديمية يلا مصري" محمية برموز أمان لا تقهر، تمنع المتسللين من العبث بمخطوطاتنا التعليمية.
+            هذا القسم يضمن أن بيانات "أكاديمية يلا مصري" محمية برموز أمان لا تقهر.
           </p>
           
           <form onSubmit={handleAction}>
@@ -43,13 +41,9 @@ export default function RulesEditor() {
           </form>
 
           {status && (
-            <motion-div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 p-4 bg-gold-500/10 border border-gold-500/20 rounded-xl text-gold-400 font-bold"
-            >
+            <div className="mt-6 p-4 bg-gold-500/10 border border-gold-500/20 rounded-xl text-gold-400 font-bold animate-pulse">
               {status}
-            </motion-div>
+            </div>
           )}
         </div>
       </div>
