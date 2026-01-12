@@ -1,90 +1,168 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti'; // تقنية الاحتفال الملكي
 
-export default function VoiceChallenge({ originalSentence }: { originalSentence: string }) {
+// --- الألوان الملكية المثبتة ---
+const GOLD = '#D4AF37';
+const NILE_BLUE = '#002366';
+
+export default function TheRoyalChallenge({ 
+  sentence, 
+  translation,
+  difficulty = "أميرة" 
+}: { 
+  sentence: string, 
+  translation: string,
+  difficulty?: string 
+}) {
+  const [status, setStatus] = useState<'idle' | 'listening' | 'analyzing' | 'success'>('idle');
   const [feedback, setFeedback] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [score, setScore] = useState<number | null>(null);
+  const recognitionRef = useRef<any>(null);
 
-  // 1. وظيفة نطق الجملة (بصوت المعلمة)
-  const playInstruction = () => {
-    const msg = new SpeechSynthesisUtterance(originalSentence);
-    msg.lang = 'ar-EG';
-    window.speechSynthesis.speak(msg);
+  // 1. تجهيز الأذن الذكية مع تقنيات تقليل الضوضاء
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.lang = 'ar-EG';
+      recognitionRef.current.interimResults = false;
+      
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        processWithGemini(transcript);
+      };
+
+      recognitionRef.current.onend = () => setStatus(prev => prev === 'listening' ? 'idle' : prev);
+    }
+  }, []);
+
+  // 2. تقنية الاحتفال عند النجاح الباهر
+  const triggerRoyalCelebration = () => {
+    const duration = 3 * 1000;
+    const end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: [GOLD, '#F3E5AB']
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: [GOLD, '#F3E5AB']
+      });
+
+      if (Date.now() < end) requestAnimationFrame(frame);
+    }());
   };
 
-  // 2. محاكاة إرسال الصوت لـ Gemini (الربط مع الـ API الذي أنشأناه)
-  const handleFeedback = async (studentText: string) => {
-    setIsLoading(true);
+  // 3. معالجة الصوت عبر ذكاء نفرتيتي (Gemini)
+  const processWithGemini = async (studentText: string) => {
+    setStatus('analyzing');
     try {
       const response = await fetch('/api/ai/challenge', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentSpeech: studentText, originalSentence })
+        body: JSON.stringify({ studentSpeech: studentText, originalSentence: sentence })
       });
       const data = await response.json();
+      
       setFeedback(data.feedback);
+      // إذا كان التقييم ممتاز (نفترض وجود رقم في الرد)
+      if (data.feedback.includes('10') || data.feedback.includes('9')) {
+        setStatus('success');
+        triggerRoyalCelebration();
+      } else {
+        setStatus('idle');
+      }
     } catch (error) {
-      setFeedback("عذراً ملكتي، حدث ارتباك في التواصل مع المعلمة.");
+      setFeedback("حدث ارتباك في أروقة القصر، حاولي مجدداً يا ملكة.");
+      setStatus('idle');
     }
-    setIsLoading(false);
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-8 rounded-3xl bg-gradient-to-b from-white to-royal-gold/10 border-2 border-royal-gold shadow-2xl text-right">
-      <h2 className="font-headline text-3xl text-nile-blue mb-6">تحدي صدى الملكات 👑</h2>
-      
-      <div className="bg-white p-6 rounded-2xl shadow-inner mb-8">
-        <p className="text-2xl font-body text-gray-700 leading-relaxed">{originalSentence}</p>
-      </div>
+    <div className="relative overflow-hidden p-1 bg-gradient-to-tr from-royal-gold via-nile-blue to-royal-gold rounded-[2rem] shadow-2xl">
+      <div className="bg-white/95 backdrop-blur-md p-8 rounded-[1.9rem] flex flex-col items-center gap-8">
+        
+        {/* شارة المستوى */}
+        <div className="self-end px-4 py-1 bg-nile-blue text-royal-gold rounded-full text-sm font-headline border border-royal-gold animate-pulse">
+           مستوى: {difficulty}
+        </div>
 
-      <div className="flex justify-center gap-6 mb-8">
-        {/* زر الاستماع */}
-        <button 
-          onClick={playInstruction}
-          className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
-        >
-          <div className="w-16 h-16 bg-nile-blue rounded-full flex items-center justify-center text-white text-2xl shadow-lg">🔊</div>
-          <span className="font-body text-sm">استمعي</span>
-        </button>
-
-        {/* زر التحدث */}
-        <button 
-          onMouseDown={() => setIsRecording(true)}
-          onMouseUp={() => {
-            setIsRecording(false);
-            // هنا سنقوم بربط Speech Recognition لاحقاً
-            handleFeedback(originalSentence); // تجربة مبدئية
-          }}
-          className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
-        >
-          <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl shadow-xl transition-all ${isRecording ? 'bg-red-500 scale-110 animate-pulse' : 'bg-royal-gold'}`}>
-            🎤
-          </div>
-          <span className="font-body text-sm font-bold">انطقي</span>
-        </button>
-      </div>
-
-      {/* منطقة رد Gemini */}
-      <AnimatePresence>
-        {(isLoading || feedback) && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-6 rounded-2xl bg-nile-blue/5 border border-nile-blue/20 text-right"
+        {/* منطقة النص الملكي */}
+        <div className="text-center space-y-4">
+          <motion.h3 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            className="text-4xl font-headline text-nile-blue leading-tight"
           >
-            {isLoading ? (
-              <div className="flex justify-center items-center gap-3">
-                <span className="animate-bounce font-body">المعلمة تفكر...</span>
-                <div className="w-4 h-4 bg-royal-gold rounded-full animate-ping" />
-              </div>
-            ) : (
-              <p className="font-body text-lg text-nile-blue leading-loose">{feedback}</p>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {sentence}
+          </motion.h3>
+          <p className="text-royal-gold/80 font-body text-xl italic">"{translation}"</p>
+        </div>
+
+        {/* أدوات التفاعل المتطورة */}
+        <div className="flex items-center gap-12">
+          <button 
+            onClick={() => {
+              const u = new SpeechSynthesisUtterance(sentence);
+              u.lang = 'ar-EG';
+              window.speechSynthesis.speak(u);
+            }}
+            className="w-16 h-16 rounded-full border-2 border-nile-blue flex items-center justify-center text-nile-blue hover:bg-nile-blue hover:text-white transition-all shadow-md"
+          >
+            🔊
+          </button>
+
+          <div className="relative">
+            <AnimatePresence>
+              {status === 'listening' && (
+                <motion.div 
+                  initial={{ scale: 0 }} animate={{ scale: 1.5, opacity: 0 }} transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="absolute inset-0 bg-royal-gold rounded-full -z-10"
+                />
+              )}
+            </AnimatePresence>
+            <button 
+              onClick={() => {
+                setStatus('listening');
+                recognitionRef.current?.start();
+              }}
+              className={`w-24 h-24 rounded-full flex items-center justify-center text-4xl shadow-2xl transition-all transform active:scale-95 ${
+                status === 'listening' ? 'bg-red-500' : 'bg-gradient-to-b from-royal-gold to-yellow-600 text-white'
+              }`}
+            >
+              {status === 'listening' ? '🛑' : '🎤'}
+            </button>
+          </div>
+
+          <div className="w-16 h-16 rounded-full border-2 border-nile-blue flex items-center justify-center text-nile-blue opacity-30">
+            ⭐
+          </div>
+        </div>
+
+        {/* منطقة التغذية الراجعة من Gemini */}
+        <AnimatePresence mode="wait">
+          {feedback && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+              className="w-full bg-nile-blue/5 border-r-4 border-royal-gold p-6 rounded-xl"
+            >
+              <p className="font-body text-lg text-nile-blue leading-relaxed text-right">
+                {feedback}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </div>
     </div>
   );
 }
