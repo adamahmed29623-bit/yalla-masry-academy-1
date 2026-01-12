@@ -2,9 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /**
-     * Helper Functions
-     */
+    // --- وظائف الحماية الملكية ---
     function isSignedIn() {
       return request.auth != null;
     }
@@ -13,28 +11,31 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    /**
-     * User profiles can be read by anyone, but only written by the owner.
-     * This allows other users (e.g., students) to see basic info of others if needed,
-     * but secures their private data.
-     */
+    // --- تأمين ملفات المستخدمين (الأمهات والطلاب) ---
     match /users/{userId} {
+      // السماح بجلب ملف شخص واحد فقط (مثلاً عند الدخول لصفحة ملفه)
       allow get: if isSignedIn();
-      allow list: if isSignedIn(); // Allow listing for features like leaderboards, etc.
+      
+      // ثغرة الـ list تم تقييدها: لا يمكن لأي شخص سحب كل البيانات 
+      // إلا إذا كان هناك استعلام (Query) محدد (مثل المتصدرين فقط)
+      allow list: if isSignedIn() && request.query.limit <= 20; 
+
       allow create: if isOwner(userId) && request.resource.data.id == userId;
       allow update: if isOwner(userId);
-      allow delete: if false; // Prevent users from deleting their own accounts from the client
+      allow delete: if false; // الحذف يتم فقط من خلال الإدارة (Admin)
     }
     
-    /**
-     * Teacher profiles are public and can be read by any authenticated user.
-     * This is necessary for students to browse and select teachers.
-     * Only the teacher themselves (who is also a user) can create or update their profile.
-     */
+    // --- ملفات المعلمين ---
     match /teachers/{teacherId} {
       allow get, list: if isSignedIn();
       allow create, update: if isOwner(teacherId);
       allow delete: if false;
+    }
+
+    // --- ميزة مضافة: سجلات التقدم (Progress) ---
+    // لضمان أن تقدم الطفل في الدروس لا يراه إلا هو وأمه
+    match /progress/{progressId} {
+      allow read, write: if isSignedIn() && (isOwner(resource.data.userId) || isOwner(request.resource.data.userId));
     }
   }
 }
