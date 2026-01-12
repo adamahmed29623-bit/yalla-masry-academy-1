@@ -1,63 +1,70 @@
-'use client';
+"use client"
 
-import { FirestorePermissionError } from '@/firebase/errors';
+/** 🛡️ Yalla Masry Academy - Robust Error Monitoring System
+ * هذا النظام مصمم لمراقبة أخطاء Firestore وتصنيفها بدقة ملكية
+ */
 
-// Define the structure of events and their payloads.
+export interface FirestorePermissionError {
+  code: string;
+  message: string;
+  path?: string;
+  timestamp: number;
+}
+
+// تعريف دقيق للفعاليات المدعومة في النظام
 type Events = {
-  'permission-error': (error: FirestorePermissionError) => void;
-  // We can add other global error types here if needed.
+  "permission-error": (error: FirestorePermissionError) => void;
+  "auth-error": (error: { code: string; message: string }) => void;
+  "connection-failed": () => void;
 };
 
-type EventName = keyof Events;
-
-/**
- * A simple, typed event emitter for handling global application events,
- * specifically for propagating Firestore permission errors to a global listener.
- */
-class TypedEventEmitter {
-  private listeners: { [K in EventName]?: ((...args: Parameters<Events[K]>) => void)[] } = {};
+class ErrorEmitter {
+  // استخدام Record لضمان قوة تعريف المستمعين ومنع الـ "any"
+  private listeners: { [E in keyof Events]?: Events[E][] } = {};
 
   /**
-   * Subscribes a listener to a specific event.
-   * @param event The name of the event to listen for.
-   * @param callback The function to execute when the event is emitted.
+   * تسجيل مستمع جديد للخطأ مع نوع بيانات صارم
    */
-  on<E extends EventName>(event: E, callback: Events[E]): void {
+  on<E extends keyof Events>(event: E, callback: Events[E]): () => void {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
-    this.listeners[event]!.push(callback as any);
+    
+    // تأكيد النوع للمجمع (Type Casting) لضمان توافق TypeScript الصارم
+    (this.listeners[event] as Events[E][]).push(callback);
+    
+    // إرجاع وظيفة الإلغاء (Cleanup function) لضمان نظافة الذاكرة
+    return () => this.off(event, callback);
   }
 
   /**
-   * Unsubscribes a listener from a specific event.
-   * @param event The name of the event to unsubscribe from.
-   * @param callback The listener function to remove.
+   * إزالة مستمع معين عند انتهاء الحاجة إليه
    */
-  off<E extends EventName>(event: E, callback: Events[E]): void {
-    if (!this.listeners[event]) {
-      return;
-    }
-    this.listeners[event] = this.listeners[event]!.filter(
-      (listener) => listener !== (callback as any)
-    );
+  off<E extends keyof Events>(event: E, callback: Events[E]): void {
+    const eventListeners = this.listeners[event] as any[];
+    if (!eventListeners) return;
+
+    this.listeners[event] = eventListeners.filter(
+      (listener) => listener !== callback
+    ) as Events[E][];
   }
 
   /**
-   * Emits an event, calling all subscribed listeners with the provided arguments.
-   * @param event The name of the event to emit.
-   * @param args The arguments to pass to the listeners.
+   * إرسال تنبيه بوقوع خطأ إلى كل الأجزاء المهتمة في الأكاديمية
    */
-  emit<E extends EventName>(event: E, ...args: Parameters<Events[E]>): void {
-    if (!this.listeners[event]) {
-      return;
-    }
-    this.listeners[event]!.forEach((listener) => {
-      listener(...args);
+  emit<E extends keyof Events>(event: E, ...args: Parameters<Events[E]>): void {
+    const eventListeners = this.listeners[event] as any[];
+    if (!eventListeners) return;
+
+    eventListeners.forEach((callback) => {
+      try {
+        callback(...args);
+      } catch (err) {
+        console.error(`🔴 Error in Academy Monitor [${event}]:`, err);
+      }
     });
   }
 }
 
-// Create and export a singleton instance of the event emitter.
-// This ensures that all parts of the app use the same event bus.
-export const errorEmitter = new TypedEventEmitter();
+// تصدير نسخة واحدة ثابتة (Singleton) لتعمل في كل أرجاء الأكاديمية
+export const errorEmitter = new ErrorEmitter();
