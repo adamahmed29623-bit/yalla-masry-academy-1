@@ -11,18 +11,18 @@
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@radix-ui/react-accordion": "^1.2.0",
-    "@types/canvas-confetti": "^1.6.4",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.11",
     "lucide-react": "^0.454.0",
-    "next": "15.0.3",
-    "react": "19.0.0-rc-66855b9609-20241106",
-    "react-dom": "19.0.0-rc-66855b9609-20241106",
+    "next": "14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
