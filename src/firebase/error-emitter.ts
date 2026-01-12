@@ -3,8 +3,8 @@
 export interface FirestorePermissionError {
   code: string;
   message: string;
-  name: string;      // أضفنا هذا ليتوافق مع المكونات الأخرى
-  request?: any;     // أضفنا هذا ليتوافق مع المكونات الأخرى
+  name: string;
+  request?: any;
   path?: string;
   timestamp: number;
 }
@@ -16,30 +16,35 @@ type Events = {
 };
 
 class ErrorEmitter {
-  private listeners: { [E in keyof Events]?: Events[E][] } = {};
+  // استخدام Map داخلي لتجنب تعقيدات المصفوفات مع TypeScript Generics
+  private listeners = new Map<keyof Events, Function[]>();
 
   on<E extends keyof Events>(event: E, callback: Events[E]): () => void {
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
-    }
-    (this.listeners[event] as Events[E][]).push(callback);
+    const current = this.listeners.get(event) || [];
+    this.listeners.set(event, [...current, callback]);
+    
     return () => this.off(event, callback);
   }
 
   off<E extends keyof Events>(event: E, callback: Events[E]): void {
-    const eventListeners = this.listeners[event] as any[];
-    if (!eventListeners) return;
-    this.listeners[event] = eventListeners.filter(listener => listener !== callback) as Events[E][];
+    const current = this.listeners.get(event);
+    if (!current) return;
+
+    this.listeners.set(
+      event,
+      current.filter((listener) => listener !== callback)
+    );
   }
 
   emit<E extends keyof Events>(event: E, ...args: Parameters<Events[E]>): void {
-    const eventListeners = this.listeners[event] as any[];
-    if (!eventListeners) return;
-    eventListeners.forEach((callback) => {
+    const current = this.listeners.get(event);
+    if (!current) return;
+
+    current.forEach((callback) => {
       try {
         callback(...args);
       } catch (err) {
-        console.error(`🔴 Error in Academy Monitor [${event}]:`, err);
+        console.error(`🔴 Academy Monitor Error [${event}]:`, err);
       }
     });
   }
