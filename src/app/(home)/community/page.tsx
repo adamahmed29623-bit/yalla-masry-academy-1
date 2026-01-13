@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCollection, useFirestore } from '@/firebase';
 import { collection, addDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { MessageSquare, Heart, Send, Share2, Award, UserCheck, Sparkles } from 'lucide-react';
-
+export const dynamic = 'force-dynamic';
 export default function RoyalCommunity() {
   const [newPost, setNewPost] = useState("");
   const firestore = useFirestore();
