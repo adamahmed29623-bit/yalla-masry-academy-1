@@ -1,3 +1,7 @@
+export const dynamic = 'force-static';
+export function generateStaticParams() {
+  return [];
+}
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
