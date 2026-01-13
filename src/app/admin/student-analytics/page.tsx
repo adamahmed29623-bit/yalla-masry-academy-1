@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { BarChart, Users, Activity, TrendingUp } from 'lucide-react';
 import React from 'react';
 
+export const dynamic = 'force-dynamic';
 export default function StudentAnalyticsPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
