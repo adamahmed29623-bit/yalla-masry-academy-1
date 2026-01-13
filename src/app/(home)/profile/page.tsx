@@ -13,7 +13,7 @@ import {
   Crown,
   Languages
 } from "lucide-react";
-
+export const dynamic = 'force-dynamic';
 export default function ProfilePage() {
   // المفتاح الملكي لتجاوز أخطاء البناء وضمان استلام البيانات
   const { user, isUserLoading, auth } = useFirebase() as any;
