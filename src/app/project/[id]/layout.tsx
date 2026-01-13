@@ -1,16 +1,16 @@
 "use client";
-export const dynamic = 'force-dynamic';
-import { ReactNode } from 'react';
 
-// تعريف الـ Props ليتوافق مع Next.js 15
+import { ReactNode, use, useEffect, useState } from 'react';
+
+// تعريف الـ Props
 interface LayoutProps {
   children: ReactNode;
   params: Promise<{ id: string }>;
 }
 
-export default async function ProjectLayout({ children, params }: LayoutProps) {
-  // فك تشفير المعرف (id) لضمان استقرار المشاريع
-  const resolvedParams = await params;
+export default function ProjectLayout({ children, params }: LayoutProps) {
+  // الحل الملكي: استخدام use() لفك تشفير الـ Promise داخل Client Component
+  const resolvedParams = use(params);
   const id = resolvedParams.id;
 
   return (
