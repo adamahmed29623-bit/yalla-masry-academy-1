@@ -1,4 +1,5 @@
-export const dynamicParams = true;
+export const dynamic = 'force-static';
+export function generateStaticParams() { return []; }
 import { Suspense } from 'react';
 
 // تأكدي أن تعريف الـ Props يستخدم Promise كما يطلب النظام الجديد
