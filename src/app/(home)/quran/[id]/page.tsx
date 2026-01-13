@@ -1,3 +1,4 @@
+export const dynamicParams = true;
 import { Suspense } from 'react';
 
 // تأكدي أن تعريف الـ Props يستخدم Promise كما يطلب النظام الجديد
