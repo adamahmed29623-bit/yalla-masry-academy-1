@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextconfig = {
-  eslint: {
-    // هذا الأمر يسمح للنشر بالنجاح حتى لو وجدت تنبيهات
-    ignoreDuringBuilds: true,
-  },
+const nextConfig = {
   typescript: {
-    // هذا الأمر يتجاهل أخطاء النوع البسيطة لإتمام النشر
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // هذا السطر يمنع محاولة الاتصال بالخارج أثناء البناء
+  output: 'standalone', 
 };
 
-export default nextconfig;
+export default nextConfig;
