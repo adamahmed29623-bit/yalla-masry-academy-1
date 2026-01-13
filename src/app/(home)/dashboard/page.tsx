@@ -1,5 +1,5 @@
 "use client";
-
+export const dynamic = 'force-dynamic';
 import { useFirebase } from "@/context/useFirebase";
 import { motion } from "framer-motion"; // للفخامة الحركية
 import { Globe, Crown, BookOpen, Star } from "lucide-react";
