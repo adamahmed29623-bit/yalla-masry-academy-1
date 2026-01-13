@@ -1,5 +1,9 @@
 "use client"
 
+export const dynamic = 'force-static';
+export function generateStaticParams() {
+  return [];
+}
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DollarSign, Users, CreditCard, Activity } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
