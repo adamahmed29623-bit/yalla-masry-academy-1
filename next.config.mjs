@@ -1,15 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // هذا السطر سيحل مشكلة المجلد المفقود
-  images: {
-    unoptimized: true, // ضروري عند استخدام 'export'
-  },
+  // أزلنا سطر output: 'export' للهروب من تعقيدات generateStaticParams
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
-  }
+  },
+  // سنترك الخصائص الأخرى كما هي للحفاظ على استقرار النظام
 };
 
 export default nextConfig;
