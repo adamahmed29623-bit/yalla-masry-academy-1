@@ -1,7 +1,5 @@
-export const dynamic = 'force-static';
-export function generateStaticParams() {
-  return [];
-}
+"use client";
+export const dynamic = 'force-dynamic';
 import { ReactNode } from 'react';
 
 // تعريف الـ Props ليتوافق مع Next.js 15
