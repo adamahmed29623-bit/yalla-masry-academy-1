@@ -1,6 +1,6 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import { getAuth, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,11 +11,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// فحص ذكي: إذا لم يجد "Project ID" (بسبب عملية البناء)، لن ينهار النظام
-const app = getApps().length > 0 
-  ? getApp() 
-  : (firebaseConfig.projectId ? initializeApp(firebaseConfig) : null);
+let app: FirebaseApp | undefined;
+let auth: Auth | undefined;
+let db: Firestore | undefined;
 
-export const auth = app ? getAuth(app) : undefined;
-export const db = app ? getFirestore(app) : undefined;
+// لا يتم التشغيل إلا إذا كنا في المتصفح أو إذا كانت المفاتيح متوفرة يقيناً
+if (typeof window !== "undefined" && firebaseConfig.apiKey) {
+  try {
+    app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+    auth = getAuth(app);
+    db = getFirestore(app);
+  } catch (error) {
+    console.error("Firebase initialization error", error);
+  }
+}
+
+export { auth, db };
 export default app;
