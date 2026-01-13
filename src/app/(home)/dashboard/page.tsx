@@ -3,7 +3,7 @@
 import { useFirebase } from "@/context/useFirebase";
 import { motion } from "framer-motion"; // للفخامة الحركية
 import { Globe, Crown, BookOpen, Star } from "lucide-react";
-
+export const dynamic = 'force-dynamic';
 export default function DashboardPage() {
   // استدعاء البيانات بالهيكلية الجديدة لضمان نجاح الـ Build
   const { user, firestore, isUserLoading } = useFirebase() as any;
