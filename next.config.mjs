@@ -1,13 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // أزلنا سطر output: 'export' للهروب من تعقيدات generateStaticParams
-  typescript: {
-    ignoreBuildErrors: true,
+  // هذا السطر يخبر النظام بتحويل الموقع لملفات جاهزة للنشر
+  output: 'export', 
+  // هذا السطر يضمن ظهور الصور بشكل صحيح في الأكاديمية
+  images: {
+    unoptimized: true,
   },
+  // لإخلاء المسؤولية من أي أخطاء بسيطة أثناء البناء لضمان النجاح
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // سنترك الخصائص الأخرى كما هي للحفاظ على استقرار النظام
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
