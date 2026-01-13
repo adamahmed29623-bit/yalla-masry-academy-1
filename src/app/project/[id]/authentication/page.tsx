@@ -1,5 +1,9 @@
 'use client';
 
+export const dynamic = 'force-static';
+export function generateStaticParams() {
+  return [];
+}
 import React from 'react';
 import { useFirebase } from '@/firebase';
 import { Loader2 } from 'lucide-react';
