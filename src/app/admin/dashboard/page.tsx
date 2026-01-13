@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 // تعريف نوع البيانات لحل مشكلة TypeScript السابقة
 type WithId<T> = T & { id: string };
 
+export const dynamic = 'force-dynamic';
 export default function AdminRoyalDashboard() {
   const [activeTab, setActiveTab] = useState('stats');
 
