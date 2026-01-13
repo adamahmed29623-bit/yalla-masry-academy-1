@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, Trash2, Plus, ShoppingBag } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
 export default function AdminStorePage() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
