@@ -22,7 +22,6 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-export const dynamic = 'force-dynamic';
 export default function LoginPage() {
   const { auth } = useFirebase();
   const router = useRouter();
