@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useCollection, useFirestore } from '@/firebase';
 import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore';
 
+export const dynamic = 'force-dynamic';
 export default function AdminHadithsPage() {
   const [text, setText] = useState('');
   const [narrator, setNarrator] = useState('');
