@@ -5,6 +5,7 @@ import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import { Trophy, Plus, Trash2, Edit2, LayoutDashboard, Star, Loader2 } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
 export default function AdminAdventurePage() {
   const firestore = useFirestore();
   const challengesCollection = firestore ? collection(firestore, 'adventure_challenges') : null;
