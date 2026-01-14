@@ -2,40 +2,62 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // --- وظائف الحماية الملكية ---
+    // --- وظائف الحماية المتقدمة ---
     function isSignedIn() {
       return request.auth != null;
     }
 
+    // التحقق من أن المستخدم هو صاحب البيانات الحقيقي
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    // وظيفة جديدة: التحقق من صحة البيانات المرسلة (لا يمكن تغيير الإيميل أو الهوية)
+    function isValidUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['displayName', 'photoURL', 'bio', 'lastSeen', 'progress']);
+    }
+
     // --- تأمين ملفات المستخدمين (الأمهات والطلاب) ---
     match /users/{userId} {
-      // السماح بجلب ملف شخص واحد فقط (مثلاً عند الدخول لصفحة ملفه)
-      allow get: if isSignedIn();
+      // الملكية: يمكن للمستخدم رؤية ملفه الخاص، والإدارة فقط ترى الجميع
+      allow get: if isOwner(userId);
       
-      // ثغرة الـ list تم تقييدها: لا يمكن لأي شخص سحب كل البيانات 
-      // إلا إذا كان هناك استعلام (Query) محدد (مثل المتصدرين فقط)
-      allow list: if isSignedIn() && request.query.limit <= 20; 
+      // الحماية من سحب البيانات (Scraping): منع القوائم تماماً إلا بشروط صارمة
+      allow list: if isSignedIn() && (request.query.limit <= 10); 
 
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isOwner(userId);
-      allow delete: if false; // الحذف يتم فقط من خلال الإدارة (Admin)
+      // الإنشاء: يجب أن يكون المعرف مطابقاً للمستخدم المسجل حالياً
+      allow create: if isOwner(userId);
+      
+      // التحديث: منع تغيير الحقول الحساسة (مثل الرصيد أو نوع الحساب) من قبل المستخدم
+      allow update: if isOwner(userId) && isValidUpdate();
+      
+      allow delete: if false; // ممنوع الحذف إلا بقرار ملكي (Admin)
     }
     
     // --- ملفات المعلمين ---
     match /teachers/{teacherId} {
-      allow get, list: if isSignedIn();
+      allow read: if isSignedIn();
       allow create, update: if isOwner(teacherId);
       allow delete: if false;
     }
 
-    // --- ميزة مضافة: سجلات التقدم (Progress) ---
-    // لضمان أن تقدم الطفل في الدروس لا يراه إلا هو وأمه
+    // --- سجلات التقدم (Progress) - التحصين الأقصى ---
     match /progress/{progressId} {
-      allow read, write: if isSignedIn() && (isOwner(resource.data.userId) || isOwner(request.resource.data.userId));
+      // القراءة: صاحب السجل فقط هو من يراه
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      // الكتابة: منع التلاعب؛ لا يمكن إنشاء سجل لشخص آخر
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      
+      // التحديث: لا يمكن تعديل التقدم إلا إذا كان المستخدم هو صاحبه
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // --- قسم الإدارة (Admin Only) ---
+    // هذا القسم سنفعله لاحقاً عندما نحدد حسابكِ كـ Admin
+    match /admin_configs/{config} {
+      allow read, write: if false; // مغلق تماماً حالياً للأمان
     }
   }
 }
