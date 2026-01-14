@@ -1,5 +1,7 @@
 export const dynamic = 'force-static';
-export function generateStaticParams() { return []; }
+export function generateStaticParams() {
+  return Array.from({ length: 114 }, (_, i) => ({ id: (i + 1).toString() }));
+}
 import { Suspense } from 'react';
 
 // تأكدي أن تعريف الـ Props يستخدم Promise كما يطلب النظام الجديد
