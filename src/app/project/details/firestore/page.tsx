@@ -1,78 +1,56 @@
 "use client";
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
+
+// 1. السجل الملكي لضمان السيولة البرمجية
 export const dynamic = 'force-dynamic';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import RulesEditor from "@/components/firestore/rules-editor";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-function DataBrowser() {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Data Browser</CardTitle>
-                <CardDescription>Visualize and manage your Firestore data.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-center text-muted-foreground py-12">Data browser UI coming soon.</p>
-            </CardContent>
-        </Card>
-    )
+function FirestoreEngine() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id'); // استدعاء معرف المشروع بصدق ودقة
+
+  return (
+    <div className="min-h-screen bg-black text-white p-6">
+      <div className="max-w-4xl mx-auto border border-zinc-800 rounded-2xl bg-zinc-900/30 backdrop-blur-xl p-8 shadow-2xl">
+        {/* رأس الصفحة الملكي */}
+        <div className="flex items-center justify-between mb-10 border-b border-zinc-800 pb-6">
+          <div>
+            <h1 className="text-3xl font-extrabold text-cyan-400">قاعدة بيانات المشروع</h1>
+            <p className="text-zinc-500 mt-2">إدارة سجلات الأكاديمية للمعرف: <span className="text-cyan-600 font-mono">{id}</span></p>
+          </div>
+          <div className="text-5xl animate-pulse">📊</div>
+        </div>
+
+        {/* محاكاة عرض البيانات (هنا تضعين جداولكِ الحقيقية لاحقاً) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-xl bg-black/40 border border-zinc-800">
+            <h3 className="text-royal-gold mb-2 font-bold">المجموعات (Collections)</h3>
+            <p className="text-sm text-zinc-400 font-mono">users, challenges, progress</p>
+          </div>
+          <div className="p-6 rounded-xl bg-black/40 border border-zinc-800">
+            <h3 className="text-cyan-500 mb-2 font-bold">حالة الاتصال</h3>
+            <p className="text-sm text-green-500 italic">متصل الآن بالخادم الملكي</p>
+          </div>
+        </div>
+
+        {/* أيقونة حارس الأكاديمية */}
+        <div className="mt-12 text-center text-zinc-700 text-xs tracking-widest uppercase">
+          حمى الله صرح نفرتيتي التعليمي
+        </div>
+      </div>
+    </div>
+  );
 }
 
-function IndexesManager() {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Indexes</CardTitle>
-                <CardDescription>Manage your Firestore query indexes.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Collection</TableHead>
-                            <TableHead>Fields</TableHead>
-                            <TableHead>Type</TableHead>
-                            <TableHead>Status</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>users</TableCell>
-                            <TableCell><code className="font-code">(isAdmin: Ascending)</code></TableCell>
-                            <TableCell>Single-field</TableCell>
-                            <TableCell>Enabled</TableCell>
-                        </TableRow>
-                         <TableRow>
-                            <TableCell>posts</TableCell>
-                            <TableCell><code className="font-code">(authorId: Ascending, createdAt: Descending)</code></TableCell>
-                            <TableCell>Composite</TableCell>
-                            <TableCell>Enabled</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </CardContent>
-        </Card>
-    )
-}
-
+// 2. المكون الأساسي (التغليف الملكي)
 export default function FirestorePage() {
-    return (
-        <Tabs defaultValue="rules" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="data">Data</TabsTrigger>
-                <TabsTrigger value="rules">Rules</TabsTrigger>
-                <TabsTrigger value="indexes">Indexes</TabsTrigger>
-            </TabsList>
-            <TabsContent value="data" className="mt-6">
-                <DataBrowser />
-            </TabsContent>
-            <TabsContent value="rules" className="mt-6">
-                <RulesEditor />
-            </TabsContent>
-            <TabsContent value="indexes" className="mt-6">
-                <IndexesManager />
-            </TabsContent>
-        </Tabs>
-    )
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <FirestoreEngine />
+    </Suspense>
+  );
 }
