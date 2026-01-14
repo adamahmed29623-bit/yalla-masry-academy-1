@@ -1,23 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. الأمر الملكي بإنتاج ملفات ثابتة للنشر المجاني
-  output: 'export', 
-  
-  // 2. تحصين الصور لتعمل بكفاءة على Cloudflare دون تكلفة إضافية
+  output: 'export',
   images: {
     unoptimized: true,
   },
-
-  // 3. تجاهل أخطاء الـ ESLint والـ TypeScript مؤقتاً لضمان سرعة النشر
+  // 👑 الأمر الملكي بتقليص الحجم ومنع التخزين الضخم
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.cache = false; // منع تكوين ملفات الـ Cache الضخمة التي سببت الخطأ
+    }
+    return config;
+  },
   eslint: {
     ignoreDuringBuild: true,
   },
   typescript: {
     ignoreBuildErrors: true,
-  },
-
-  // 4. إعدادات المسارات لضمان عدم حدوث أخطاء 404 عند تحديث الصفحة
-  trailingSlash: true,
+  }
 };
 
 export default nextConfig;
