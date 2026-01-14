@@ -1,19 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 👑 ملاحظة ملكية: حذفنا 'output: export' لنعطي فيرسل الحرية
-  images: {
-    unoptimized: true,
+  // 👑 هذا السطر سيقوم بتقليص حجم الملفات لأقصى درجة (تحسين ملكي)
+  output: 'standalone', 
+  images: { unoptimized: true },
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
+  // حذف الكاش لتقليل الحجم
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      config.cache = false;
+    }
+    return config;
   },
-  typescript: {
-    ignoreBuildErrors: true, // تجاهل أخطاء اللغة
-  },
-  eslint: {
-    ignoreDuringBuilds: true, // تجاهل أخطاء التنسيق
-  },
-  // منع الانهيار بسبب جلب البيانات أثناء البناء
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  }
 };
-
 export default nextConfig;
