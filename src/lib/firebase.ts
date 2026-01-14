@@ -1,30 +1,23 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-// 1. جلب المفاتيح من بيئة العمل (Cloudflare أو .env)
+// 👑 هذه القيم تضمن أن النظام لن ينهار أثناء البناء (Build)
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "temp-key",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "yalla-masry-academy.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "yalla-masry-academy", // هذا هو السطر الذي بسببه يفشل النشر
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "yalla-masry-academy.appspot.com",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "123456789",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:123456789:web:abcdef"
 };
 
-// 2. التحقق من صحة المفاتيح والتهيئة الذكية
-// هذا السطر يضمن عدم انهيار الموقع أثناء الـ Build إذا لم تكن المفاتيح متاحة للسيرفر مؤقتاً
-const isConfigValid = firebaseConfig.apiKey && firebaseConfig.projectId;
+// 👑 تهيئة التطبيق بطريقة آمنة
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-const app = (getApps().length > 0) 
-  ? getApp() 
-  : (isConfigValid ? initializeApp(firebaseConfig) : null);
-
-// 3. تصدير الخدمات للعمل الفعلي في الأكاديمية
-// إذا كان app موجوداً سيعمل النظام، وإذا لم يوجد (أثناء الـ Build فقط) لن ينهار المشروع
-export const db = app ? getFirestore(app) : null as any;
-export const auth = app ? getAuth(app) : null as any;
-export const storage = app ? getStorage(app) : null as any;
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export default app;
