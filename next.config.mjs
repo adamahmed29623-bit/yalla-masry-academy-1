@@ -1,18 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // هذا السطر يخبر النظام بتحويل الموقع لملفات جاهزة للنشر
-  output: 'export', 
-  // هذا السطر يضمن ظهور الصور بشكل صحيح في الأكاديمية
+  // 1. حذف output: 'export' هو السر؛ لنجعل Cloudflare يتعامل بمرونة
+  // 2. إعدادات الصور لضمان عمل الصور الملكية
   images: {
     unoptimized: true,
   },
-  // لإخلاء المسؤولية من أي أخطاء بسيطة أثناء البناء لضمان النجاح
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // 3. منع Next.js من محاولة تخمين المسارات أثناء البناء
   typescript: {
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 };
 
 export default nextConfig;
