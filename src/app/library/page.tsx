@@ -1,11 +1,11 @@
 "use client";
+export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCollection, useFirestore } from '@/firebase';
 import { collection, query, where } from 'firebase/firestore';
 import { Book, Search, ScrollText, Moon, Library, Download, Loader2, Sparkles } from 'lucide-react';
-export const dynamic = 'force-dynamic';
 export default function GrandIslamicLibrary() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
