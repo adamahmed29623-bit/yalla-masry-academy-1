@@ -1,9 +1,9 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
-// 1. المفاتيح الملكية - تأكدي من تسميتها بنفس الأسماء في Cloudflare
+// 1. جلب المفاتيح من بيئة العمل (Cloudflare أو .env)
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -13,19 +13,18 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// 2. التحقق الذكي: منع الانهيار إذا كانت المفاتيح غائبة أثناء البناء (Build)
-const isConfigValid = !!firebaseConfig.projectId;
+// 2. التحقق من صحة المفاتيح والتهيئة الذكية
+// هذا السطر يضمن عدم انهيار الموقع أثناء الـ Build إذا لم تكن المفاتيح متاحة للسيرفر مؤقتاً
+const isConfigValid = firebaseConfig.apiKey && firebaseConfig.projectId;
 
-// 3. تهيئة التطبيق بأسلوب يمنع تكرار الإعلان (Singleton Pattern)
-const app = (getApps().length === 0 && isConfigValid) 
-  ? initializeApp(firebaseConfig) 
-  : getApps().length > 0 
-    ? getApp() 
-    : null; // يعيد null إذا كنا في مرحلة البناء بدون مفاتيح
+const app = (getApps().length > 0) 
+  ? getApp() 
+  : (isConfigValid ? initializeApp(firebaseConfig) : null);
 
-// 4. تصدير الخدمات (التي ستستخدمينها في الأكاديمية)
-export const auth = app ? getAuth(app) : null;
-export const db = app ? getFirestore(app) : null;
-export const storage = app ? getStorage(app) : null;
+// 3. تصدير الخدمات للعمل الفعلي في الأكاديمية
+// إذا كان app موجوداً سيعمل النظام، وإذا لم يوجد (أثناء الـ Build فقط) لن ينهار المشروع
+export const db = app ? getFirestore(app) : null as any;
+export const auth = app ? getAuth(app) : null as any;
+export const storage = app ? getStorage(app) : null as any;
 
 export default app;
