@@ -1,100 +1,69 @@
-"use client"
+"use client";
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export const dynamic = 'force-static';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { DollarSign, Users, CreditCard, Activity } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
+// 1. الختم الملكي لضمان ثبات الصرح أثناء البناء
+export const dynamic = 'force-dynamic';
 
-const chartData = [
-    { month: "January", calls: 1860, users: 800 },
-    { month: "February", calls: 3050, users: 2000 },
-    { month: "March", calls: 2370, users: 1200 },
-    { month: "April", calls: 730, users: 1900 },
-    { month: "May", calls: 2090, users: 1300 },
-    { month: "June", calls: 2140, users: 1400 },
-]
+function OverviewEngine() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
 
-const chartConfig = {
-    calls: {
-        label: "API Calls",
-        color: "hsl(var(--chart-1))",
-    },
-    users: {
-        label: "New Users",
-        color: "hsl(var(--chart-2))",
-    },
+  return (
+    <div className="min-h-screen bg-black text-white p-8">
+      <div className="max-w-6xl mx-auto space-y-8">
+        
+        {/* لوحة التحكم الرئيسية (Dashboard) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 p-10 rounded-3xl bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 shadow-2xl relative">
+            <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">
+              نظرة ملكية عامة
+            </h1>
+            <p className="text-cyan-400 text-lg font-medium italic">المشروع القائم: {id || "سجل مجهول"}</p>
+            <div className="mt-8 flex space-x-4">
+              <span className="px-4 py-2 bg-cyan-900/20 border border-cyan-800 rounded-full text-xs text-cyan-300">نظام نشط</span>
+              <span className="px-4 py-2 bg-zinc-800/50 border border-zinc-700 rounded-full text-xs text-zinc-400">تحديث تلقائي</span>
+            </div>
+          </div>
+
+          <div className="p-8 rounded-3xl bg-zinc-900/20 border border-cyan-900/30 flex flex-col items-center justify-center text-center">
+            <div className="text-6xl mb-4 shadow-cyan-500/50 drop-shadow-xl">👑</div>
+            <h3 className="text-royal-gold font-bold">هوية الأكاديمية</h3>
+            <p className="text-xs text-zinc-500 mt-2">نفرتيتي: الجمال والذكاء في العلم</p>
+          </div>
+        </div>
+
+        {/* إحصائيات سريعة */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: "الطلاب", val: "١,٢٥٠", color: "text-blue-400" },
+            { label: "التحديات", val: "٨٤", color: "text-purple-400" },
+            { label: "المعلمين", val: "١٢", color: "text-cyan-400" },
+            { label: "التقييم", val: "٤.٩", color: "text-yellow-400" }
+          ].map((stat, i) => (
+            <div key={i} className="p-6 rounded-2xl bg-zinc-900/10 border border-zinc-800/50 text-center">
+              <p className="text-zinc-500 text-xs mb-1">{stat.label}</p>
+              <p className={`text-2xl font-bold ${stat.color}`}>{stat.val}</p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
 }
 
+// 2. المكون الأساسي (التغليف الملكي)
 export default function OverviewPage() {
   return (
-    <div className="space-y-8">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">+180.1% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">+19% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">API Calls</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+573k</div>
-            <p className="text-xs text-muted-foreground">+201 since last hour</p>
-          </CardContent>
-        </Card>
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-2xl text-zinc-700 animate-pulse font-serif italic border-b border-zinc-800">
+          Nefertiti Academy Overview...
+        </div>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Usage Overview</CardTitle>
-          <CardDescription>An overview of your project's usage for the last 6 months.</CardDescription>
-        </CardHeader>
-        <CardContent>
-           <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-            <BarChart accessibilityLayer data={chartData}>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <YAxis />
-              <Tooltip cursor={false} content={<ChartTooltipContent />} />
-              <Bar dataKey="calls" fill="var(--color-calls)" radius={4} />
-              <Bar dataKey="users" fill="var(--color-users)" radius={4} />
-            </BarChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-    </div>
-  )
+    }>
+      <OverviewEngine />
+    </Suspense>
+  );
 }
