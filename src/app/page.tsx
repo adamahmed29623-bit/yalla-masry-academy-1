@@ -2,90 +2,123 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function LandingPage() {
+export default function NefertitiAcademy() {
   return (
-    <div className="min-h-screen bg-[#002366] text-[#D4AF37] font-sans selection:bg-[#D4AF37] selection:text-[#002366]">
-      {/* 🌟 الهيدر الملكي */}
-      <nav className="flex justify-between items-center p-6 border-b border-[#D4AF37]/20 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="relative w-12 h-12 rounded-full border-2 border-[#D4AF37] overflow-hidden">
-             {/* تأكدي من وضع صورة نفرتيتي في مجلد public باسم nefertiti.png */}
-            <Image src="/nefertiti.png" alt="نفرتيتي" fill className="object-cover" />
+    <div className="min-h-screen bg-[#002366] text-[#D4AF37] font-sans selection:bg-[#D4AF37] selection:text-[#002366] overflow-x-hidden">
+      
+      {/* 👑 الهيدر الملكي الثابت */}
+      <nav className="flex justify-between items-center p-5 border-b border-[#D4AF37]/30 backdrop-blur-lg sticky top-0 z-[100] bg-[#002366]/80">
+        <div className="flex items-center gap-4">
+          <div className="relative w-14 h-14 rounded-full border-2 border-[#D4AF37] p-1 shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+             <div className="w-full h-full rounded-full bg-gradient-to-br from-[#D4AF37] to-[#996515] flex items-center justify-center text-[#002366] font-bold">
+               N
+             </div>
           </div>
-          <h1 className="text-2xl font-bold tracking-widest uppercase">يلا مصري نفرتيتي</h1>
+          <div>
+            <h1 className="text-xl md:text-2xl font-black tracking-tighter uppercase leading-none">أكاديمية نفرتيتي</h1>
+            <span className="text-[10px] tracking-[0.3em] text-white/50">YALLA MASRY ACADEMY</span>
+          </div>
         </div>
-        <div className="hidden md:flex gap-8 font-medium">
-          <Link href="#about" className="hover:text-white transition-colors">عن الأكاديمية</Link>
-          <Link href="#safety" className="hover:text-white transition-colors">مملكة الأمان</Link>
-          <Link href="/login" className="px-6 py-2 border border-[#D4AF37] rounded-full hover:bg-[#D4AF37] hover:text-[#002366] transition-all">دخول الملكات</Link>
+        
+        <div className="hidden lg:flex gap-10 font-bold text-sm uppercase tracking-widest">
+          <Link href="#vision" className="hover:text-white transition-all">الرؤية</Link>
+          <Link href="#safety" className="hover:text-white transition-all">مملكة الأمان</Link>
+          <Link href="#courses" className="hover:text-white transition-all">المناهج</Link>
+          <Link href="/login" className="px-8 py-2 bg-[#D4AF37] text-[#002366] rounded-full hover:bg-white transition-all shadow-lg">دخول الملكات</Link>
         </div>
       </nav>
 
-      {/* 👑 قسم البطولة (Hero Section) */}
-      <section className="relative h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-        {/* خلفية النيل السحرية */}
-        <div className="absolute inset-0 z-0 opacity-30">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#002366]"></div>
-          {/* هنا يمكن إضافة صورة تعبيرية للنيل */}
+      {/* 👑 قسم البطولة: شمس الأكاديمية تشرق */}
+      <section className="relative min-h-[90vh] flex items-center justify-center text-center px-6">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[60%] bg-[#D4AF37]/10 blur-[120px] rounded-full"></div>
+           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[60%] bg-[#D4AF37]/10 blur-[120px] rounded-full"></div>
         </div>
 
-        <div className="z-10 max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-          <h2 className="text-4xl md:text-7xl font-extrabold leading-tight">
-            مرحباً بكِ أيتها <span className="text-white drop-shadow-[0_0_10px_rgba(212,175,55,0.8)]">الفرعونة القوية</span> <br/>
-            في مملكة اللهجة المصرية
+        <div className="relative z-10 max-w-5xl space-y-10">
+          <div className="inline-block px-4 py-1 border border-[#D4AF37] rounded-full text-xs tracking-widest uppercase text-white mb-4 animate-pulse">
+            مملكة اللهجة المصرية الأولى من نوعها
+          </div>
+          <h2 className="text-5xl md:text-8xl font-black leading-[1.1] tracking-tight text-white">
+            اكتشفي سر القوة <br/>
+            <span className="text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]">يا ملكة</span>
           </h2>
           
-          <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed italic">
-            "بصي يا ملكة.. هقولك من الآخر، هنا مش مجرد مدرسة، هنا بيتك الآمن اللي هيطلع سر القوة اللي جواكي وجوا أطفالك بالحب والجدعنة المصرية."
+          <p className="text-xl md:text-3xl text-white/80 max-w-3xl mx-auto leading-relaxed font-light italic">
+            "الأكاديمية دي اتعملت ليكي ولأطفالك.. عشان نرجع لغتنا وهويتنا بكل حب وجدعنة، في مكان آمن مية في المية."
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-10">
-            <Link href="/register" className="px-10 py-4 bg-[#D4AF37] text-[#002366] text-xl font-bold rounded-full shadow-[0_0_20px_rgba(212,175,55,0.5)] hover:scale-105 transition-transform">
-              ابدئي رحلتكِ الملكية الآن
+          <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+            <Link href="/register" className="px-12 py-5 bg-[#D4AF37] text-[#002366] text-xl font-black rounded-xl shadow-2xl hover:scale-105 active:scale-95 transition-all">
+               سجلي كملكة الآن
             </Link>
-            <Link href="#features" className="px-10 py-4 border-2 border-[#D4AF37] text-[#D4AF37] text-xl font-bold rounded-full hover:bg-[#D4AF37]/10 transition-colors">
-              اكتشفي سر القوة
+            <Link href="#safety" className="px-12 py-5 border-2 border-[#D4AF37] text-[#D4AF37] text-xl font-black rounded-xl hover:bg-[#D4AF37]/10 transition-all">
+               ليه إحنا مختلفين؟
             </Link>
-          </div>
-        </div>
-
-        {/* أيقونة الأنخ (مفتاح الحياة) كديكور خلفي */}
-        <div className="absolute bottom-10 right-10 opacity-10 pointer-events-none">
-          <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12,2A5,5 0 0,0 7,7C7,8.6 7.7,10 8.9,11C7.1,11.5 5.7,12.6 4.8,14.1C3.9,15.6 3.5,17.2 3.5,19A1,1 0 0,0 4.5,20H19.5A1,1 0 0,0 20.5,19C20.5,17.2 20.1,15.6 19.2,14.1C18.3,12.6 16.9,11.5 15.1,11C16.3,10 17,8.6 17,7A5,5 0 0,0 12,2M12,4A3,3 0 0,1 15,7A3,3 0 0,1 12,10A3,3 0 0,1 9,7A3,3 0 0,1 12,4Z" />
-          </svg>
-        </div>
-      </section>
-
-      {/* 🛡️ قسم الأمان النسائي */}
-      <section className="bg-white/5 py-20 px-6" id="safety">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h3 className="text-4xl font-bold mb-6">ليه أكاديمية نفرتيتي؟</h3>
-            <ul className="space-y-6 text-lg text-white/90">
-              <li className="flex items-start gap-4">
-                <span className="text-2xl">✨</span>
-                <p><strong>بيئة نسائية خالصة:</strong> المعلمات والطلاب نساء وأطفال بس، عشان تاخدي راحتك وتطمني على ولادك.</p>
-              </li>
-              <li className="flex items-start gap-4">
-                <span className="text-2xl">🛡️</span>
-                <p><strong>أمان مش محتاج كلام:</strong> حماية كاملة ضد أي محاولات اختراق أو سلوكيات مش مظبوطة، إحنا هنا عيلة واحدة.</p>
-              </li>
-              <li className="flex items-start gap-4">
-                <span className="text-2xl">🧡</span>
-                <p><strong>الروح المصرية:</strong> بنعلم ولادنا بجدعنة ودفا، وبنصدر الصورة الحقيقية لجمال بلدنا.</p>
-              </li>
-            </ul>
-          </div>
-          <div className="relative h-96 rounded-2xl border-2 border-[#D4AF37] shadow-[0_0_30px_rgba(212,175,55,0.2)] overflow-hidden">
-             <Image src="/egypt-warmth.jpg" alt="الدفء المصري" fill className="object-cover opacity-80" />
           </div>
         </div>
       </section>
 
-      {/* 🏺 التذييل الملكي */}
-      <footer className="p-10 text-center border-t border-[#D4AF37]/20">
-        <p className="opacity-60">© 2026 أكاديمية يلا مصري نفرتيتي - جميع الحقوق ملك للملكات</p>
+      {/* 🛡️ قسم ميثاق الأمان الملكي */}
+      <section id="safety" className="py-24 bg-black/20 border-y border-[#D4AF37]/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <h3 className="text-4xl md:text-6xl font-bold text-white mb-4">ميثاق الأمان النسائي</h3>
+            <div className="w-24 h-1 bg-[#D4AF37] mx-auto"></div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { title: "مجتمع نسائي مغلق", desc: "المعلمات، الإدارة، والطلاب نساء وأطفال فقط. خصوصيتك هي أولويتنا الأولى." },
+              { title: "حماية تقنية ملكية", desc: "أنظمة مشفرة تمنع أي تطفل، لضمان بيئة تعليمية هادئة وآمنة." },
+              { title: "الروح المصرية", desc: "تعليم اللهجة المصرية ليس مجرد كلمات، بل هو زرع قيم الجدعنة والأصول." }
+            ].map((feature, i) => (
+              <div key={i} className="p-10 border border-[#D4AF37]/20 rounded-3xl hover:border-[#D4AF37] transition-all bg-[#002366]/50 group">
+                <div className="text-[#D4AF37] text-4xl mb-6 group-hover:scale-110 transition-transform">✨</div>
+                <h4 className="text-2xl font-bold mb-4 text-white">{feature.title}</h4>
+                <p className="text-white/70 leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 📚 قسم المناهج والأقسام (الشامل) */}
+      <section id="courses" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          <div className="space-y-8">
+            <h3 className="text-5xl font-black text-white italic">مش مجرد دروس.. <br/> دي رحلة بناء!</h3>
+            <p className="text-lg text-white/60">في أكاديمية نفرتيتي، بنهتم بكل تفصيلة في حياة الطفل والمرأة المصرية في الغربة.</p>
+            
+            <div className="space-y-4">
+              {["كورس اللهجة المصرية التأسيسي", "تحديات المغامرة للأطفال", "مكتبة الحواديت الملكية", "متجر الهوية المصرية"].map((item, i) => (
+                <div key={i} className="flex items-center gap-4 text-xl border-l-4 border-[#D4AF37] pl-4">
+                  <span className="text-[#D4AF37]">✔</span> {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-[#D4AF37]/20 rounded-[2rem] blur-2xl group-hover:bg-[#D4AF37]/30 transition-all"></div>
+            <div className="relative aspect-video rounded-[2rem] border-2 border-[#D4AF37] bg-[#001a4d] overflow-hidden flex items-center justify-center">
+               <span className="text-[#D4AF37] font-bold text-lg">صورة الأكاديمية الملكية</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 🏺 التذييل: الحقوق الملكية */}
+      <footer className="py-16 text-center border-t border-[#D4AF37]/10 bg-black/40">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <h2 className="text-2xl font-bold tracking-widest text-[#D4AF37]">أكاديمية نفرتيتي</h2>
+          <p className="text-white/40 px-6 italic">
+            "نحن لا نعلم لغة، نحن نبني انتماءً ونصنع مستقبلاً يفخر بجذوره."
+          </p>
+          <div className="pt-8 text-xs tracking-tighter text-white/20 uppercase">
+             &copy; 2026 NEFERTITI ACADEMY | ALL RIGHTS RESERVED TO THE QUEENS
+          </div>
+        </div>
       </footer>
     </div>
   );
