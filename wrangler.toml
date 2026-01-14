@@ -1,0 +1,11 @@
+name = "yalla-masry-academy-1"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = ".next"
+
+[vars]
+# 👑 هنا نضع المفتاح الذي كان يسبب الأزمة لضمان رؤيته وقت البناء
+NEXT_PUBLIC_FIREBASE_PROJECT_ID = "yalla-masry-academy"
+
+[[routes]]
+pattern = "/*"
+script = "_worker.js"
