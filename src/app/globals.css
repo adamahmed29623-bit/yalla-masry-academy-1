@@ -4,38 +4,57 @@
 
 @layer base {
   :root {
-    /* ألوان الخلفية الملكية - مريحة للعين */
-    --background: 40 30% 98%; /* لون كريمي فاخر */
+    --background: 220 33% 98%;
     --foreground: 222 47% 11%;
-
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-
-    --primary: 45 64% 53%; /* الذهب الملكي */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 45 93% 47%; /* اللون الذهبي الملكي */
     --primary-foreground: 210 40% 98%;
-
-    --secondary: 221 100% 20%; /* النيلي العميق */
-    --secondary-foreground: 210 40% 98%;
-
-    --accent: 45 64% 90%; /* ذهبي فاتح جداً للمسات */
-    --accent-foreground: 221 100% 20%;
-
-    --border: 214 32% 91%;
-    --radius: 0.75rem; /* زوايا منحنية تعطي شعوراً بالنعومة والأمان */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.75rem;
   }
 }
 
-/* تأثير التدرج الذهبي الملكي */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    /* تم إصلاح الخطأ هنا: استبدال font-body بخطوط النظام لضمان القبول */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    @apply antialiased bg-background text-foreground;
+    background-color: hsl(var(--background));
+  }
+}
+
+/* تحسينات بصرية للأكاديمية */
+.royal-shadow {
+  box-shadow: 0 4px 20px -2px rgba(212, 175, 55, 0.2);
+}
+
 .gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #996515 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
 }
 
-/* تحسين الخطوط العربية */
-body {
-  @apply font-body antialiased;
-  background-color: hsl(var(--background));
+/* إصلاح مشكلة المدد الزمنية الطويلة التي اشتكى منها فيرسل */
+.animate-slow {
+  animation-duration: 3s;
 }
 
-h1, h2, h3 {
-  @apply font-headline font-bold tracking-tight;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
