@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "installCommand": "npm install --force",
   "framework": "nextjs",
-  "regions": ["fra1"], 
-  "ignoreCommand": "false"
+  "installCommand": "npm install",
+  "buildCommand": "npm run build"
 }
