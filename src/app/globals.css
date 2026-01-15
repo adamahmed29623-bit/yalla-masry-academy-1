@@ -1,35 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* تنظيف شامل لإجبار فيرسل على القبول */
 :root {
   --background: #f8fafc;
-  --foreground: #0f172a;
-  --primary: #d4af37; /* الذهبي الملكي */
+  --foreground: #010409;
+  --primary: #d4af37;
 }
 
-body {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #010409;
+  font-family: sans-serif;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-/* التنسيقات الملكية الأساسية */
-.royal-gold {
-  color: var(--primary);
-}
-
-.gold-gradient {
-  background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
-}
-
-/* إلغاء أي انيميشن يسبب مشاكل مؤقتاً لضمان البناء */
-* {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
+.royal-gold { color: #d4af37; }
+.gold-bg { background-color: #d4af37; }
