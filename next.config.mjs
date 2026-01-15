@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: true, // تجاهل أخطاء التنسيق أثناء النشر
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // تجاهل أخطاء التايب سكريبت لو وجدت
+    ignoreBuildErrors: true,
   },
-  output: 'standalone', // تحسين الأداء ليتناسب مع السيرفرات
-}
+};
 
-module.exports = nextConfig
+export default nextConfig;
