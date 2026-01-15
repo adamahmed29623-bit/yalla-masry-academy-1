@@ -1,42 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --force",
   "framework": "nextjs",
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "regions": ["pdx1"],
-  "build": {
-    "env": {
-      "NEXT_REDACTED_ROUTES": "true"
-    }
-  },
-  "routes": [
-    {
-      "src": "/_next/(.*)",
-      "dest": "/_next/$1",
-      "check": true
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1",
-      "check": true
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1",
-      "check": true
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "status": 200,
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "status": 404,
-      "dest": "/404"
-    }
-  ]
+  "regions": ["fra1"], 
+  "ignoreCommand": "false"
 }
