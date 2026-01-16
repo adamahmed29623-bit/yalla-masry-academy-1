@@ -2,15 +2,15 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+// تم استبدال Headset بـ Headphones هنا لضمان عمل الكود
 import { Headphones, Mic2, Play, Radio, Share2, Sparkles, Users, Volume2 } from 'lucide-react';
 
 export default function NefertitiPodcast() {
-  const [isLive, setIsLive] = useState(true); // حالة البث المباشر
+  const [isLive, setIsLive] = useState(true);
 
   return (
     <div className="min-h-screen bg-[#050c16] text-white rtl selection:bg-gold-500/30" dir="rtl">
       
-      {/* رأس صفحة البودكاست - تصميم الاستوديو */}
       <header className="relative py-24 border-b border-gold-500/20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('/patterns/sound-wave.png')] opacity-10 animate-pulse" />
         <div className="container mx-auto px-6 text-center relative z-10">
@@ -40,7 +40,6 @@ export default function NefertitiPodcast() {
 
       <main className="container mx-auto px-6 py-16">
         
-        {/* قسم البث المباشر والمقابلات اليومية */}
         <section className="mb-20">
           <div className="flex items-center gap-3 mb-8">
             <Mic2 className="text-gold-500" size={28} />
@@ -54,11 +53,9 @@ export default function NefertitiPodcast() {
             <div className="absolute top-0 left-0 w-full h-full bg-[url('/patterns/studio-bg.png')] opacity-5" />
             
             <div className="flex flex-col lg:flex-row items-center gap-12 relative z-10">
-              {/* صورة الضيف (الطالب) */}
               <div className="relative">
                 <div className="w-56 h-56 bg-gold-500/10 rounded-[40px] border-2 border-gold-500/50 flex items-center justify-center overflow-hidden">
                    <Users className="text-gold-500/20" size={100} />
-                   {/* هنا توضع صورة الطالب الضيف */}
                 </div>
                 <div className="absolute -bottom-4 -left-4 bg-white text-black p-4 rounded-3xl shadow-xl">
                   <Volume2 className="animate-bounce" size={24} />
@@ -84,11 +81,11 @@ export default function NefertitiPodcast() {
           </motion.div>
         </section>
 
-        {/* أرشيف الحلقات السابقة */}
         <section>
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
-              <Headset className="text-gold-500" size={28} />
+              {/* تم تغيير Headset إلى Headphones هنا أيضاً */}
+              <Headphones className="text-gold-500" size={28} />
               <h2 className="text-3xl font-black italic">أرشيف اللقاءات الملكية</h2>
             </div>
             <button className="text-gold-500 font-bold hover:underline text-sm uppercase tracking-widest">عرض الكل</button>
