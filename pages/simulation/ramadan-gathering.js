@@ -1,97 +1,107 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const RamadanSimulation = () => {
-  const [gameState, setGameState] = useState('waiting'); // waiting, announcement, celebration
-  const audioRef = useRef(null);
-
-  // وظيفة لبدء المحاكاة عند تفاعل المستخدم (بسبب سياسة المتصفح للصوت)
-  const startSim = () => {
-    setGameState('announcement');
-    // هنا سيتم تشغيل صوت المفتي
-  };
+const RamadanGathering = () => {
+  // حالات المحاكاة: waiting (ترقب)، announcement (إعلان المفتي)، celebration (الفرحة واللمة)
+  const [scene, setScene] = useState('waiting');
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
       <Head>
-        <title>محاكاة ليلة الرؤية | أكاديمية نفرتيتي</title>
+        <title>المحاكاة الملكية | لحظة الرؤية</title>
       </Head>
 
-      {/* المشهد البصري: صالة البيت المصري */}
+      {/* الخلفية: صورة العائلة المصرية أمام التلفاز التي أرسلتِها */}
       <div className="absolute inset-0 z-0">
-        <div className={`absolute inset-0 bg-black/60 z-10 transition-opacity duration-1000 ${gameState === 'celebration' ? 'opacity-20' : 'opacity-60'}`} />
         <img 
-          src="/assets/simulation/egyptian-home.jpg" 
-          className="w-full h-full object-cover scale-105"
-          alt="بيت مصري أصيل"
+          src="/assets/simulation/family-waiting.jpg" 
+          className={`w-full h-full object-cover transition-all duration-2000 ${scene === 'waiting' ? 'brightness-50' : 'brightness-100'}`}
+          alt="العائلة المصرية تنتظر المفتي"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
       </div>
 
-      {/* واجهة المحاكاة التفاعلية */}
-      <main className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4">
-        
+      {/* الرمز الكرتوني "آدم" - يظهر كمرشد في زاوية الشاشة */}
+      <motion.div 
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        className="fixed bottom-5 right-5 z-50 w-32 md:w-48 cursor-pointer"
+      >
+        <div className="relative">
+          <img src="/assets/characters/adam-avatar.png" alt="آدم" className="w-full drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]" />
+          <div className="absolute -top-16 right-0 bg-white text-black p-3 rounded-2xl rounded-tr-none text-xs font-bold shadow-xl border-2 border-yellow-500">
+            {scene === 'waiting' && "بسرعة يا بطل، اقعد جنب العيلة، المفتي طالع حالا!"}
+            {scene === 'celebration' && "مبروووك! رمضان جه.. يلا بينا على الشارع نعلق الزينة!"}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* المحتوى التفاعلي الرئيسي */}
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen">
         <AnimatePresence mode="wait">
-          {gameState === 'waiting' && (
+          {scene === 'waiting' && (
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="text-center"
+              key="waiting"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="text-center bg-black/40 backdrop-blur-md p-8 rounded-3xl border border-yellow-600/30"
             >
-              <div className="mb-6 p-4 border-2 border-yellow-600 bg-black/40 backdrop-blur-md rounded-lg">
-                <p className="text-xl md:text-2xl font-serif text-yellow-500 italic">
-                  "التلفاز مشوش.. العائلة صامتة.. والقلوب تدق ترقباً.."
-                </p>
-              </div>
+              <h2 className="text-2xl md:text-4xl font-serif text-yellow-500 mb-6 leading-relaxed">
+                أنصت.. هل غداً أول أيام رمضان؟
+              </h2>
               <button 
-                onClick={startSim}
-                className="group relative px-8 py-4 bg-yellow-700 hover:bg-yellow-600 transition-all rounded-full border-b-4 border-yellow-900 active:border-0"
+                onClick={() => setScene('announcement')}
+                className="px-12 py-4 bg-gradient-to-r from-yellow-700 to-yellow-500 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.4)]"
               >
-                <span className="text-xl font-bold">المس التلفاز لاستقبال الإشارة الملكية</span>
+                افتح الراديو الآن
               </button>
             </motion.div>
           )}
 
-          {gameState === 'announcement' && (
+          {scene === 'announcement' && (
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center"
+              key="announcement"
+              initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+              className="w-full max-w-3xl px-4"
             >
-              {/* شاشة تلفاز افتراضية تظهر خطاب المفتي */}
-              <div className="w-full max-w-2xl aspect-video bg-gray-900 border-8 border-stone-800 rounded-lg shadow-[0_0_50px_rgba(234,179,8,0.3)] flex items-center justify-center overflow-hidden relative">
-                 <div className="absolute inset-0 scanline opacity-20" />
-                 {/* هنا نضع الفيديو الخاص بالمفتي */}
-                 <p className="text-yellow-500 animate-pulse text-xl">جاري الاتصال بدار الإفتاء...</p>
-                 
-                 {/* زر مؤقت للمحاكاة حتى نربط الفيديو */}
-                 <button 
-                  onClick={() => setGameState('celebration')}
-                  className="absolute bottom-4 right-4 text-xs underline"
-                 >
-                   تخطي للإعلان
-                 </button>
+              <div className="bg-gray-900 border-8 border-stone-800 rounded-2xl aspect-video flex items-center justify-center relative overflow-hidden shadow-2xl">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20" />
+                <div className="text-center z-10">
+                  <p className="text-yellow-500 animate-pulse text-2xl mb-4 font-mono italic">جاري استقبال بيان دار الإفتاء المصرية...</p>
+                  <button 
+                    onClick={() => setScene('celebration')}
+                    className="mt-4 text-xs text-gray-400 underline"
+                  >
+                    تخطي للنتيجة
+                  </button>
+                </div>
               </div>
             </motion.div>
           )}
 
-          {gameState === 'celebration' && (
+          {scene === 'celebration' && (
             <motion.div 
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+              key="celebration"
+              initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}
               className="text-center"
             >
-              <h1 className="text-6xl md:text-9xl font-black text-yellow-500 drop-shadow-2xl mb-6">
+              <h1 className="text-6xl md:text-8xl font-black text-yellow-500 drop-shadow-lg mb-4">
                 رمضان كريم
               </h1>
-              <p className="text-2xl text-white mb-8">الفرحة بدأت.. عائلتك بانتظارك على السفرة</p>
-              
+              <div className="flex gap-4 justify-center mt-8">
+                {/* هنا تظهر الصور الشعبية للبنات والأولاد بالفوانيس */}
+                <div className="p-4 bg-white/10 rounded-xl border border-yellow-500/50 backdrop-blur-sm">
+                   <p className="text-sm">سارة وليلى: "وحوي يا وحوي!" 🏮</p>
+                </div>
+                <div className="p-4 bg-white/10 rounded-xl border border-yellow-500/50 backdrop-blur-sm">
+                   <p className="text-sm">محمود: "أنا هصوم للظهر!" 🌙</p>
+                </div>
+              </div>
               <motion.button 
                 whileHover={{ scale: 1.1 }}
-                className="px-10 py-5 bg-gradient-to-r from-yellow-600 to-yellow-400 text-black font-black rounded-xl"
+                className="mt-12 px-10 py-4 bg-yellow-600 text-black font-black rounded-full"
               >
-                الدخول لشارع المعز الآن
+                إلى شارع المعز مع آدم 🚀
               </motion.button>
             </motion.div>
           )}
@@ -99,13 +109,10 @@ const RamadanSimulation = () => {
       </main>
 
       <style jsx>{`
-        .scanline {
-          background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.5) 51%);
-          background-size: 100% 4px;
-        }
+        .font-serif { font-family: 'Amiri', serif; }
       `}</style>
     </div>
   );
 };
 
-export default RamadanSimulation;
+export default RamadanGathering;
