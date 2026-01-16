@@ -20,7 +20,7 @@
     "lucide-react": "^0.300.0",
     "clsx": "^2.1.0",
     "tailwind-merge": "^2.2.0",
-    "tailwind-animated": "^1.0.1",
+    "tailwindcss-animated": "^1.0.1",
     "firebase": "^10.0.0"
   },
   "devDependencies": {
