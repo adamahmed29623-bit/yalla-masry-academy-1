@@ -1,89 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
+import Head from 'next/head';
 
-// دالة النطق بصوت آدم (تعمل مباشرة من الصفحة)
-const speakAdam = (text) => {
-  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'ar-EG';
-    msg.pitch = 1.4; // نبرة آدم المرحة
-    window.speechSynthesis.speak(msg);
-  }
-};
+const RamadanWithAdam = () => {
+  const [step, setStep] = useState(1);
+  const [speech, setSpeech] = useState("");
 
-export default function RamadanSimulation() {
-  const [scene, setScene] = useState(1);
+  // نصوص آدم في كل مرحلة
+  const adamMessages = {
+    1: "يا ملكة نفرتيتي، العيلة كلها مستنية المفتي.. يا ترى رمضان بكره؟",
+    2: "الشارع نور! شوفي البنات والأولاد بالفوانيس.. رمضان جانا!",
+    3: "حي على الصلاة.. خشوع التراويح في مصر ملوش زي، يلا ندعي سوا."
+  };
+
+  // وظيفة نطق آدم للكلام تلقائياً
+  const speak = (text) => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'ar-EG';
+      msg.pitch = 1.3;
+      window.speechSynthesis.speak(msg);
+    }
+  };
+
+  useEffect(() => {
+    setSpeech(adamMessages[step]);
+    speak(adamMessages[step]);
+  }, [step]);
 
   return (
-    <div className="min-h-screen bg-black text-white relative font-sans overflow-hidden">
+    <div className="min-h-screen bg-black text-white overflow-hidden font-serif">
       <Head>
-        <title>محاكاة رمضان | أكاديمية نفرتيتي</title>
+        <title>رمضان مع آدم | أكاديمية نفرتيتي</title>
       </Head>
 
-      {/* --- الرمز الكرتوني "آدم" --- */}
+      {/* --- أفاتار آدم (ثابت ويتحرك بمرونة) --- */}
       <motion.div 
-        initial={{ y: 100 }} animate={{ y: 0 }}
-        className="fixed bottom-5 left-5 z-50 w-32 md:w-44 cursor-pointer"
-        onClick={() => speakAdam("أنا آدم، رفيقك في رحلة رمضان بالأكاديمية!")}
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        className="fixed bottom-10 right-10 z-50 flex flex-col items-center"
       >
-        <img src="/assets/characters/adam-avatar.png" alt="آدم" className="w-full drop-shadow-2xl" />
-        <div className="bg-yellow-500 text-black p-2 rounded-xl text-[10px] font-bold mt-2 text-center shadow-lg border border-white">
-          إضغط عليّ لأتحدث!
+        <div className="bg-white text-black p-3 rounded-2xl rounded-br-none mb-3 shadow-2xl border-2 border-yellow-500 max-w-[180px] text-center">
+          <p className="text-xs font-bold">{speech}</p>
         </div>
+        <img 
+          src="/assets/characters/adam-hero.png" 
+          alt="آدم" 
+          className="w-32 md:w-48 drop-shadow-[0_0_20px_rgba(234,179,8,0.6)] rounded-full border-4 border-yellow-600"
+        />
       </motion.div>
 
       <AnimatePresence mode="wait">
-        {/* المشهد 1: البيت والانتظار */}
-        {scene === 1 && (
-          <motion.div key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-screen relative flex items-center justify-center">
-            <img src="/assets/simulation/family-waiting.jpg" className="absolute inset-0 w-full h-full object-cover opacity-50" />
-            <div className="z-10 bg-black/60 p-8 rounded-3xl border-2 border-yellow-600 text-center backdrop-blur-md">
-              <h2 className="text-3xl text-yellow-500 mb-4">لحظة الرؤية الملكية</h2>
-              <button 
-                onClick={() => { setScene(2); speakAdam("رمضان جانا! يلا نشوف الشارع المصري منور إزاي!"); }}
-                className="bg-yellow-600 px-10 py-3 rounded-full font-bold hover:bg-yellow-500 transition-all"
-              >
-                افتح الراديو واسمع المفتي 📻
+        {/* المشهد 1: بيت العائلة */}
+        {step === 1 && (
+          <motion.div key="1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-screen relative flex items-center justify-center">
+            <img src="/assets/simulation/family-waiting.jpg" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+            <div className="z-10 text-center bg-black/40 backdrop-blur-md p-10 rounded-3xl border border-yellow-600">
+              <h1 className="text-4xl text-yellow-500 mb-6 drop-shadow-lg">لحظة الرؤية</h1>
+              <button onClick={() => setStep(2)} className="bg-yellow-600 hover:bg-yellow-500 text-black px-10 py-3 rounded-full font-black transition-all shadow-lg">
+                أعلنوا الرؤية.. انطلق!
               </button>
             </div>
           </motion.div>
         )}
 
-        {/* المشهد 2: الشارع والاحتفال */}
-        {scene === 2 && (
-          <motion.div key="s2" initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="h-screen relative flex items-center justify-center">
-            <img src="/assets/simulation/egyptian-street.jpg" className="absolute inset-0 w-full h-full object-cover opacity-40" />
-            <div className="z-10 grid grid-cols-2 gap-4 max-w-lg px-4">
-              <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-yellow-500/50 text-center">
-                <p>بنات وأولاد بالفوانيس 🏮</p>
+        {/* المشهد 2: الشارع والزينة */}
+        {step === 2 && (
+          <motion.div key="2" initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="h-screen relative flex items-center justify-center">
+            <img src="/assets/simulation/egyptian-street.jpg" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+            <div className="z-10 text-center">
+              <h2 className="text-5xl font-black text-yellow-500 mb-10 shadow-black">بهجة الشارع المصري</h2>
+              <div className="flex gap-4 justify-center">
+                 <button onClick={() => setStep(3)} className="bg-yellow-600 text-black px-12 py-4 rounded-2xl font-bold text-xl hover:scale-105 transition-all">
+                   صوت التراويح بدأ 🕌
+                 </button>
               </div>
-              <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-yellow-500/50 text-center">
-                <p>ريحة الكنافة البلدي 🧁</p>
-              </div>
-              <button 
-                onClick={() => { setScene(3); speakAdam("صوت التراويح بدأ.. ادخل المسجد واستشعر الهدوء."); }}
-                className="col-span-2 bg-yellow-600 py-4 rounded-xl font-black"
-              >
-                الذهاب للمسجد (صلاة التراويح)
-              </button>
             </div>
           </motion.div>
         )}
 
         {/* المشهد 3: المسجد والدعاء */}
-        {scene === 3 && (
-          <motion.div key="s3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-screen relative flex flex-col items-center justify-center">
-            <img src="/assets/simulation/mosque-light.webp" className="absolute inset-0 w-full h-full object-cover opacity-30" />
-            <div className="z-10 text-center px-6">
-              <h2 className="text-5xl font-serif text-yellow-500 mb-6 italic">روحانية التراويح</h2>
-              <p className="text-xl mb-10 text-gray-300">"اللهم تقبل منا ومنكم صالح الأعمال"</p>
-              <button onClick={() => setScene(1)} className="text-yellow-600 underline">العودة للبيت</button>
+        {step === 3 && (
+          <motion.div key="3" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="h-screen relative flex items-center justify-center text-center">
+            <img src="/assets/simulation/mosque-light.webp" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+            <div className="z-10 max-w-2xl px-6">
+              <h3 className="text-6xl text-yellow-500 mb-6 italic">السكينة والروحانية</h3>
+              <p className="text-2xl text-gray-200 leading-relaxed mb-8">"اللهم بارك لنا في رمضان، واجعله شهر خير وبركة على أكاديمية نفرتيتي وكل طلابنا."</p>
+              <button onClick={() => setStep(1)} className="text-yellow-600 underline text-lg">العودة للبيت</button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-}
+};
+
+export default RamadanWithAdam;
