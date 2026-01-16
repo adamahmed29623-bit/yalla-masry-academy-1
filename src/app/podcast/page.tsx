@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mic2, Radio, Play, Headset, Calendar, Users, Volume2, Share2, Sparkles } from 'lucide-react';
+import { Headphones, Mic2, Play, Radio, Share2, Sparkles, Users, Volume2 } from 'lucide-react';
 
 export default function NefertitiPodcast() {
   const [isLive, setIsLive] = useState(true); // حالة البث المباشر
